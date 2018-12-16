@@ -5,10 +5,11 @@ class Buffer
 {
 	private:
 		cl::Context context;
-		cl::Buffer buffer;
 		friend class Context;
-	public:
 		Buffer(const cl::Context& context, cl_mem_flags flag, size_t size);
+	public:
+		cl::Buffer buffer;
+
 		~Buffer();
 };
 

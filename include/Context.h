@@ -3,8 +3,8 @@
 #include"CL/cl.hpp"
 #include<string>
 #include"Buffer.h"
-#include"Queue.h"
 #include"Kernel.h"
+#include"Queue.h"
 class Context
 {
 	private:

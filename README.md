@@ -28,6 +28,11 @@ Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Con
 
 `Kernel` : the object holding GPU code (kernel code)
 
+# Tested Machine (Intel core i7 5500U, Intel HD Graphics 5500, AMD R7 M270)
+
+- Windows 10 with proprietary driver : works
+
+- Fedora 29 with mesa driver : "asynchronous calls" does not work for both GPUs
 
 # TO DO
 

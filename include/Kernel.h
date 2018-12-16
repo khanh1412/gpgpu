@@ -1,6 +1,7 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 #include"CL/cl.hpp"
+#include<string>
 class Kernel
 {
 	private:

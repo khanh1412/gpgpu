@@ -1,7 +1,7 @@
 #include<iostream>
 #include"Context.h"
 
-const uint64_t COUNT = 200;
+const uint64_t COUNT = 10;
 
 void canvas_add(float *s, float *a, float *b, uint64_t COUNT)
 {
@@ -30,8 +30,9 @@ int main()
 
 	for (uint64_t i=0; i<COUNT; i++)
 	{
-		a[i] = i;
-		b[i] = COUNT - i;
+		a[i] = static_cast<float>(i);
+		b[i] = static_cast<float>(COUNT - i);
+		s[i] = 0;
 	}
 
 

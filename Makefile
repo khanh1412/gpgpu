@@ -1,5 +1,5 @@
 CC = g++
-CC_FLAGS = -std=c++17 -g
+CC_FLAGS = -std=c++17 -g -w
 INCLUDE = -I./include
 LIBRARY = -lOpenCL
 
@@ -14,4 +14,4 @@ lib:
 	rm -rf objects
 
 test: lib
-	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/test.cc ./libCLWrapper.so
+	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/test.cc ./libCLWrapper.so $(LIBRARY)

@@ -1,6 +1,6 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
-#include"CL/cl.hpp"
+#include<CL/cl.hpp>
 #include<vector>
 #include"Buffer.h"
 #include"Kernel.h"

@@ -1,6 +1,6 @@
 #ifndef _CONTEXT_H_
 #define _CONTEXT_H_
-#include"CL/cl.hpp"
+#include<CL/cl.hpp>
 #include<string>
 #include"Buffer.h"
 #include"Kernel.h"

@@ -1,6 +1,6 @@
 #ifndef _BUFFER_H_
 #define _BUFFER_H_
-#include"CL/cl.hpp"
+#include<CL/cl.hpp>
 class Buffer
 {
 	private:

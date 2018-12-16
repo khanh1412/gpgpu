@@ -8,7 +8,7 @@ Queue::~Queue()
 {}
 void Queue::executeKernel(Kernel& kernel, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim, const std::vector<Buffer>& arguments)
 {
-	int i = 0;
+	cl_uint i = 0;
 	for (auto it = arguments.begin(); it != arguments.end(); it++)
 	{
 		kernel.kernel.setArg(i, (*it).buffer);

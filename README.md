@@ -2,6 +2,8 @@
 
 OpenCL abstraction in C++
 
+![alt text](https://raw.githubusercontent.com/khanh1412/opencl/master/images/20181216_204709.jpg)
+
 Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Context`, `Buffer`, `Queue` and `Kernel`.
 
 `Context` : the connection between hardware and software. It can be thought as the "DEVICES"

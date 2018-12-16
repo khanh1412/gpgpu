@@ -1,9 +1,11 @@
 #include<iostream>
 #include"Context.h"
 
-const uint64_t COUNT = 10;
+#include<ctime>
 
-void canvas_add(float *s, float *a, float *b, uint64_t COUNT)
+const uint64_t COUNT = 1936*1096;
+
+void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
 	auto context = Context::initContext(0,0);
 
@@ -12,15 +14,57 @@ void canvas_add(float *s, float *a, float *b, uint64_t COUNT)
 	auto db = context.allocateBuffer(CL_MEM_READ_ONLY , COUNT*sizeof(float));
 
 	auto queue = context.createQueue();
-	auto add_kernel = context.compileKernel("kernels/add.cl.c", "add");
+	auto add = context.compileKernel("kernels/add.cl.c", "add");
+	auto mul = context.compileKernel("kernels/mul.cl.c", "mul");
+	auto sub = context.compileKernel("kernels/sub.cl.c", "sub");
+	auto div = context.compileKernel("kernels/div.cl.c", "div");
 
 
+	auto t1 = std::clock();
 	queue.writeBuffer(da, COUNT*sizeof(float), a);
 	queue.writeBuffer(db, COUNT*sizeof(float), b);
-	queue.executeKernel(add_kernel, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	queue.executeKernel(mul, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	queue.executeKernel(sub, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	queue.executeKernel(div, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
 	queue.readBuffer(ds, COUNT*sizeof(float), s);
 	queue.synchronize();
+	auto t2 = std::clock();
+	std::cout<<"CL time: "<<t2-t1<<" ticks"<<std::endl;
 }
+
+void add(float *s, float *a, float *b, uint64_t COUNT)
+{
+	for (uint64_t i = 0; i<COUNT; i++)
+		s[i] = a[i] + b[i];
+}	
+void sub(float *s, float *a, float *b, uint64_t COUNT)
+{
+	for (uint64_t i = 0; i<COUNT; i++)
+		s[i] = a[i] - b[i];
+}	
+void mul(float *s, float *a, float *b, uint64_t COUNT)
+{
+	for (uint64_t i = 0; i<COUNT; i++)
+		s[i] = a[i] * b[i];
+}	
+void div(float *s, float *a, float *b, uint64_t COUNT)
+{
+	for (uint64_t i = 0; i<COUNT; i++)
+		s[i] = a[i] / b[i];
+}	
+
+void nativeCAL(float *s, float *a, float *b, uint64_t COUNT)
+{
+	auto t1 = std::clock();
+	add(s, a, b, COUNT);
+	mul(s, a, b, COUNT);
+	sub(s, a, b, COUNT);
+	div(s, a, b, COUNT);
+	auto t2 = std::clock();
+	std::cout<<"native time: "<<t2-t1<<" ticks"<<std::endl;
+}
+
 
 int main()
 {
@@ -34,10 +78,7 @@ int main()
 		b[i] = static_cast<float>(COUNT - i);
 		s[i] = 0;
 	}
-
-
-	canvas_add(s, a, b, COUNT);
-
+	/*
 	std::cout<<"a = "<<std::endl<<"\t";
 	for (uint64_t i=0; i<COUNT; i++)
 		std::cout<<a[i]<<" ";
@@ -47,14 +88,25 @@ int main()
 	for (uint64_t i=0; i<COUNT; i++)
 		std::cout<<b[i]<<" ";
 	std::cout<<std::endl;
+	*/
 
+	clCAL(s, a, b, COUNT);
 
-	std::cout<<"s = a + b "<<std::endl<<"\t";
+	/*
+
+	std::cout<<"CL : s = a + b "<<std::endl<<"\t";
 	for (uint64_t i=0; i<COUNT; i++)
 		std::cout<<s[i]<<" ";
 	std::cout<<std::endl;
-
-
+	*/
+	nativeCAL(s, a, b, COUNT);
+	/*
+	std::cout<<"Native : s = a + b "<<std::endl<<"\t";
+	for (uint64_t i=0; i<COUNT; i++)
+		std::cout<<s[i]<<" ";
+	std::cout<<std::endl;
+	*/
+	return 0;
 
 
 }

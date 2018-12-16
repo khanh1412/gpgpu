@@ -15,13 +15,13 @@ class Queue
 		cl::CommandQueue queue;
 		
 		~Queue();
-		inline void writeBuffer(const Buffer& buffer, cl_bool sync, size_t size, void* host_ptr)
+		inline void writeBuffer(const Buffer& buffer, size_t size, void* host_ptr)
 		{
-			queue.enqueueWriteBuffer(buffer.buffer, sync, 0, size, host_ptr);
+			queue.enqueueWriteBuffer(buffer.buffer, CL_FALSE, 0, size, host_ptr);
 		}
-		inline void readBuffer(const Buffer& buffer, cl_bool sync, size_t size, void* host_ptr)
+		inline void readBuffer(const Buffer& buffer, size_t size, void* host_ptr)
 		{
-			queue.enqueueReadBuffer(buffer.buffer, sync, 0, size, host_ptr);
+			queue.enqueueReadBuffer(buffer.buffer, CL_FALSE, 0, size, host_ptr);
 		}
 		void executeKernel(Kernel& kernel, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim, const std::vector<Buffer>& arguments);
 		inline void synchronize() const

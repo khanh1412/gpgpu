@@ -15,10 +15,10 @@ void canvas_add(float *s, float *a, float *b, uint64_t COUNT)
 	auto add_kernel = context.compileKernel("kernels/add.cl.c", "add");
 
 
-	queue.writeBuffer(da, CL_FALSE, COUNT*sizeof(float), a);
-	queue.writeBuffer(db, CL_FALSE, COUNT*sizeof(float), b);
+	queue.writeBuffer(da, COUNT*sizeof(float), a);
+	queue.writeBuffer(db, COUNT*sizeof(float), b);
 	queue.executeKernel(add_kernel, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.readBuffer(ds, CL_FALSE, COUNT*sizeof(float), s);
+	queue.readBuffer(ds, COUNT*sizeof(float), s);
 	queue.synchronize();
 }
 

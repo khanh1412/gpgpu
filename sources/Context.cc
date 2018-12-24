@@ -9,25 +9,23 @@ Context::Context(const cl::Platform& platform, const cl::Device& device)
 }
 Context Context::initContext(uint8_t PlatformID, uint8_t DeviceID)
 {
+	int i;
 	//PLATFORMS (OPENCL SOFTWARE)
 	std::vector<cl::Platform> all_platforms;
 	cl::Platform::get(&all_platforms);
-	cl::Platform platform = all_platforms[PlatformID];
-
-	//DEVICES (HARDWARE)
-	std::vector<cl::Device> all_devices;
-	platform.getDevices(CL_DEVICE_TYPE_ALL, &all_devices);
-	cl::Device device = all_devices[0];
-
 	std::cout<<"All platforms:"<<std::endl;
-	int i;
 	i=0;
 	for (auto& platform : all_platforms)
 	{
 		std::cout<<"\t["<<i<<"] "<<platform.getInfo<CL_PLATFORM_NAME>()<<std::endl;
 		i++;
 	}
-	std::cerr<<"Using platform: "<<platform.getInfo<CL_PLATFORM_NAME>()<<std::endl<<std::endl;
+	cl::Platform platform = all_platforms[PlatformID];
+	std::cerr<<"Using platform: ["<<(int)PlatformID<<"] "<<platform.getInfo<CL_PLATFORM_NAME>()<<std::endl<<std::endl;
+
+	//DEVICES (HARDWARE)
+	std::vector<cl::Device> all_devices;
+	platform.getDevices(CL_DEVICE_TYPE_ALL, &all_devices);
 	i=0;
 	std::cout<<"Platform's devices:"<<std::endl;
 	for (auto& device : all_devices)
@@ -35,8 +33,10 @@ Context Context::initContext(uint8_t PlatformID, uint8_t DeviceID)
 		std::cout<<"\t["<<i<<"] "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
 		i++;
 	}
+	cl::Device device = all_devices[DeviceID];
+	std::cerr<<"Using device: ["<<(int)DeviceID<<"] "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl<<std::endl;
 
-	std::cerr<<"Using device: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl<<std::endl;
+
 
 
 	Context context(platform, device);

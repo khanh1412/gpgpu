@@ -19,7 +19,23 @@ Context Context::initContext(uint8_t PlatformID, uint8_t DeviceID)
 	platform.getDevices(CL_DEVICE_TYPE_ALL, &all_devices);
 	cl::Device device = all_devices[0];
 
+	std::cout<<"All platforms:"<<std::endl;
+	int i;
+	i=0;
+	for (auto& platform : all_platforms)
+	{
+		std::cout<<"\t["<<i<<"]"<<platform.getInfo<CL_PLATFORM_NAME>()<<std::endl;
+		i++;
+	}
 	std::cerr<<"Using platform: "<<platform.getInfo<CL_PLATFORM_NAME>()<<std::endl;
+	i=0;
+	std::cout<<"Platform's devices:"<<std::endl;
+	for (auto& device : all_devices)
+	{
+		std::cout<<"\t["<<i<<"]"<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
+		i++;
+	}
+
 	std::cerr<<"Using device: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
 
 

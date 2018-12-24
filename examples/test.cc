@@ -3,7 +3,7 @@
 
 #include<ctime>
 #include<thread>
-const uint64_t COUNT = 1936*1096;
+const uint64_t COUNT = 6000000*10;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
@@ -22,19 +22,16 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 	queue.synchronize();
 	auto t2 = std::clock();
 	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
 	queue.synchronize();
 	auto t3 = std::clock();
 	queue.readBuffer(ds, COUNT*sizeof(float), s);
 	queue.synchronize();
 	auto t4 = std::clock();
 	std::cout<<"CL time: "<<static_cast<float>(t4-t1)/CLOCKS_PER_SEC<<std::endl;
-	std::cout<<"\twrite buffer time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<std::endl;
-	std::cout<<"\tkernel       time: "<<static_cast<float>(t3-t2)/CLOCKS_PER_SEC<<std::endl;
-	std::cout<<"\tread buffer  time: "<<static_cast<float>(t4-t2)/CLOCKS_PER_SEC<<std::endl;
+	std::cout<<"\twrite  time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<std::endl;
+	std::cout<<"\tkernel time: "<<static_cast<float>(t3-t2)/CLOCKS_PER_SEC<<std::endl;
+	std::cout<<"\tread   time: "<<static_cast<float>(t4-t3)/CLOCKS_PER_SEC<<std::endl;
+
 }
 
 void add(float *s, float *a, float *b, uint64_t COUNT)
@@ -68,10 +65,6 @@ void nativeCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
 	auto t1 = std::clock();
 	add(s, a, b, COUNT);
-	add(s, a, b, COUNT);
-	add(s, a, b, COUNT);
-	add(s, a, b, COUNT);
-	add(s, a, b, COUNT);
 	auto t2 = std::clock();
 	std::cout<<"native time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<std::endl;
 }
@@ -79,10 +72,6 @@ void nativeCAL(float *s, float *a, float *b, uint64_t COUNT)
 void mpCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
 	auto t1 = std::clock();
-	add_m(s, a, b, COUNT);
-	add_m(s, a, b, COUNT);
-	add_m(s, a, b, COUNT);
-	add_m(s, a, b, COUNT);
 	add_m(s, a, b, COUNT);
 	auto t2 = std::clock();
 	std::cout<<"mp time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<std::endl;

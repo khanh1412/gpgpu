@@ -7,7 +7,7 @@ const uint64_t COUNT = 1936*1096;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
-	auto context = Context::initContext(1,0);
+	auto context = Context::initContext(0,0);
 
 	auto ds = context.allocateBuffer(CL_MEM_WRITE_ONLY, COUNT*sizeof(float));
 	auto da = context.allocateBuffer(CL_MEM_READ_ONLY , COUNT*sizeof(float));
@@ -35,11 +35,11 @@ void add_kernel(float *s, float *a, float *b, uint64_t COUNT)
 	for (uint64_t i = 0; i<COUNT; i++)
 		s[i] = a[i] + b[i];
 }
-inline void add(float *s, float *a, float *b, uint64_t COUNT)
+inline void add_s(float *s, float *a, float *b, uint64_t COUNT)
 {
 	add_kernel(s, a, b, COUNT);
 }
-void add_m(float *s, float *a, float *b, uint64_t COUNT)
+void add(float *s, float *a, float *b, uint64_t COUNT)
 {
 	uint8_t threads = 4;
 	std::thread t[threads];

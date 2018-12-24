@@ -1,7 +1,7 @@
 CC = g++
 CC_FLAGS = -std=c++17 -g -w
 INCLUDE = -I./include
-LIBRARY = -lOpenCL
+LIBRARY = -lOpenCL -lpthread
 
 lib:
 	rm -rf objects

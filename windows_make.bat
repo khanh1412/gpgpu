@@ -9,6 +9,6 @@ g++ -std=c++17 -I.\include -shared -o CLWrapper.dll objects\*.o .\OpenCL.dll -w 
 del objects\*.o
 rmdir objects
 
-g++ -std=c++17 -I.\include -o run.exe examples\test.cc .\ClWrapper.dll .\OpenCL.dll -w -g
+g++ -std=c++17 -I.\include -o run.exe examples\test.cc .\ClWrapper.dll .\OpenCL.dll -w -g -lpthread
 
 

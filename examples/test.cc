@@ -19,27 +19,30 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 	auto t1 = std::clock();
 	queue.writeBuffer(da, COUNT*sizeof(float), a);
 	queue.writeBuffer(db, COUNT*sizeof(float), b);
-	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.readBuffer(ds, COUNT*sizeof(float), s);
 	queue.synchronize();
 	auto t2 = std::clock();
-	std::cout<<"CL time: "<<t2-t1<<" ticks"<<std::endl;
+	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	queue.synchronize();
+	auto t3 = std::clock();
+	queue.readBuffer(ds, COUNT*sizeof(float), s);
+	queue.synchronize();
+	auto t4 = std::clock();
+	std::cout<<"CL time: "<<static_cast<float>(t4-t1)/CLOCKS_PER_SEC<<std::endl;
+	std::cout<<"\twrite buffer time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<std::endl;
+	std::cout<<"\tkernel       time: "<<static_cast<float>(t3-t2)/CLOCKS_PER_SEC<<std::endl;
+	std::cout<<"\tread buffer  time: "<<static_cast<float>(t4-t2)/CLOCKS_PER_SEC<<std::endl;
 }
 
-void add_kernel(float *s, float *a, float *b, uint64_t COUNT)
+void add(float *s, float *a, float *b, uint64_t COUNT)
 {
 	for (uint64_t i = 0; i<COUNT; i++)
 		s[i] = a[i] + b[i];
 }
-inline void add_s(float *s, float *a, float *b, uint64_t COUNT)
-{
-	add_kernel(s, a, b, COUNT);
-}
-void add(float *s, float *a, float *b, uint64_t COUNT)
+void add_m(float *s, float *a, float *b, uint64_t COUNT)
 {
 	uint8_t threads = 4;
 	std::thread t[threads];
@@ -48,12 +51,12 @@ void add(float *s, float *a, float *b, uint64_t COUNT)
 		uint64_t offset = i*COUNT/4;
 		if (i != threads-1)
 		{
-			t[i] = std::thread(add_kernel, s+offset, a+offset, b+offset, COUNT/4);
+			t[i] = std::thread(add, s+offset, a+offset, b+offset, COUNT/4);
 		}
 		else
 		{
 			uint64_t lastlength = COUNT - offset;
-			t[i] = std::thread(add_kernel, s+offset, a+offset, b+offset, lastlength);
+			t[i] = std::thread(add, s+offset, a+offset, b+offset, lastlength);
 		}
 	}
 	for (int i=0; i<threads; i++)
@@ -70,9 +73,20 @@ void nativeCAL(float *s, float *a, float *b, uint64_t COUNT)
 	add(s, a, b, COUNT);
 	add(s, a, b, COUNT);
 	auto t2 = std::clock();
-	std::cout<<"native time: "<<t2-t1<<" ticks"<<std::endl;
+	std::cout<<"native time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<std::endl;
 }
 
+void mpCAL(float *s, float *a, float *b, uint64_t COUNT)
+{
+	auto t1 = std::clock();
+	add_m(s, a, b, COUNT);
+	add_m(s, a, b, COUNT);
+	add_m(s, a, b, COUNT);
+	add_m(s, a, b, COUNT);
+	add_m(s, a, b, COUNT);
+	auto t2 = std::clock();
+	std::cout<<"mp time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<std::endl;
+}
 
 int main()
 {
@@ -86,10 +100,22 @@ int main()
 		b[i] = static_cast<float>(COUNT - i);
 		s[i] = 0;
 	}
-
 	clCAL(s, a, b, COUNT);
-
+	for (uint64_t i=0; i<COUNT; i++)
+	{
+		a[i] = static_cast<float>(i);
+		b[i] = static_cast<float>(COUNT - i);
+		s[i] = 0;
+	}
+	mpCAL(s, a, b, COUNT);
+	for (uint64_t i=0; i<COUNT; i++)
+	{
+		a[i] = static_cast<float>(i);
+		b[i] = static_cast<float>(COUNT - i);
+		s[i] = 0;
+	}
 	nativeCAL(s, a, b, COUNT);
+
 	/*
 	std::cout<<"a = ";
 	for (uint64_t i=0; i<COUNT; i++)

@@ -7,7 +7,7 @@ const uint64_t COUNT = 1936*1096;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
-	auto context = Context::initContext(0,0);
+	auto context = Context::initContext(1,0);
 
 	auto ds = context.allocateBuffer(CL_MEM_WRITE_ONLY, COUNT*sizeof(float));
 	auto da = context.allocateBuffer(CL_MEM_READ_ONLY , COUNT*sizeof(float));
@@ -78,34 +78,12 @@ int main()
 		b[i] = static_cast<float>(COUNT - i);
 		s[i] = 0;
 	}
-	/*
-	std::cout<<"a = "<<std::endl<<"\t";
-	for (uint64_t i=0; i<COUNT; i++)
-		std::cout<<a[i]<<" ";
-	std::cout<<std::endl;
-
-	std::cout<<"b = "<<std::endl<<"\t";
-	for (uint64_t i=0; i<COUNT; i++)
-		std::cout<<b[i]<<" ";
-	std::cout<<std::endl;
-	*/
 
 	clCAL(s, a, b, COUNT);
 
-	/*
-
-	std::cout<<"CL : s = a + b "<<std::endl<<"\t";
-	for (uint64_t i=0; i<COUNT; i++)
-		std::cout<<s[i]<<" ";
-	std::cout<<std::endl;
-	*/
 	nativeCAL(s, a, b, COUNT);
-	/*
-	std::cout<<"Native : s = a + b "<<std::endl<<"\t";
-	for (uint64_t i=0; i<COUNT; i++)
-		std::cout<<s[i]<<" ";
-	std::cout<<std::endl;
-	*/
+
+
 	return 0;
 
 

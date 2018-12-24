@@ -1,5 +1,6 @@
 #include"Context.h"
 #include<vector>
+#include<iostream>
 
 Context::Context(const cl::Platform& platform, const cl::Device& device)
 	: platform(platform), device(device)
@@ -17,6 +18,10 @@ Context Context::initContext(uint8_t PlatformID, uint8_t DeviceID)
 	std::vector<cl::Device> all_devices;
 	platform.getDevices(CL_DEVICE_TYPE_ALL, &all_devices);
 	cl::Device device = all_devices[0];
+
+	std::cerr<<"Using platform: "<<platform.getInfo<CL_PLATFORM_NAME>()<<std::endl;
+	std::cerr<<"Using device: "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
+
 
 	Context context(platform, device);
 

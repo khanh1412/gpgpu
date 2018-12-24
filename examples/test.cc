@@ -3,7 +3,7 @@
 
 #include<ctime>
 #include<thread>
-const uint64_t COUNT = 60000000;
+const uint64_t COUNT = 100000000;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {

@@ -15,18 +15,18 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 
 	auto queue = context.createQueue();
 	auto add = context.compileKernel("kernels/add.cl.c", "add");
-	auto mul = context.compileKernel("kernels/mul.cl.c", "mul");
-	auto sub = context.compileKernel("kernels/sub.cl.c", "sub");
-	auto div = context.compileKernel("kernels/div.cl.c", "div");
+	//auto mul = context.compileKernel("kernels/mul.cl.c", "mul");
+	//auto sub = context.compileKernel("kernels/sub.cl.c", "sub");
+	//auto div = context.compileKernel("kernels/div.cl.c", "div");
 
 
 	auto t1 = std::clock();
 	queue.writeBuffer(da, COUNT*sizeof(float), a);
 	queue.writeBuffer(db, COUNT*sizeof(float), b);
 	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(mul, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(sub, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.executeKernel(div, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	//queue.executeKernel(mul, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	//queue.executeKernel(sub, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
+	//queue.executeKernel(div, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
 	queue.readBuffer(ds, COUNT*sizeof(float), s);
 	queue.synchronize();
 	auto t2 = std::clock();
@@ -58,9 +58,9 @@ void nativeCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
 	auto t1 = std::clock();
 	add(s, a, b, COUNT);
-	mul(s, a, b, COUNT);
-	sub(s, a, b, COUNT);
-	div(s, a, b, COUNT);
+	//mul(s, a, b, COUNT);
+	//sub(s, a, b, COUNT);
+	//div(s, a, b, COUNT);
 	auto t2 = std::clock();
 	std::cout<<"native time: "<<t2-t1<<" ticks"<<std::endl;
 }

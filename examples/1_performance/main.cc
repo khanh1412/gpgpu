@@ -4,11 +4,13 @@
 #include<ctime>
 #include<thread>
 
-const uint64_t COUNT = 10000000;
+
+const uint64_t size = 256;
+const uint64_t COUNT = size*size*size;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
-	auto context = CL::Context::initContext(1,0);
+	auto context = CL::Context::initContext(0,0);
 
 	auto ds = context.allocateBuffer(CL_MEM_WRITE_ONLY, COUNT*sizeof(float));
 	auto da = context.allocateBuffer(CL_MEM_READ_ONLY , COUNT*sizeof(float));
@@ -20,11 +22,19 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 	auto t1 = std::clock();
 	queue.writeBuffer(da, a, COUNT*sizeof(float));
 	queue.writeBuffer(db, b, COUNT*sizeof(float));
-	queue.executeNDRangeKernel(add, {&ds, &da, &db}, {COUNT, 1, 1}, {1,1,1});
+	queue.synchronize();
+	auto t2 = std::clock();
+	queue.executeNDRangeKernel(add, {&ds, &da, &db}, {COUNT, 1, 1}, {size,1,1});
+	queue.synchronize();
+	auto t3 = std::clock();
+
 	queue.readBuffer(ds, s, COUNT*sizeof(float));
 	queue.synchronize();
 	auto t4 = std::clock();
 	std::cout<<"CL time: "<<static_cast<float>(t4-t1)/CLOCKS_PER_SEC<<std::endl;
+	std::cout<<"\tWrite  time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<" | "<<2*COUNT*sizeof(float)<<"bytes"<<std::endl;
+	std::cout<<"\tKernel time: "<<static_cast<float>(t3-t2)/CLOCKS_PER_SEC<<std::endl;
+	std::cout<<"\tRead   time: "<<static_cast<float>(t4-t3)/CLOCKS_PER_SEC<<" | "<<COUNT*sizeof(float)<<"bytes"<<std::endl;
 }
 
 void add(float *s, float *a, float *b, uint64_t COUNT)

@@ -3,7 +3,7 @@
 
 #include<ctime>
 #include<thread>
-const uint64_t COUNT = 10;
+const uint64_t COUNT = 10000000;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
@@ -19,19 +19,11 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 	auto t1 = std::clock();
 	queue.writeBuffer(da, COUNT*sizeof(float), a);
 	queue.writeBuffer(db, COUNT*sizeof(float), b);
-	queue.synchronize();
-	auto t2 = std::clock();
 	queue.executeKernel(add, {COUNT, 1, 1}, {1,1,1}, {ds, da, db});
-	queue.synchronize();
-	auto t3 = std::clock();
 	queue.readBuffer(ds, COUNT*sizeof(float), s);
 	queue.synchronize();
 	auto t4 = std::clock();
 	std::cout<<"CL time: "<<static_cast<float>(t4-t1)/CLOCKS_PER_SEC<<std::endl;
-	std::cout<<"\twrite  time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<std::endl;
-	std::cout<<"\tkernel time: "<<static_cast<float>(t3-t2)/CLOCKS_PER_SEC<<std::endl;
-	std::cout<<"\tread   time: "<<static_cast<float>(t4-t3)/CLOCKS_PER_SEC<<std::endl;
-
 }
 
 void add(float *s, float *a, float *b, uint64_t COUNT)
@@ -90,7 +82,6 @@ int main()
 		s[i] = 0;
 	}
 	clCAL(s, a, b, COUNT);
-	/*
 	for (uint64_t i=0; i<COUNT; i++)
 	{
 		a[i] = static_cast<float>(i);
@@ -105,8 +96,8 @@ int main()
 		s[i] = 0;
 	}
 	nativeCAL(s, a, b, COUNT);
-	*/
 
+	/*
 	std::cout<<"a = ";
 	for (uint64_t i=0; i<COUNT; i++)
 	{
@@ -127,7 +118,7 @@ int main()
 		std::cout<<s[i]<<" ";
 	}
 	std::cout<<std::endl;
-
+	*/
 	return 0;
 
 

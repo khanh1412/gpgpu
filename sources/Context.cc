@@ -39,9 +39,7 @@ Context Context::initContext(uint8_t PlatformID, uint8_t DeviceID)
 	platform.getDevices(CL_DEVICE_TYPE_ALL, &all_devices);
 	cl::Device device = all_devices[DeviceID];
 
-	Context context(platform, device);
-
-	return context;
+	return Context(platform, device);
 }
 Context::~Context()
 {}

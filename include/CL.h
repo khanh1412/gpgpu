@@ -12,10 +12,10 @@ namespace CL
 	{
 		private:
 			cl::Context context;
-			friend class Context;
+			friend class Context; friend class Queue;
+			cl::Buffer buffer;
 			Buffer(const cl::Context& context, cl_mem_flags flag, size_t size);
 		public:
-			cl::Buffer buffer;
 			~Buffer();
 	};
 	class Kernel
@@ -23,12 +23,10 @@ namespace CL
 		private:
 			cl::Context context;
 			cl::Device device;
-			friend class Context;
-		
-			Kernel(const cl::Context& context, const cl::Device& device, const std::string& kernel_path, const std::string& kernel_name);
-		public:
+			friend class Context; friend class Queue;
 			cl::Kernel kernel;
-			
+			Kernel(const cl::Context& context, const cl::Device& device, const std::string& kernel_path, const std::string& kernel_name);
+		public:	
 			~Kernel();
 	};
 	class Queue
@@ -37,10 +35,9 @@ namespace CL
 			cl::Context context;
 			cl::Device device;
 			friend class Context;
+			cl::CommandQueue queue;	
 			Queue(const cl::Context& context, const cl::Device& device);
 		public:
-			cl::CommandQueue queue;
-		
 			~Queue();
 			inline void writeBuffer(const Buffer& buffer, size_t size, void* host_ptr)
 			{

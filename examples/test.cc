@@ -26,7 +26,7 @@ int main()
 		queue.writeBuffer(d_b, b, 3*sizeof(float));
 
 
-		queue.executeNDRangeKernel(add, {&d_c, &d_a, &d_b}, {3, 1, 1}, {1, 1, 1});
+		queue.executeNDRangeKernel(add, {&d_c, &d_a, &d_b}, {3, 1, 1}, {3, 1, 1});
 
 
 

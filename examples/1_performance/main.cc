@@ -20,7 +20,7 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 	auto t1 = std::clock();
 	queue.writeBuffer(da, a, COUNT*sizeof(float));
 	queue.writeBuffer(db, b, COUNT*sizeof(float));
-	queue.executeNDRangeKernel(add, {&ds, &da, &db}, {COUNT, 1, 1}, {1,1,1});
+	queue.executeNDRangeKernel(add, {&ds, &da, &db}, {COUNT, 1, 1}, {512,1,1});
 	queue.readBuffer(ds, s, COUNT*sizeof(float));
 	queue.synchronize();
 	auto t4 = std::clock();

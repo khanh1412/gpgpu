@@ -40,6 +40,8 @@ int main()
 
 	}
 
+	std::printf("%f %f %f\n", a[0], a[1], a[2]);
+	std::printf("%f %f %f\n", b[0], b[1], b[2]);
 	std::printf("%f %f %f\n", c[0], c[1], c[2]);
 
 

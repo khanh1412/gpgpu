@@ -1,5 +1,6 @@
-#include"Kernel.h"
+#include"CL.h"
 #include<fstream>
+using namespace CL;
 std::string readKernel(const std::string& filepath)
 {
 	std::ifstream ifs(filepath);

@@ -1,8 +1,10 @@
 #include<iostream>
-#include"Context.h"
+#include"CL.h"
 
 #include<ctime>
 #include<thread>
+
+using namespace CL;
 const uint64_t COUNT = 10000000;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)

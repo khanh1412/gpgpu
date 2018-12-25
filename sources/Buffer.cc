@@ -1,5 +1,5 @@
-#include"Buffer.h"
-
+#include"CL.h"
+using namespace CL;
 Buffer::Buffer(const cl::Context& context, cl_mem_flags flag, size_t size)
 	: context(context)
 {

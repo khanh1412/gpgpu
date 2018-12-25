@@ -1,7 +1,8 @@
-#include"Context.h"
+#include"CL.h"
 #include<vector>
 #include<iostream>
 
+using namespace CL;
 Context::Context(const cl::Platform& platform, const cl::Device& device)
 	: platform(platform), device(device)
 {

@@ -1,4 +1,5 @@
-#include"Queue.h"
+#include"CL.h"
+using namespace CL;
 Queue::Queue(const cl::Context& context, const cl::Device& device)
 	: context(context), device(device)
 {

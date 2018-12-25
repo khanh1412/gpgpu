@@ -18,6 +18,7 @@ namespace CL
 	class Kernel;
 	class Queue;
 	class Context;
+	class Event;
 	class Context: public singleton
 	{
 		private:
@@ -65,7 +66,7 @@ namespace CL
 			void executeNDRangeKernel(
 					Kernel& kernel, const std::vector<Buffer*>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
-			void enqueueBarrier();
+			void enqueueBarrierWaitForEvents(std::vector<Event*> events);
 			void synchronize();
 	};
 }

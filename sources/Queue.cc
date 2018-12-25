@@ -2,7 +2,7 @@
 using namespace CL;
 Queue::Queue(const cl_context& context, const cl_device_id& device)
 {
-	queue = clCreateCommandQueue(context, device, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, nullptr);
+	queue = clCreateCommandQueue(context, device, 0, nullptr);
 }
 Queue::~Queue()
 {
@@ -29,10 +29,6 @@ void Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Buffer*>& arg
 	for (cl_uint i=0; i < arguments.size(); i++)
 		clSetKernelArg(kernel.kernel, i, sizeof(cl_mem), arguments.at(i));
 	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), 0, global_dim.data(), local_dim.data(), 0, nullptr, nullptr);
-}
-void Queue::enqueueBarrier()
-{
-	clEnqueueBarrierWithWaitList(queue, 0, nullptr, nullptr);
 }
 void Queue::synchronize()
 {

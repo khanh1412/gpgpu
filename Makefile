@@ -15,4 +15,8 @@ lib:
 
 test: lib
 	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/test.cc ./libCL.so $(LIBRARY)
+vecAdd: lib
+	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LIBRARY)
+performance: lib
+	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LIBRARY)
 	

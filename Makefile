@@ -13,5 +13,7 @@ lib:
 	$(CC) $(CC_FLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 	rm -rf objects
 
-test: lib
-	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/test.cc ./libCL.so $(LIBRARY)
+vecAdd: lib
+	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/0_vecadd/main.cc ./libCL.so $(LIBRARY)
+performance: lib
+	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LIBRARY)

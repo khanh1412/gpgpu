@@ -4,19 +4,18 @@
 #include<ctime>
 #include<thread>
 
-using namespace CL;
 const uint64_t COUNT = 10000000;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
-	auto context = Context::initContext(1,0);
+	auto context = CL::Context::initContext(1,0);
 
 	auto ds = context.allocateBuffer(CL_MEM_WRITE_ONLY, COUNT*sizeof(float));
 	auto da = context.allocateBuffer(CL_MEM_READ_ONLY , COUNT*sizeof(float));
 	auto db = context.allocateBuffer(CL_MEM_READ_ONLY , COUNT*sizeof(float));
 
 	auto queue = context.createQueue();
-	auto add = context.compileKernel("kernels/add.cl.c", "add");
+	auto add = context.compileKernel("examples/kernels/add.cl.c", "add");
 
 	auto t1 = std::clock();
 	queue.writeBuffer(da, a, COUNT*sizeof(float));

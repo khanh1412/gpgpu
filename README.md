@@ -38,3 +38,4 @@ Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Con
 
 - add in "callbacks"
 
+- add in "singleton" for `Buffer`

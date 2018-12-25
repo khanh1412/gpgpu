@@ -4,11 +4,20 @@
 #include<string>
 namespace CL
 {
+	class singleton
+	{
+		private:
+			singleton(const singleton& obj);
+			void operator=(const singleton& obj);
+		public:
+			singleton(){};
+			virtual ~singleton(){}
+	};
 	class Buffer;
 	class Kernel;
 	class Queue;
 	class Context;
-	class Context
+	class Context: public singleton
 	{
 		private:
 			cl::Device device;
@@ -31,7 +40,7 @@ namespace CL
 		public:
 			~Buffer();
 	};
-	class Kernel
+	class Kernel: public singleton
 	{
 		private:
 			cl::Context context;
@@ -42,7 +51,7 @@ namespace CL
 		public:	
 			~Kernel();
 	};
-	class Queue
+	class Queue: public singleton
 	{
 		private:
 			cl::Context context;

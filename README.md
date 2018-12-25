@@ -36,6 +36,6 @@ Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Con
 
 # TO DO
 
-- add in "callbacks"
+- add in "Event"
 
 - add in "singleton" for `Buffer`

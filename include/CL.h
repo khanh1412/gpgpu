@@ -63,7 +63,7 @@ namespace CL
 			void copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
 			void fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset=0);
 			void executeNDRangeKernel(
-					Kernel& kernel, const std::vector<Buffer>& arguments, 
+					Kernel& kernel, const std::vector<Buffer*>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
 			void synchronize();
 	};

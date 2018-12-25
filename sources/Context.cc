@@ -3,8 +3,8 @@
 #include<iostream>
 
 using namespace CL;
-Context::Context(const cl::Platform& platform, const cl::Device& device)
-	: platform(platform), device(device)
+Context::Context(const cl::Device& device)
+	: device(device)
 {
 	context = cl::Context({device});
 }
@@ -39,7 +39,7 @@ Context Context::initContext(uint8_t PlatformID, uint8_t DeviceID)
 	platform.getDevices(CL_DEVICE_TYPE_ALL, &all_devices);
 	cl::Device device = all_devices[DeviceID];
 
-	return Context(platform, device);
+	return Context(device);
 }
 Context::~Context()
 {}

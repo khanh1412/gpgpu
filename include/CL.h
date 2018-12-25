@@ -49,7 +49,6 @@ namespace CL
 	class Context
 	{
 		private:
-			cl::Platform platform;
 			cl::Device device;
 			cl::Context context;
 			Context(const cl::Platform& platform, const cl::Device& device);

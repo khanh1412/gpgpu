@@ -10,7 +10,7 @@ namespace CL
 			singleton(const singleton& obj);
 			void operator=(const singleton& obj);
 		public:
-			singleton(){};
+			singleton(){}
 			virtual ~singleton(){}
 	};
 	class Buffer;

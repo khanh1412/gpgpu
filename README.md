@@ -1,6 +1,6 @@
 # opencl
 
-OpenCL abstraction in C++
+CL on top of OpenCL C++ Binding
 
 ![alt text](https://raw.githubusercontent.com/khanh1412/opencl/master/images/20181216_204709.jpg)
 

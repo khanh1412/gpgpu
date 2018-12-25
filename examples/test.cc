@@ -3,7 +3,7 @@
 
 #include<ctime>
 #include<thread>
-const uint64_t COUNT = 100000000;
+const uint64_t COUNT = 10;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
@@ -90,6 +90,7 @@ int main()
 		s[i] = 0;
 	}
 	clCAL(s, a, b, COUNT);
+	/*
 	for (uint64_t i=0; i<COUNT; i++)
 	{
 		a[i] = static_cast<float>(i);
@@ -104,8 +105,8 @@ int main()
 		s[i] = 0;
 	}
 	nativeCAL(s, a, b, COUNT);
+	*/
 
-	/*
 	std::cout<<"a = ";
 	for (uint64_t i=0; i<COUNT; i++)
 	{
@@ -126,7 +127,6 @@ int main()
 		std::cout<<s[i]<<" ";
 	}
 	std::cout<<std::endl;
-	*/
 
 	return 0;
 

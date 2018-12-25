@@ -24,7 +24,6 @@ Context Context::initContext(uint8_t PlatformID, uint8_t DeviceID)
 		i++;
 	}
 	cl::Platform platform = all_platforms[PlatformID];
-//	std::cerr<<"Using platform: ["<<(int)PlatformID<<"] "<<platform.getInfo<CL_PLATFORM_NAME>()<<std::endl<<std::endl;
 
 	//DEVICES (HARDWARE)
 	std::vector<cl::Device> all_devices;
@@ -40,7 +39,6 @@ Context Context::initContext(uint8_t PlatformID, uint8_t DeviceID)
 		i++;
 	}
 	cl::Device device = all_devices[DeviceID];
-	//std::cerr<<"Using device: ["<<(int)DeviceID<<"] "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl<<std::endl;
 
 
 

@@ -3,6 +3,6 @@ void kernel add(
 		global const float* a, 
 		global const float* b)
 {
-	int i = get_global_id(0);
+	ulong i = get_global_id(0);
 	s[i] = a[i] + b[i];
 }

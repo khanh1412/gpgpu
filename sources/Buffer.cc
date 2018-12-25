@@ -1,9 +1,9 @@
 #include"CL.h"
 using namespace CL;
-Buffer::Buffer(const cl::Context& context, cl_mem_flags flag, size_t size)
-	: context(context)
-{
-	buffer = cl::Buffer(context, flag, size);
+Buffer::Buffer(const cl_context& context, cl_mem_flags flags, size_t size){
+	buffer = clCreateBuffer(context, flags, size, nullptr, nullptr);
 }
 Buffer::~Buffer()
-{}
+{
+	clReleaseMemObject(buffer);
+}

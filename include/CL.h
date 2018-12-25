@@ -1,6 +1,7 @@
 #ifndef _CL_H_
 #define _CL_H_
-#include<CL/cl.hpp>
+#include<CL/cl.h>
+#include<vector>
 #include<string>
 namespace CL
 {
@@ -20,52 +21,49 @@ namespace CL
 	class Context: public singleton
 	{
 		private:
-			cl::Device device;
-			cl::Context context;
-			Context(const cl::Device& device);
+			cl_device_id device;
+			cl_context context;
+			Context(const cl_device_id& device);
 		public:
-			static Context initContext(uint8_t PlatformID, uint8_t DeviceID);
-			Buffer allocateBuffer(cl_mem_flags flag, size_t size);
+			static Context initContext(uint32_t PlatformID, uint32_t DeviceID);
+			Buffer allocateBuffer(cl_mem_flags flags, size_t size);
 			Queue createQueue();
-			Kernel compileKernel(const std::string& kernelpath, const std::string& kernelname);
+			Kernel loadKernel(const std::string& program_path, const std::string& kernel_name);
 			~Context();
 	};
 	class Buffer
 	{
 		private:
-			cl::Context context;
-			friend class Context; friend class Queue;
-			cl::Buffer buffer;
-			Buffer(const cl::Context& context, cl_mem_flags flag, size_t size);
+			friend class Queue; friend class Context;
+			cl_mem buffer;
+			Buffer(const cl_context& context, cl_mem_flags flags, size_t size);
 		public:
 			~Buffer();
 	};
 	class Kernel: public singleton
 	{
 		private:
-			cl::Context context;
-			cl::Device device;
-			friend class Context; friend class Queue;
-			cl::Kernel kernel;
-			Kernel(const cl::Context& context, const cl::Device& device, const std::string& kernel_path, const std::string& kernel_name);
+			friend class Queue; friend class Context;
+			cl_program program;
+			cl_kernel kernel;
+			Kernel(const cl_context& context, const cl_device_id& device, const std::string& program_path, const std::string& kernel_name);
 		public:	
 			~Kernel();
 	};
 	class Queue: public singleton
 	{
 		private:
-			cl::Context context;
-			cl::Device device;
 			friend class Context;
-			cl::CommandQueue queue;	
-			Queue(const cl::Context& context, const cl::Device& device);
+			cl_command_queue queue;
+			Queue(const cl_context& context, const cl_device_id& device);
 		public:
 			~Queue();
 			void writeBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
 			void readBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
 			void copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
-			void executeKernel(
-					Kernel& kernel, const std::vector<Buffer>& arguments,
+			void fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset=0);
+			void executeNDRangeKernel(
+					Kernel& kernel, const std::vector<Buffer>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
 			void synchronize();
 	};

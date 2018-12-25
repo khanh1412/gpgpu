@@ -1,7 +1,7 @@
 #include"CL.h"
 #include<fstream>
 using namespace CL;
-std::string readKernel(const std::string& filepath)
+inline std::string read_program(const std::string& filepath)
 {
 	std::ifstream ifs(filepath);
 	std::string content((std::istreambuf_iterator<char>(ifs)), 
@@ -9,22 +9,18 @@ std::string readKernel(const std::string& filepath)
 	return content;
 }
 
-Kernel::Kernel(const cl::Context& context, const cl::Device& device, const std::string& kernel_path, const std::string& kernel_name)
-	: context(context), device(device)
+Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std::string& program_path, const std::string& kernel_name)
 {
-	cl::Program::Sources sources;
+	auto content = read_program(program_path);
+	auto program_string = content.c_str();
+	auto program_length = content.length();
 
-	std::string kernel_code = readKernel(kernel_path);
-	sources.push_back({kernel_code.c_str(), kernel_code.length()});
-
-	cl::Program program(context, sources);
-
-	if (CL_SUCCESS != program.build({device}))
-		throw std::runtime_error("Error building: " + program.getBuildInfo<CL_PROGRAM_BUILD_LOG>(device));
-	
-
-	kernel = cl::Kernel(program, kernel_name.c_str());
+	program = clCreateProgramWithSource(context, 1, &program_string, &program_length, nullptr);
+	clBuildProgram(program, 1, &device, nullptr, nullptr, nullptr);
+	kernel = clCreateKernel(program, kernel_name.c_str(), nullptr);
 }
 Kernel::~Kernel()
-{}
-
+{
+	clReleaseKernel(kernel);
+	clReleaseProgram(program);
+}

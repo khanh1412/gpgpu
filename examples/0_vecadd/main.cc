@@ -15,12 +15,12 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 	auto db = context.allocateBuffer(CL_MEM_READ_ONLY , COUNT*sizeof(float));
 
 	auto queue = context.createQueue();
-	auto add = context.compileKernel("examples/kernels/add.cl.c", "add");
+	auto add = context.loadKernel("examples/kernels/add.cl.c", "add");
 
 	auto t1 = std::clock();
 	queue.writeBuffer(da, a, COUNT*sizeof(float));
 	queue.writeBuffer(db, b, COUNT*sizeof(float));
-	queue.executeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {1,1,1});
+	queue.executeNDRangeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {1,1,1});
 	queue.readBuffer(ds, s, COUNT*sizeof(float));
 	queue.synchronize();
 	auto t4 = std::clock();

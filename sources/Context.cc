@@ -1,57 +1,37 @@
 #include"CL.h"
-#include<vector>
-#include<iostream>
-
 using namespace CL;
-Context::Context(const cl::Device& device)
+Context::Context(const cl_device_id& device)
 	: device(device)
 {
-	context = cl::Context({device});
-}
-Context Context::initContext(uint8_t PlatformID, uint8_t DeviceID)
-{
-	//PLATFORMS (OPENCL SOFTWARE)
-	std::vector<cl::Platform> all_platforms;
-	cl::Platform::get(&all_platforms);
-	std::cout<<std::endl<<"All platforms:\tAll devices:"<<std::endl;
-	int i=0; int j=0;
-	for (auto& platform : all_platforms)
-	{
-		std::cout<<"["<<i<<"] "<<platform.getInfo<CL_PLATFORM_NAME>()<<std::endl;
-		//DEVICES (HARDWARE)
-		j=0;
-		std::vector<cl::Device> all_devices;
-		platform.getDevices(CL_DEVICE_TYPE_ALL, &all_devices);
-		for (auto& device : all_devices)
-		{
-			if (j != DeviceID or i != PlatformID)
-				std::cout<<"\t\t["<<j<<"] "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
-			else
-				std::cout<<"\tusing\t["<<j<<"] "<<device.getInfo<CL_DEVICE_NAME>()<<std::endl;
-			j++;
-		}
-		i++;
-		std::cout<<std::endl;
-	}
-	std::cout<<std::endl;
-	cl::Platform platform = all_platforms[PlatformID];
-	std::vector<cl::Device> all_devices;
-	platform.getDevices(CL_DEVICE_TYPE_ALL, &all_devices);
-	cl::Device device = all_devices[DeviceID];
-
-	return Context(device);
+	context = clCreateContext(nullptr, 1, &device, nullptr, nullptr, nullptr);
 }
 Context::~Context()
-{}
-Buffer Context::allocateBuffer(cl_mem_flags flag, size_t size)
 {
-	return Buffer(context, flag, size);
+	clReleaseContext(context);
+}
+Context Context::initContext(uint32_t PlatformID, uint32_t DeviceID)
+{
+	cl_uint num_platforms;
+	cl_platform_id all_platforms[256];
+	clGetPlatformIDs(0, nullptr, &num_platforms);
+	clGetPlatformIDs(num_platforms, &(all_platforms[0]), nullptr);
+
+	cl_uint num_devices;
+	cl_device_id all_devices[256];
+	clGetDeviceIDs(all_platforms[PlatformID], CL_DEVICE_TYPE_ALL, 0, nullptr, &num_devices);
+	clGetDeviceIDs(all_platforms[PlatformID], CL_DEVICE_TYPE_ALL, num_devices, &(all_devices[0]), nullptr);
+
+	return Context(all_devices[DeviceID]);
+}
+Buffer Context::allocateBuffer(cl_mem_flags flags, size_t size)
+{
+	return Buffer(context, flags, size);
 }
 Queue Context::createQueue()
 {
 	return Queue(context, device);
 }
-Kernel Context::compileKernel(const std::string& kernel_path, const std::string& kernel_name)
+Kernel Context::loadKernel(const std::string& program_path, const std::string& kernel_name)
 {
-	return Kernel(context, device, kernel_path, kernel_name);
+	return Kernel(context, device, program_path, kernel_name);
 }

@@ -1,41 +1,37 @@
 #include"CL.h"
 using namespace CL;
-Queue::Queue(const cl::Context& context, const cl::Device& device)
-	: context(context), device(device)
+Queue::Queue(const cl_context& context, const cl_device_id& device)
 {
-	queue = cl::CommandQueue(context, device);
+	cl_command_queue_properties properties = CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE;
+	queue = clCreateCommandQueueWithProperties(context, device, &properties, nullptr);
 }
 Queue::~Queue()
-{}
-void Queue::executeKernel(Kernel& kernel, const std::vector<Buffer>& arguments, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim)
 {
-	cl_uint i = 0;
-	for (auto it = arguments.begin(); it != arguments.end(); it++)
-	{
-		kernel.kernel.setArg(i, (*it).buffer);
-		i++;
-	}
-	queue.enqueueNDRangeKernel(
-			kernel.kernel, 
-			cl::NullRange, 
-			cl::NDRange(global_dim[0], global_dim[1], global_dim[2]), 
-			cl::NDRange(local_dim[0], local_dim[1], local_dim[2]), 
-			nullptr, nullptr);
-			
+	clReleaseCommandQueue(queue);
 }
 void Queue::writeBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
 {
-	queue.enqueueWriteBuffer(buffer.buffer, CL_FALSE, offset, size, host_ptr);
+	clEnqueueWriteBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, nullptr);
 }
 void Queue::readBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
 {
-	queue.enqueueReadBuffer(buffer.buffer, CL_FALSE, offset, size, host_ptr);
+	clEnqueueReadBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, nullptr);
 }
 void Queue::copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset, size_t src_offset)
 {
-	queue.enqueueCopyBuffer(src.buffer, dst.buffer, src_offset, dst_offset, size);
-};
+	clEnqueueCopyBuffer(queue, src.buffer, dst.buffer, src_offset, dst_offset, size, 0, nullptr, nullptr);
+}
+void Queue::fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset)
+{
+	clEnqueueFillBuffer(queue, buffer.buffer, pattern, pattern_size, offset, size, 0, nullptr, nullptr);
+}
+void Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Buffer>& arguments, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim)
+{
+	for (cl_uint i=0; i < arguments.size(); i++)
+		clSetKernelArg(kernel.kernel, i, sizeof(cl_mem), &(arguments.at(i)));
+	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), 0, global_dim.data(), local_dim.data(), 0, nullptr, nullptr);
+}
 void Queue::synchronize()
 {
-	queue.finish();
+	clFinish(queue);
 }

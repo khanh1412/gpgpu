@@ -19,10 +19,10 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 	auto add = context.compileKernel("kernels/add.cl.c", "add");
 
 	auto t1 = std::clock();
-	queue.writeBuffer(da, COUNT*sizeof(float), a);
-	queue.writeBuffer(db, COUNT*sizeof(float), b);
+	queue.writeBuffer(da, a, COUNT*sizeof(float));
+	queue.writeBuffer(db, b, COUNT*sizeof(float));
 	queue.executeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {1,1,1});
-	queue.readBuffer(ds, COUNT*sizeof(float), s);
+	queue.readBuffer(ds, s, COUNT*sizeof(float));
 	queue.synchronize();
 	auto t4 = std::clock();
 	std::cout<<"CL time: "<<static_cast<float>(t4-t1)/CLOCKS_PER_SEC<<std::endl;

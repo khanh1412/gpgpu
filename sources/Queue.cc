@@ -23,14 +23,18 @@ void Queue::executeKernel(Kernel& kernel, const std::vector<Buffer>& arguments, 
 			nullptr, nullptr);
 			
 }
-void Queue::writeBuffer(const Buffer& buffer, size_t size, void* host_ptr)
+void Queue::writeBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
 {
-	queue.enqueueWriteBuffer(buffer.buffer, CL_FALSE, 0, size, host_ptr);
+	queue.enqueueWriteBuffer(buffer.buffer, CL_FALSE, offset, size, host_ptr);
 }
-void Queue::readBuffer(const Buffer& buffer, size_t size, void* host_ptr)
+void Queue::readBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
 {
-	queue.enqueueReadBuffer(buffer.buffer, CL_FALSE, 0, size, host_ptr);
+	queue.enqueueReadBuffer(buffer.buffer, CL_FALSE, offset, size, host_ptr);
 }
+void Queue::copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset, size_t src_offset)
+{
+	queue.enqueueCopyBuffer(src.buffer, dst.buffer, src_offset, dst_offset, size);
+};
 void Queue::synchronize()
 {
 	queue.finish();

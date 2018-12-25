@@ -25,14 +25,17 @@ int main()
 		queue.writeBuffer(d_a, a, 3*sizeof(float));
 		queue.writeBuffer(d_b, b, 3*sizeof(float));
 
+		queue.enqueueBarrier();
 
 		queue.executeNDRangeKernel(add, {&d_c, &d_a, &d_b}, {3, 1, 1}, {1, 1, 1});
 
 
 
 
+		queue.enqueueBarrier();
 
 		queue.readBuffer(d_c, c, 3*sizeof(float));
+		queue.enqueueBarrier();
 
 		queue.synchronize();
 

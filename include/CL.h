@@ -65,6 +65,7 @@ namespace CL
 			void executeNDRangeKernel(
 					Kernel& kernel, const std::vector<Buffer*>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
+			void enqueueBarrier();
 			void synchronize();
 	};
 }

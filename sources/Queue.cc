@@ -30,6 +30,10 @@ void Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Buffer*>& arg
 		clSetKernelArg(kernel.kernel, i, sizeof(cl_mem), arguments.at(i));
 	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), 0, global_dim.data(), local_dim.data(), 0, nullptr, nullptr);
 }
+void Queue::enqueueBarrier()
+{
+	clEnqueueBarrierWithWaitList(queue, 0, nullptr, nullptr);
+}
 void Queue::synchronize()
 {
 	clFinish(queue);

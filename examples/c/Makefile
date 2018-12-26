@@ -1,5 +1,5 @@
 CC = gcc
-CC_FLAGS = -std=c17 -g
+CC_FLAGS = -std=c17 -Wall -g
 INCLUDE = 
 LIBRARY = -lOpenCL
 

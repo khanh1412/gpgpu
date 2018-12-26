@@ -6,7 +6,7 @@ void print(float *a)
 {
 	printf("%f %f %f\n", a[0], a[1], a[2]);
 }
-char* read(char *filename)
+char* read_file(char *filename)
 {
 	FILE *fp = fopen (filename , "rb" );
 	if(!fp)
@@ -34,24 +34,34 @@ char* read(char *filename)
 	buffer[filesize] = '\0';
 	fclose(fp);
 	printf("---------------------\n");
-	printf("PROGRAM: size %d bytes\n", filesize);
+	printf("PROGRAM: size %ld bytes\n", filesize);
 	printf("---------------------\n");
 	printf("%s\n", buffer);
 	printf("---------------------\n");
 	
 	return buffer;
 }
+char name[256];
 int main()
 {
-	const char *kernelSource = read("./fill.cl");
-	const size_t kernelLength = strlen(kernelSource);
+	char * kernelSource = read_file("./fill.cl");
+	size_t kernelLength = strlen(kernelSource);
 	cl_platform_id platform;
 	clGetPlatformIDs(1, &platform, NULL);
+	{
+		clGetPlatformInfo(platform, CL_PLATFORM_NAME, 256*sizeof(char), &(name[0]), NULL);
+		printf("Platform: %s\n", &(name[0]));
+	}
 	cl_device_id device;
 	clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
+	{
+		clGetDeviceInfo(device, CL_DEVICE_NAME, 256*sizeof(char), &(name[0]), NULL);
+		printf("Device: %s\n", &(name[0]));
+	}
 	cl_context context = clCreateContext(NULL, 1, &device, NULL, NULL, NULL);
-	cl_command_queue_properties properties[] = {0};
-	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), NULL);
+//	cl_command_queue_properties properties[] = {0};
+//	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), NULL);
+	cl_command_queue queue = clCreateCommandQueue(context, device, 0, NULL);
 	cl_program program = clCreateProgramWithSource(context, 1, (const char**) &kernelSource, &kernelLength, NULL);
 	clBuildProgram(program, 1, &device, NULL, NULL, NULL);
 	cl_kernel kernel = clCreateKernel(program, "fill", NULL);
@@ -78,4 +88,5 @@ int main()
 	clReleaseProgram(program);
 	clReleaseCommandQueue(queue);
 	clReleaseContext(context);
+	free(kernelSource);
 }

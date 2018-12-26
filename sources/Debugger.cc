@@ -61,22 +61,24 @@ void print_data(const std::string& name, void *data, size_t size)
 {
 	uint8_t *ptr = reinterpret_cast<uint8_t*>(data);
 
-	uint64_t len = 2*size;
+	uint64_t len = 2*size+size;
 
-	char *str = new char[len+1];
-	str[len] = '\0';
+	char *str = new char[len];
 	for (size_t byte=0; byte<size; byte++)
 	{
-		uint64_t i1 = 2*byte;
-		uint64_t i2 = 2*byte+1;
+		uint64_t i1 = 3*byte;
+		uint64_t i2 = 3*byte+1;
+		uint64_t i3 = 3*byte+2;
 
 		uint8_t first  = ptr[byte] / 16;
 		uint8_t second = ptr[byte] % 16;
 
 		str[i1] = num2char(first);
 		str[i2] = num2char(second);
+		str[i3] = ' ';
 	}
-	std::printf("%s: \"%s\"\n", name.c_str(), str);
+	str[len-1] = '\0';
+	std::printf("%s:\t\"%s\"\n", name.c_str(), str);
 	delete str;
 }
 

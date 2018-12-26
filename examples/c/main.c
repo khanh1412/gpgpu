@@ -50,7 +50,8 @@ int main()
 	cl_device_id device;
 	clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
 	cl_context context = clCreateContext(NULL, 1, &device, NULL, NULL, NULL);
-	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, 0, NULL);
+	cl_command_queue_properties properties[] = {0};
+	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), NULL);
 	cl_program program = clCreateProgramWithSource(context, 1, (const char**) &kernelSource, &kernelLength, NULL);
 	clBuildProgram(program, 1, &device, NULL, NULL, NULL);
 	cl_kernel kernel = clCreateKernel(program, "fill", NULL);

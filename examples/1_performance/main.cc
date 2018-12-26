@@ -24,7 +24,7 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 	queue.writeBuffer(db, b, COUNT*sizeof(float));
 	queue.synchronize();
 	auto t2 = std::clock();
-	queue.executeNDRangeKernel(add, {&ds, &da, &db}, {COUNT, 1, 1}, {size,1,1});
+	queue.executeNDRangeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {size,1,1});
 	queue.synchronize();
 	auto t3 = std::clock();
 
@@ -32,9 +32,9 @@ void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 	queue.synchronize();
 	auto t4 = std::clock();
 	std::cout<<"CL time: "<<static_cast<float>(t4-t1)/CLOCKS_PER_SEC<<std::endl;
-	std::cout<<"\tWrite  time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<" | "<<2*COUNT*sizeof(float)<<"bytes"<<std::endl;
+	std::cout<<"\tWrite  time: "<<static_cast<float>(t2-t1)/CLOCKS_PER_SEC<<"\t| "<<2*COUNT*sizeof(float)<<" bytes"<<std::endl;
 	std::cout<<"\tKernel time: "<<static_cast<float>(t3-t2)/CLOCKS_PER_SEC<<std::endl;
-	std::cout<<"\tRead   time: "<<static_cast<float>(t4-t3)/CLOCKS_PER_SEC<<" | "<<COUNT*sizeof(float)<<"bytes"<<std::endl;
+	std::cout<<"\tRead   time: "<<static_cast<float>(t4-t3)/CLOCKS_PER_SEC<<"\t| "<<COUNT*sizeof(float)<<" bytes"<<std::endl;
 }
 
 void add(float *s, float *a, float *b, uint64_t COUNT)

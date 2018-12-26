@@ -16,7 +16,6 @@ int main()
 		auto fill = context.loadKernel("./examples/kernels/fill.cl.c", "fill");
 
 
-
 		queue.writeBuffer(d_a, a, 3*sizeof(float));
 
 

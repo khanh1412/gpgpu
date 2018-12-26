@@ -27,7 +27,7 @@ void Queue::fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size,
 void Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Argument>& arguments, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim)
 {
 	for (cl_uint i=0; i < arguments.size(); i++)
-		clSetKernelArg(kernel.kernel, i, sizeof(cl_mem), arguments[i].data);
+		clSetKernelArg(kernel.kernel, i, arguments[i].size, arguments[i].data);
 	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), 0, global_dim.data(), local_dim.data(), 0, nullptr, nullptr);
 }
 void Queue::synchronize()

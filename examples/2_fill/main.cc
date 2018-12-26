@@ -5,7 +5,7 @@ int main()
 
 	float a[] = {1,2,3};
 	std::printf("%f %f %f\n", a[0], a[1], a[2]);
-	auto context = CL::Context::initContext(0,0);
+	auto context = CL::Context::initContext(1,0);
 
 	{
 		auto d_a = context.allocateBuffer(CL_MEM_READ_WRITE, 3*sizeof(float));
@@ -13,7 +13,7 @@ int main()
 
 		auto queue = context.createQueue();
 
-		auto fill = context.loadKernel("./examples/kernels/fill.cl.c", "add");
+		auto fill = context.loadKernel("./examples/kernels/fill.cl.c", "fill");
 
 
 

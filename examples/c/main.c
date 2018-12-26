@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 #include<string.h>
 #include<CL/cl.h>
 void print(float *a)
@@ -42,14 +43,15 @@ char* read(char *filename)
 }
 int main()
 {
-	const char * kernelSource = read("./fill.cl");
+	const char *kernelSource = read("./fill.cl");
+	const size_t kernelLength = strlen(kernelSource);
 	cl_platform_id platform;
 	clGetPlatformIDs(1, &platform, NULL);
 	cl_device_id device;
 	clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL, 1, &device, NULL);
 	cl_context context = clCreateContext(NULL, 1, &device, NULL, NULL, NULL);
-	cl_command_queue queue = clCreateCommandQueue(context, device, 0, NULL);
-	cl_program program = clCreateProgramWithSource(context, 1, (const char**) &kernelSource, strlen(kernelSource), NULL);
+	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, 0, NULL);
+	cl_program program = clCreateProgramWithSource(context, 1, (const char**) &kernelSource, &kernelLength, NULL);
 	clBuildProgram(program, 1, &device, NULL, NULL, NULL);
 	cl_kernel kernel = clCreateKernel(program, "fill", NULL);
 	{
@@ -69,6 +71,7 @@ int main()
 		clFinish(queue);
 		print(h_a);
 		clReleaseMemObject(d_a);
+		free(h_a);
 	}
 	clReleaseKernel(kernel);
 	clReleaseProgram(program);

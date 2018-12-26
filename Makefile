@@ -1,5 +1,5 @@
 CC = g++
-CC_FLAGS = -std=c++17 -g -w
+CC_FLAGS = -std=c++17 -g
 INCLUDE = -I./include
 LIBRARY = -lOpenCL -lpthread
 

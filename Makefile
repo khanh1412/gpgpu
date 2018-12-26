@@ -20,4 +20,6 @@ vecAdd: lib
 	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LIBRARY)
 performance: lib
 	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LIBRARY)
+fill: lib
+	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/2_fill/main.cc ./libCL.so $(LIBRARY)
 	

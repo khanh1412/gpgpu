@@ -29,10 +29,8 @@ namespace CL
 			void *data;
 		public:
 			Argument(){}
-			Argument(const Buffer& buffer)
-			{
-				data = (void*)(&buffer);
-			}
+			Argument(const Buffer& buffer){data = (void*)(&buffer);}
+			Argument(const float& num){data = (void*)(&num);}
 			~Argument(){};
 	};
 	class Context: public Singleton

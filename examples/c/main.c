@@ -44,10 +44,12 @@ char* read_file(char *filename)
 char name[256];
 int main()
 {
+	cl_uint err;
 	char * kernelSource = read_file("./fill.cl");
 	size_t kernelLength = strlen(kernelSource);
-	cl_platform_id platform;
-	clGetPlatformIDs(1, &platform, NULL);
+	cl_platform_id platforms[3];
+	clGetPlatformIDs(3, &(platforms[0]), NULL);
+	cl_platform_id platform = platforms[1];
 	{
 		clGetPlatformInfo(platform, CL_PLATFORM_NAME, 256*sizeof(char), &(name[0]), NULL);
 		printf("Platform: %s\n", &(name[0]));
@@ -62,6 +64,8 @@ int main()
 //	cl_command_queue_properties properties[] = {0};
 //	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), NULL);
 	cl_command_queue queue = clCreateCommandQueue(context, device, 0, NULL);
+
+
 	cl_program program = clCreateProgramWithSource(context, 1, (const char**) &kernelSource, &kernelLength, NULL);
 	clBuildProgram(program, 1, &device, NULL, NULL, NULL);
 	cl_kernel kernel = clCreateKernel(program, "fill", NULL);

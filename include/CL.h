@@ -38,8 +38,8 @@ namespace CL
 	class Buffer
 	{
 		private:
-			friend class Queue; friend class Context;
-		public:	cl_mem buffer;
+			friend class Queue; friend class Context; friend class Argument;
+			cl_mem buffer;
 			Buffer(const cl_context& context, cl_mem_flags flags, size_t size);
 		public:
 			~Buffer();
@@ -81,8 +81,8 @@ namespace CL
 			Argument(){}
 			Argument(const Buffer& buffer)
 			{
-				data = (void*)(&buffer);
-				size = sizeof(Buffer);
+				data = (void*)(&(buffer.buffer));
+				size = sizeof(cl_mem);
 			}
 			Argument(const float& num)
 			{

@@ -28,7 +28,7 @@ void Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Argument>& ar
 {
 	for (cl_uint i=0; i < arguments.size(); i++)
 		clSetKernelArg(kernel.kernel, i, arguments[i].size, arguments[i].data);
-	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), 0, global_dim.data(), local_dim.data(), 0, nullptr, nullptr);
+	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), nullptr, global_dim.data(), local_dim.data(), 0, nullptr, nullptr);
 }
 void Queue::synchronize()
 {

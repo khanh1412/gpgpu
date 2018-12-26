@@ -77,8 +77,8 @@ int main()
 
 		clEnqueueWriteBuffer(queue, d_a, CL_FALSE, 0, n*sizeof(float), h_a, 0, NULL, NULL);
 		clSetKernelArg(kernel, 0, sizeof(cl_mem), &d_a);
-		float X = 3.15;
-		clSetKernelArg(kernel, 1, sizeof(float), &X);
+		cl_float X = 3.15;
+		clSetKernelArg(kernel, 1, sizeof(cl_float), &X);
 		size_t global_dim = 3;
 		size_t local_dim = 3;
 		clEnqueueNDRangeKernel(queue, kernel, 1, NULL, &global_dim, &local_dim, 0, NULL, NULL);

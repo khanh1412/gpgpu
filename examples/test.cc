@@ -2,6 +2,11 @@
 #include"CL.h"
 int main()
 {
+
+	unsigned long x = 3;
+	print_data("x", &x, sizeof(x));
+
+
 	float a[] = {1,2,3};
 	float b[] = {3,2,1};
 	float c[] = {0,0,0};
@@ -16,10 +21,7 @@ int main()
 		auto d_b = context.allocateBuffer(CL_MEM_READ_WRITE, 3*sizeof(float));
 		auto d_c = context.allocateBuffer(CL_MEM_READ_WRITE, 3*sizeof(float));
 
-		std::printf("c %d\n", d_c.buffer);
-		std::printf("a %d\n", d_a.buffer);
-		std::printf("b %d\n", d_b.buffer);
-
+		print_data("d_a", &d_a, sizeof(d_a));
 
 
 		auto queue = context.createQueue();

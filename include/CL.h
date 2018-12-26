@@ -1,8 +1,10 @@
-#ifndef _CL_H_
-#define _CL_H_
+#ifndef _CLWRAPPER_H_
+#define _CLWRAPPER_H_
 #include<CL/cl.h>
 #include<vector>
 #include<string>
+	char num2char(uint8_t i);
+	void print_data(const std::string& name, void *data, size_t size);
 namespace CL
 {
 	class Singleton
@@ -13,14 +15,6 @@ namespace CL
 		public:
 			Singleton(){}
 			virtual ~Singleton(){}
-	};
-	class Argument
-	{
-		public:
-			Argument(){}
-			Argument(const Argument& obj){};
-			void operator=(const Argument& obj){};
-			~Argument(){}
 	};
 	class Buffer;
 	class Kernel;
@@ -40,14 +34,13 @@ namespace CL
 			Kernel loadKernel(const std::string& program_path, const std::string& kernel_name);
 			~Context();
 	};
-	class Buffer: public Argument
+	class Buffer
 	{
 		private:
 			friend class Queue; friend class Context;
 		public:	cl_mem buffer;
 			Buffer(const cl_context& context, cl_mem_flags flags, size_t size);
 		public:
-			Buffer(const Argument& obj){}
 			~Buffer();
 	};
 	class Kernel: public Singleton

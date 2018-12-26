@@ -10,6 +10,7 @@ lib:
 	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Kernel.o sources/Kernel.cc
 	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Queue.o sources/Queue.cc
 	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Context.o sources/Context.cc
+	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Debugger.o sources/Debugger.cc
 	$(CC) $(CC_FLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 	rm -rf objects
 

@@ -3,7 +3,6 @@
 #include<CL/cl.h>
 #include<vector>
 #include<string>
-char num2char(uint8_t i);
 void print_data(const std::string& name, void *data, size_t size);
 namespace CL
 {

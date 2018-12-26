@@ -16,6 +16,12 @@ int main()
 		auto d_b = context.allocateBuffer(CL_MEM_READ_WRITE, 3*sizeof(float));
 		auto d_c = context.allocateBuffer(CL_MEM_READ_WRITE, 3*sizeof(float));
 
+		std::printf("c %d\n", d_c.buffer);
+		std::printf("a %d\n", d_a.buffer);
+		std::printf("b %d\n", d_b.buffer);
+
+
+
 		auto queue = context.createQueue();
 
 		auto add = context.loadKernel("./examples/kernels/add.cl.c", "add");

@@ -5,21 +5,29 @@
 #include<string>
 namespace CL
 {
-	class singleton
+	class Singleton
 	{
 		private:
-			singleton(const singleton& obj);
-			void operator=(const singleton& obj);
+			Singleton(const Singleton& obj);
+			void operator=(const Singleton& obj);
 		public:
-			singleton(){}
-			virtual ~singleton(){}
+			Singleton(){}
+			virtual ~Singleton(){}
+	};
+	class Argument
+	{
+		public:
+			Argument(){}
+			Argument(const Argument& obj){};
+			void operator=(const Argument& obj){};
+			~Argument(){}
 	};
 	class Buffer;
 	class Kernel;
 	class Queue;
 	class Context;
 	class Event;
-	class Context: public singleton
+	class Context: public Singleton
 	{
 		private:
 			cl_device_id device;
@@ -32,16 +40,17 @@ namespace CL
 			Kernel loadKernel(const std::string& program_path, const std::string& kernel_name);
 			~Context();
 	};
-	class Buffer
+	class Buffer: public Argument
 	{
 		private:
 			friend class Queue; friend class Context;
-			cl_mem buffer;
+		public:	cl_mem buffer;
 			Buffer(const cl_context& context, cl_mem_flags flags, size_t size);
 		public:
+			Buffer(const Argument& obj){}
 			~Buffer();
 	};
-	class Kernel: public singleton
+	class Kernel: public Singleton
 	{
 		private:
 			friend class Queue; friend class Context;
@@ -51,7 +60,7 @@ namespace CL
 		public:	
 			~Kernel();
 	};
-	class Queue: public singleton
+	class Queue: public Singleton
 	{
 		private:
 			friend class Context;

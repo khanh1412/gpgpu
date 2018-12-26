@@ -3,10 +3,17 @@
 #include<CL/cl.h>
 #include<vector>
 #include<string>
-	char num2char(uint8_t i);
-	void print_data(const std::string& name, void *data, size_t size);
+char num2char(uint8_t i);
+void print_data(const std::string& name, void *data, size_t size);
 namespace CL
 {
+	class Singleton;
+	class Argument;
+	class Buffer;
+	class Kernel;
+	class Queue;
+	class Context;
+	class Event;
 	class Singleton
 	{
 		private:
@@ -16,11 +23,18 @@ namespace CL
 			Singleton(){}
 			virtual ~Singleton(){}
 	};
-	class Buffer;
-	class Kernel;
-	class Queue;
-	class Context;
-	class Event;
+	class Argument
+	{
+		public:
+			void *data;
+		public:
+			Argument(){}
+			Argument(const Buffer& buffer)
+			{
+				data = (void*)(&buffer);
+			}
+			~Argument(){};
+	};
 	class Context: public Singleton
 	{
 		private:
@@ -66,7 +80,7 @@ namespace CL
 			void copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
 			void fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset=0);
 			void executeNDRangeKernel(
-					Kernel& kernel, const std::vector<Buffer*>& arguments, 
+					Kernel& kernel, const std::vector<Argument>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
 			void enqueueBarrierWaitForEvents(std::vector<Event*> events);
 			void synchronize();

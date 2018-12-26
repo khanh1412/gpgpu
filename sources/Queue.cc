@@ -4,6 +4,7 @@ Queue::Queue(const cl_context& context, const cl_device_id& device)
 {
 	cl_command_queue_properties properties[] = {0};
 	queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), nullptr);
+//	queue = clCreateCommandQueueWith(context, device, 0, nullptr);
 }
 Queue::~Queue()
 {

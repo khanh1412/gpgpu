@@ -8,7 +8,7 @@ const uint64_t COUNT = 100;
 
 void clCAL(float *s, float *a, float *b, uint64_t COUNT)
 {
-	auto context = CL::Context::initContext(1,0);
+	auto context = CL::Context::initContext(2,0);
 
 	auto ds = context.allocateBuffer(CL_MEM_WRITE_ONLY, COUNT*sizeof(float));
 	auto da = context.allocateBuffer(CL_MEM_READ_ONLY , COUNT*sizeof(float));

@@ -61,9 +61,19 @@ int main()
 		printf("Device: %s\n", &(name[0]));
 	}
 	cl_context context = clCreateContext(NULL, 1, &device, NULL, NULL, NULL);
-//	cl_command_queue_properties properties[] = {0};
-//	cl_command_queue queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), NULL);
-	cl_command_queue queue = clCreateCommandQueue(context, device, 0, NULL);
+
+	//get device cl version
+	clGetDeviceInfo(device, CL_DEVICE_VERSION, 256, &(name[0]), NULL);
+	cl_command_queue queue;
+	if ('2' == name[7]) // "OpenCL 2.*"
+	{
+		cl_command_queue_properties properties[] = {0};
+		queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), NULL);
+	}
+	else
+	{
+		queue = clCreateCommandQueue(context, device, 0, NULL);
+	}
 
 
 	cl_program program = clCreateProgramWithSource(context, 1, (const char**) &kernelSource, &kernelLength, NULL);

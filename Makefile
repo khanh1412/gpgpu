@@ -3,6 +3,11 @@ CC_FLAGS = -std=c++17 -g
 INCLUDE = -I./include
 LIBRARY = -lOpenCL -lpthread
 
+vecAdd: lib
+	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LIBRARY)
+performance: lib
+	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LIBRARY)
+	
 lib:
 	rm -rf objects
 	mkdir objects
@@ -14,8 +19,3 @@ lib:
 	$(CC) $(CC_FLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 	rm -rf objects
 
-vecAdd: lib
-	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LIBRARY)
-performance: lib
-	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LIBRARY)
-	

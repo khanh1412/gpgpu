@@ -12,9 +12,9 @@ void SWAP(float *a0, float *a1, uint64_t COUNT)
 	auto q0 = context.createQueue();
 
 	auto control = context.createUserEvent();
-	q1.waitForEventsWithBarrier({control});
-	auto read = q1.readBuffer(d, a1, COUNT*sizeof(float));
-	auto write = q0.writeBuffer(d, a0, COUNT*sizeof(float));
+	q1.enqueueBarrier({control});
+	auto read = q1.enqueueReadBuffer(d, a1, COUNT*sizeof(float));
+	auto write = q0.enqueueWriteBuffer(d, a0, COUNT*sizeof(float));
 	write.wait();
 	control.setCompleted();
 	

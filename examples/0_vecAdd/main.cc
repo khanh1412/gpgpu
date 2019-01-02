@@ -17,12 +17,13 @@ void ADD(float *s, float *a, float *b, uint64_t COUNT)
 	auto queue = context.createQueue();
 	auto add = context.loadKernel("examples/kernels/add.cl.c", "add");
 
-	auto w1 = queue.writeBuffer(da, a, COUNT*sizeof(float));
-	auto w2 = queue.writeBuffer(db, b, COUNT*sizeof(float));
-	auto b1 = queue.waitForEventsWithBarrier({w1, w2});
-	auto c = queue.executeNDRangeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {512,1,1});
-	auto r = queue.readBuffer(ds, s, COUNT*sizeof(float));
-	auto b2 = queue.waitForEventsWithBarrier({r});
+	auto w1 = queue.enqueueWriteBuffer(da, a, COUNT*sizeof(float));
+	auto w2 = queue.enqueueWriteBuffer(db, b, COUNT*sizeof(float));
+	auto b1 = queue.enqueueBarrier({w1, w2});
+	auto c = queue.enqueueNDRangeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {512,1,1});
+	auto r = queue.enqueueReadBuffer(ds, s, COUNT*sizeof(float));
+	auto b2 = queue.enqueueBarrier({r});
+	b2.wait();
 
 	queue.synchronize();
 }

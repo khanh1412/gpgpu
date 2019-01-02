@@ -78,15 +78,16 @@ namespace CL
 			Queue(const cl_context& context, const cl_device_id& device);
 		public:
 			~Queue();
-			Event writeBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
-			Event readBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
-			Event copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
-			Event fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset=0);
-			Event executeNDRangeKernel(
-					Kernel& kernel, const std::vector<Argument>& arguments, 
-					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
-			Event waitForEventsWithMarker(const std::vector<Argument>& events);
-			Event waitForEventsWithBarrier(const std::vector<Argument>& events);
+			Event enqueueWriteBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
+			Event enqueueReadBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
+			Event enqueueCopyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
+			Event enqueueFillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset=0);
+			Event enqueueNDRangeKernel(	Kernel& kernel, const std::vector<Argument>& arguments, 
+							const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
+			//used in out-of-order exeution
+			Event enqueueMarker(const std::vector<Argument>& events);
+			//used in both in-order and out-of-order
+			Event enqueueBarrier(const std::vector<Argument>& events);
 			void flush();
 			void synchronize();
 	};

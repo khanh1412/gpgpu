@@ -15,31 +15,31 @@ Queue::~Queue()
 {
 	clReleaseCommandQueue(queue);
 }
-Event Queue::writeBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
+Event Queue::enqueueWriteBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
 {
 	cl_event event;
 	clEnqueueWriteBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, &event);
 	return Event(event);
 }
-Event Queue::readBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
+Event Queue::enqueueReadBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
 {
 	cl_event event;
 	clEnqueueReadBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, &event);
 	return Event(event);
 }
-Event Queue::copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset, size_t src_offset)
+Event Queue::enqueueCopyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset, size_t src_offset)
 {
 	cl_event event;
 	clEnqueueCopyBuffer(queue, src.buffer, dst.buffer, src_offset, dst_offset, size, 0, nullptr, &event);
 	return Event(event);
 }
-Event Queue::fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset)
+Event Queue::enqueueFillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset)
 {
 	cl_event event;
 	clEnqueueFillBuffer(queue, buffer.buffer, pattern, pattern_size, offset, size, 0, nullptr, &event);
 	return Event(event);
 }
-Event Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Argument>& arguments, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim)
+Event Queue::enqueueNDRangeKernel(Kernel& kernel, const std::vector<Argument>& arguments, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim)
 {
 	cl_event event;
 	for (cl_uint i=0; i < arguments.size(); i++)
@@ -47,7 +47,7 @@ Event Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Argument>& a
 	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), nullptr, global_dim.data(), local_dim.data(), 0, nullptr, &event);
 	return Event(event);
 }
-Event Queue::waitForEventsWithMarker(const std::vector<Argument>& events)
+Event Queue::enqueueMarker(const std::vector<Argument>& events)
 {
 	cl_event event;
 	std::vector<cl_event> event_list;
@@ -56,7 +56,7 @@ Event Queue::waitForEventsWithMarker(const std::vector<Argument>& events)
 	clEnqueueMarkerWithWaitList(queue, event_list.size(), event_list.data(), &event);
 	return Event(event);
 }
-Event Queue::waitForEventsWithBarrier(const std::vector<Argument>& events)
+Event Queue::enqueueBarrier(const std::vector<Argument>& events)
 {
 	cl_event event;
 	std::vector<cl_event> event_list;

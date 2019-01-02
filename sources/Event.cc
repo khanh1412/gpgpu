@@ -14,7 +14,7 @@ Event::Event(const cl_event& event)
 {}
 Event::~Event()
 {
-//	clReleaseEvent(event);
+	clReleaseEvent(event);
 }
 void Event::wait()
 {

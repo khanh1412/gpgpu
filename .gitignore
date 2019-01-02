@@ -1,6 +1,6 @@
 *.swp
 *~
-run.exe
+*.exe
 run
 *.dll
 *.so

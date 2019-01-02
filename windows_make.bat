@@ -10,6 +10,7 @@ g++ -std=c++17 -I.\include -shared -o CL.dll objects\*.o .\OpenCL.dll
 del objects\*.o
 rmdir objects
 
-g++ -std=c++17 -I.\include -o run.exe examples\test.cc .\Cl.dll .\OpenCL.dll -lpthread
+g++ -std=c++17 -I.\include -o vecAdd.exe examples\0_vecAdd\main.cc .\Cl.dll .\OpenCL.dll -lpthread
+g++ -std=c++17 -I.\include -o performance.exe examples\1_performance\main.cc .\Cl.dll .\OpenCL.dll -lpthread
 
 

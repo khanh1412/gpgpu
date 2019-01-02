@@ -1,5 +1,7 @@
 DEBUG = 1
 
+
+
 CC = g++
 CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
 INCLUDE = -I./include
@@ -16,11 +18,9 @@ test: lib
 .PHONY: vecAdd
 vecAdd: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LDFLAGS)
-.PHONY: performance
-performance: lib
-	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LDFLAGS) -lpthread
+.PHONY: event
 event: lib
-	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/2_event/main.cc ./libCL.so $(LDFLAGS)
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/1_event/main.cc ./libCL.so $(LDFLAGS)
 .PHONY: lib
 lib: clean
 	mkdir objects

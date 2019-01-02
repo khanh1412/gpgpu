@@ -4,5 +4,4 @@ __kernel void fill(
 {
 	ulong i = get_global_id(0);
 	a[i] = x;
-	printf("%d\n", x);
 }

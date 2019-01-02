@@ -1,11 +1,11 @@
 #ifndef _CLWRAPPER_H_
 #define _CLWRAPPER_H_
+#include<CL/cl.h>
 #include<vector>
 #include<string>
+void print_data(const std::string& name, void *data, size_t size);
 namespace CL
 {
-	#include<CL/cl.h>
-	void print_data(const std::string& name, void *data, size_t size);
 	class Singleton;
 	class Argument;
 	class Buffer;

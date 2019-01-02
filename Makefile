@@ -1,4 +1,4 @@
-DEBUG = 1
+DEBUG = 0
 
 CC = g++
 CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
@@ -7,8 +7,6 @@ LDFLAGS = -lOpenCL
 
 ifeq (1, $(DEBUG))
 CCFLAGS += -g -DDEBUG -O0
-else
-CCFLAGS += -O3
 endif
 
 

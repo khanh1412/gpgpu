@@ -26,7 +26,7 @@ Context Context::initContext(uint32_t PlatformID, uint32_t DeviceID)
 	cl_device_id all_devices[256];
 	clGetDeviceIDs(all_platforms[PlatformID], CL_DEVICE_TYPE_ALL, 0, nullptr, &num_devices);
 	clGetDeviceIDs(all_platforms[PlatformID], CL_DEVICE_TYPE_ALL, num_devices, &(all_devices[0]), nullptr);
-
+#ifdef DEBUG
 	char name[256];
 	for (int i=0; i<256; i++) name[i] = '\0';
 	clGetPlatformInfo(all_platforms[PlatformID], CL_PLATFORM_NAME, 256*sizeof(char), &(name[0]), nullptr);
@@ -34,6 +34,7 @@ Context Context::initContext(uint32_t PlatformID, uint32_t DeviceID)
 	for (int i=0; i<256; i++) name[i] = '\0';
 	clGetDeviceInfo(all_devices[DeviceID], CL_DEVICE_NAME, 256*sizeof(char), &(name[0]), nullptr);
 	std::printf("Device: %s\n", name);
+#endif
 
 
 

@@ -4,3 +4,4 @@
 run
 *.dll
 *.so
+*.o

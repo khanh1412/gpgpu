@@ -1,4 +1,4 @@
-DEBUG = 0
+DEBUG = 1
 
 CC = g++
 CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
@@ -19,8 +19,7 @@ vecAdd: lib
 performance: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LDFLAGS) -lpthread
 .PHONY: lib
-lib:
-	rm -rf objects
+lib: clean
 	mkdir objects
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Buffer.o sources/Buffer.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Kernel.o sources/Kernel.cc
@@ -28,7 +27,11 @@ lib:
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Context.o sources/Context.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Debugger.o sources/Debugger.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
+.PHONY: clean
+clean:
 	rm -rf objects
+	rm -f libCL.so
+	rm -f run
 .PHONY: clinfo
 clinfo:
 	./clinfo/clinfo

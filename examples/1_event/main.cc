@@ -22,6 +22,21 @@ void SWAP(float *a0, float *a1, uint64_t COUNT)
 	q1.synchronize();
 	q0.synchronize();
 }
+void SWAPwithoutEvents(float *a0, float *a1, uint64_t COUNT)
+{
+	auto context = CL::Context::initContext(1,0);
+	auto d = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
+
+	auto q1 = context.createQueue();
+	auto q0 = context.createQueue();
+
+	auto read = q1.enqueueReadBuffer(d, a1, COUNT*sizeof(float));
+	auto write = q0.enqueueWriteBuffer(d, a0, COUNT*sizeof(float));
+	
+
+	q1.synchronize();
+	q0.synchronize();
+}
 void print_array(float *a, uint64_t COUNT)
 {
 	for (uint64_t i=0; i<COUNT; i++)
@@ -33,6 +48,7 @@ int main()
 	
 	float *a0 = new float[COUNT];
 	float *a1 = new float[COUNT];
+	//SWAP WITH EVENTS
 	for (uint64_t i=0; i<COUNT; i++)
 	{
 		a0[i] = 13;
@@ -41,6 +57,17 @@ int main()
 	print_array(a0, COUNT);
 	print_array(a1, COUNT);
 	SWAP(a0, a1, COUNT);
+	print_array(a0, COUNT);
+	print_array(a1, COUNT);
+	//SWAP WITHOUT EVENTS
+	for (uint64_t i=0; i<COUNT; i++)
+	{
+		a0[i] = 13;
+		a1[i] = 26;
+	}
+	print_array(a0, COUNT);
+	print_array(a1, COUNT);
+	SWAPwithoutEvents(a0, a1, COUNT);
 	print_array(a0, COUNT);
 	print_array(a1, COUNT);
 }

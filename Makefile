@@ -2,6 +2,8 @@ DEBUG = 0
 
 CC = g++
 CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
+INCLUDE = -I./include
+LDFLAGS = -lOpenCL
 
 ifeq (1, $(DEBUG))
 CCFLAGS += -g -DDEBUG -O0
@@ -9,8 +11,6 @@ else
 CCFLAGS += -O3
 endif
 
-INCLUDE = -I./include
-LDFLAGS = -lOpenCL
 
 .PHONY: vecAdd
 vecAdd: lib
@@ -18,7 +18,6 @@ vecAdd: lib
 .PHONY: performance
 performance: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LDFLAGS) -lpthread
-
 .PHONY: lib
 lib:
 	rm -rf objects

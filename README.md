@@ -14,7 +14,7 @@ Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Con
             
             - Create queues
             
-            - Compile Kernel
+            - Compile Kernel and Load into Devices
 
 `Buffer` : objects holding the allocated memory in GPU's global memory
 

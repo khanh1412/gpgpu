@@ -1,3 +1,4 @@
+#ifdef DEBUG
 #include"CL.h"
 char num2char(uint8_t i)
 {
@@ -81,7 +82,4 @@ void print_data(const std::string& name, const void *data, size_t size)
 	std::printf("%s:\t\"%s\"\n", name.c_str(), str);
 	delete str;
 }
-
-
-
-
+#endif

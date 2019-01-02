@@ -47,7 +47,7 @@ Event Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Argument>& a
 	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), nullptr, global_dim.data(), local_dim.data(), 0, nullptr, &event);
 	return Event(event);
 }
-Event Queue::waitForEvents(const std::vector<Argument>& events)
+Event Queue::waitForEventsWithMarker(const std::vector<Argument>& events)
 {
 	cl_event event;
 	std::vector<cl_event> event_list;

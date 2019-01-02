@@ -5,8 +5,8 @@
 #include<string>
 #ifdef DEBUG
 #include<stdexcept>
-#endif
 void print_data(const std::string& name, const void *data, size_t size);
+#endif
 namespace CL
 {
 	class Singleton;
@@ -85,7 +85,7 @@ namespace CL
 			Event executeNDRangeKernel(
 					Kernel& kernel, const std::vector<Argument>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
-			Event waitForEvents(const std::vector<Argument>& events);
+			Event waitForEventsWithMarker(const std::vector<Argument>& events);
 			Event waitForEventsWithBarrier(const std::vector<Argument>& events);
 			void flush();
 			void synchronize();

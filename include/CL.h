@@ -24,7 +24,8 @@ namespace CL
 	};
 	class Argument
 	{
-		public:
+		private:
+			friend class Queue;
 			void *data;
 			size_t size;
 		public:
@@ -44,6 +45,7 @@ namespace CL
 			Buffer allocateBuffer(cl_mem_flags flags, size_t size);
 			Queue createQueue();
 			Kernel loadKernel(const std::string& program_path, const std::string& kernel_name);
+			Event createUserEvent();
 			~Context();
 	};
 	class Buffer: public Singleton
@@ -83,5 +85,12 @@ namespace CL
 			void enqueueBarrierWaitForEvents(std::vector<Event*> events);
 			void synchronize();
 	};
+	class Event: public Singleton
+	{
+		private:
+			friend class Context;
+			cl_event event;
+			Event(const cl_context& context);
+	}
 }
 #endif

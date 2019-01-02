@@ -46,3 +46,4 @@ Kernel Context::loadKernel(const std::string& program_path, const std::string& k
 {
 	return Kernel(context, device, program_path, kernel_name);
 }
+Event Context::createUserEvent(){}

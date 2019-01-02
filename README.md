@@ -18,3 +18,5 @@ CL C++ simple wrapper (OpenCL 2.0)
 
 - add in "Context of multiple devices"
 
+- add in "Scalar argument to NDRangeKernel"
+

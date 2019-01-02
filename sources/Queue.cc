@@ -50,6 +50,10 @@ Event Queue::waitForEvents(const std::vector<Argument>& events)
 	clEnqueueBarrierWithWaitList(queue, events_list.size(), events_list.data(), &event);
 	return Event(event);
 }
+void Queue::flush()
+{
+	clFlush(queue);
+}
 void Queue::synchronize()
 {
 	clFinish(queue);

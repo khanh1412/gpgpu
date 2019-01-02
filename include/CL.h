@@ -83,6 +83,7 @@ namespace CL
 					Kernel& kernel, const std::vector<Argument>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
 			Event waitForEvents(const std::vector<Argument>& events);
+			void flush();
 			void synchronize();
 	};
 	class Event: public Singleton

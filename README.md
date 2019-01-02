@@ -1,6 +1,6 @@
 # opencl
 
-CL C++ simple wrapper (OpenCL 2.0)
+CL C++ simple wrapper (master)
 
 ![alt text](https://raw.githubusercontent.com/khanh1412/opencl/c/images/20181216_204709.jpg)
 
@@ -27,20 +27,4 @@ Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Con
             - synchronize : wait until the queue is empty
 
 `Kernel` : the object holding GPU code (kernel code)
-
-# Tested Machine (Intel core i7 5500U, Intel HD Graphics 5500)
-
-- GPU : Intel HD Graphics 5500
-
-- Host machine : Fedora 29
-
-- Driver : Intel Gen OCL Driver (OpenCL 2.0 beignet 1.3)
-
-# TO DO
-
-- add in "Event"
-
-- add in "singleton" for `Buffer`
-
-- add in "Context of multiple devices"
 

@@ -27,15 +27,21 @@ namespace CL
 			Singleton(){}
 			virtual ~Singleton(){}
 	};
+	enum ParamType
+	{
+		EVENT,
+		BUFFER
+	};
 	class Param
 	{
 		public:
+			void *param;
+			ParamType type;
 			void *data;
 			size_t size;
 		public:
 			Param(){}
 			Param(const Buffer& buffer);
-			Param(const float& num);
 			Param(const Event& event);
 			~Param(){};
 	};

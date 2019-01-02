@@ -21,4 +21,6 @@ lib:
 	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Debugger.o sources/Debugger.cc
 	$(CC) $(CC_FLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 	rm -rf objects
-
+.PHONY: clinfo
+clinfo:
+	./clinfo/clinfo

@@ -3,6 +3,9 @@
 #include<CL/cl.h>
 #include<vector>
 #include<string>
+#ifdef DEBUG
+#include<stdexcept>
+#endif
 void print_data(const std::string& name, void *data, size_t size);
 namespace CL
 {
@@ -82,7 +85,6 @@ namespace CL
 			Event executeNDRangeKernel(
 					Kernel& kernel, const std::vector<Argument>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
-			Event enqueueBarrier();
 			Event waitForEvents(const std::vector<Argument>& events);
 			Event waitForEventsWithBarrier(const std::vector<Argument>& events);
 			void flush();

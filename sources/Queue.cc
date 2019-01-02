@@ -2,9 +2,14 @@
 using namespace CL;
 Queue::Queue(const cl_context& context, const cl_device_id& device)
 {
-	//cl_command_queue_properties properties[] = {CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, 0};
+	cl_int err;
 	cl_command_queue_properties properties[] = {0};
-	queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), nullptr);
+	queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), &err);
+#ifdef DEBUG
+	if (CL_SUCCESS != err)
+		throw std::runtime_error("Create Command Queue failed!");
+#endif
+
 }
 Queue::~Queue()
 {

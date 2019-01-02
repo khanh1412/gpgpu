@@ -4,7 +4,12 @@ using namespace CL;
 Context::Context(const cl_device_id& device)
 	: device(device)
 {
-	context = clCreateContext(nullptr, 1, &device, nullptr, nullptr, nullptr);
+	cl_int err;
+	context = clCreateContext(nullptr, 1, &device, nullptr, nullptr, &err);
+#ifdef DEBUG
+	if (CL_SUCCESS != err)
+		throw std::runtime_error("Create Context failed!");
+#endif
 }
 Context::~Context()
 {

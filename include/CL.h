@@ -3,10 +3,12 @@
 #include<CL/cl.h>
 #include<vector>
 #include<string>
+
 #ifdef DEBUG
 #include<stdexcept>
 void print_data(const std::string& name, const void *data, size_t size);
 #endif
+
 namespace CL
 {
 	class Singleton;

@@ -17,14 +17,14 @@ void ADD(float *s, float *a, float *b, uint64_t COUNT)
 	auto queue = context.createQueue();
 	auto add = context.loadKernel("examples/kernels/add.cl.c", "add");
 
-	auto t1 = std::clock();
-	queue.writeBuffer(da, a, COUNT*sizeof(float));
-	queue.writeBuffer(db, b, COUNT*sizeof(float));
-	queue.executeNDRangeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {512,1,1});
-	queue.readBuffer(ds, s, COUNT*sizeof(float));
+	auto w1 = queue.writeBuffer(da, a, COUNT*sizeof(float));
+	auto w2 = queue.writeBuffer(db, b, COUNT*sizeof(float));
+	auto b1 = queue.waitForEventsWithBarrier({w1, w2});
+	auto c = queue.executeNDRangeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {512,1,1});
+	auto r = queue.readBuffer(ds, s, COUNT*sizeof(float));
+	auto b2 = queue.waitForEventsWithBarrier({r});
+
 	queue.synchronize();
-	auto t4 = std::clock();
-	std::cout<<"CL time: "<<static_cast<float>(t4-t1)/CLOCKS_PER_SEC<<std::endl;
 }
 int main()
 {

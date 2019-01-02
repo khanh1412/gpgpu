@@ -2,6 +2,7 @@
 using namespace CL;
 Queue::Queue(const cl_context& context, const cl_device_id& device)
 {
+	//cl_command_queue_properties properties[] = {CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, 0};
 	cl_command_queue_properties properties[] = {0};
 	queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), nullptr);
 }
@@ -42,6 +43,15 @@ Event Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Argument>& a
 	return Event(event);
 }
 Event Queue::waitForEvents(const std::vector<Argument>& events)
+{
+	cl_event event;
+	std::vector<cl_event> events_list;
+	for (auto it = events.begin(); it != events.end(); it++)
+		events_list.push_back(reinterpret_cast<Event*>((*it).data)->event);
+	clEnqueueMarkerWithWaitList(queue, events_list.size(), events_list.data(), &event);
+	return Event(event);
+}
+Event Queue::waitForEventsWithBarrier(const std::vector<Argument>& events)
 {
 	cl_event event;
 	std::vector<cl_event> events_list;

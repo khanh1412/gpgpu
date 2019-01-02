@@ -15,7 +15,7 @@ void SWAP(float *a0, float *a1, uint64_t COUNT)
 
 	q1.waitForEvents({control});
 	auto read = q1.readBuffer(d, a1, COUNT*sizeof(float));
-	q1.flush();
+//	q1.flush();
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	auto q0 = context.createQueue();
 	auto write = q0.writeBuffer(d, a0, COUNT*sizeof(float));

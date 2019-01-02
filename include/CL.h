@@ -12,7 +12,7 @@ void print_data(const std::string& name, const void *data, size_t size);
 namespace CL
 {
 	class Singleton;
-	class Argument;
+	class Param;
 	class Buffer;
 	class Kernel;
 	class Queue;
@@ -27,17 +27,17 @@ namespace CL
 			Singleton(){}
 			virtual ~Singleton(){}
 	};
-	class Argument
+	class Param
 	{
 		public:
 			void *data;
 			size_t size;
 		public:
-			Argument(){}
-			Argument(const Buffer& buffer);
-			Argument(const float& num);
-			Argument(const Event& event);
-			~Argument(){};
+			Param(){}
+			Param(const Buffer& buffer);
+			Param(const float& num);
+			Param(const Event& event);
+			~Param(){};
 	};
 	class Context: public Singleton
 	{
@@ -56,7 +56,7 @@ namespace CL
 	class Buffer: public Singleton
 	{
 		private:
-			friend class Queue; friend class Context; friend class Argument;
+			friend class Queue; friend class Context; friend class Param;
 			cl_mem buffer;
 			Buffer(const cl_context& context, cl_mem_flags flags, size_t size);
 		public:
@@ -84,19 +84,19 @@ namespace CL
 			Event enqueueReadBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
 			Event enqueueCopyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
 			Event enqueueFillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset=0);
-			Event enqueueNDRangeKernel(	Kernel& kernel, const std::vector<Argument>& arguments, 
+			Event enqueueNDRangeKernel(	Kernel& kernel, const std::vector<Param>& parameters, 
 							const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
 			//used in out-of-order exeution
-			Event enqueueMarker(const std::vector<Argument>& events);
+			Event enqueueMarker(const std::vector<Param>& events);
 			//used in both in-order and out-of-order
-			Event enqueueBarrier(const std::vector<Argument>& events);
+			Event enqueueBarrier(const std::vector<Param>& events);
 			void flush();
 			void synchronize();
 	};
 	class Event: public Singleton
 	{
 		private:
-			friend class Context; friend class Queue; friend class Argument;
+			friend class Context; friend class Queue; friend class Param;
 			cl_event event;
 			Event(const cl_context& context);
 			Event(const cl_event& event);

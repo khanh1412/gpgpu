@@ -28,7 +28,7 @@ lib: clean
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Kernel.o sources/Kernel.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Queue.o sources/Queue.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Context.o sources/Context.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Argument.o sources/Argument.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Param.o sources/Param.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Event.o sources/Event.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Debugger.o sources/Debugger.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o

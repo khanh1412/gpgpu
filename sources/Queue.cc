@@ -39,15 +39,15 @@ Event Queue::enqueueFillBuffer(const Buffer& buffer, void* pattern, size_t patte
 	clEnqueueFillBuffer(queue, buffer.buffer, pattern, pattern_size, offset, size, 0, nullptr, &event);
 	return Event(event);
 }
-Event Queue::enqueueNDRangeKernel(Kernel& kernel, const std::vector<Argument>& arguments, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim)
+Event Queue::enqueueNDRangeKernel(Kernel& kernel, const std::vector<Param>& parameters, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim)
 {
 	cl_event event;
-	for (cl_uint i=0; i < arguments.size(); i++)
-		clSetKernelArg(kernel.kernel, i, arguments[i].size, arguments[i].data);
+	for (cl_uint i=0; i < parameters.size(); i++)
+		clSetKernelArg(kernel.kernel, i, parameters[i].size, parameters[i].data);
 	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), nullptr, global_dim.data(), local_dim.data(), 0, nullptr, &event);
 	return Event(event);
 }
-Event Queue::enqueueMarker(const std::vector<Argument>& events)
+Event Queue::enqueueMarker(const std::vector<Param>& events)
 {
 	cl_event event;
 	std::vector<cl_event> event_list;
@@ -56,7 +56,7 @@ Event Queue::enqueueMarker(const std::vector<Argument>& events)
 	clEnqueueMarkerWithWaitList(queue, event_list.size(), event_list.data(), &event);
 	return Event(event);
 }
-Event Queue::enqueueBarrier(const std::vector<Argument>& events)
+Event Queue::enqueueBarrier(const std::vector<Param>& events)
 {
 	cl_event event;
 	std::vector<cl_event> event_list;

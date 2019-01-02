@@ -31,6 +31,13 @@ void Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Argument>& ar
 		clSetKernelArg(kernel.kernel, i, arguments[i].size, arguments[i].data);
 	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), nullptr, global_dim.data(), local_dim.data(), 0, nullptr, nullptr);
 }
+void Queue::enqueueBarrierWaitForEvents(const std::vector<Argument>& events)
+{
+	std::vector<cl_event> events_list;
+	for (auto it = events.begin(); it != events.end(); it++)
+		events_list.push_back(reinterpret_cast<Event*>((*it).data)->event);
+	clEnqueueBarrierWithWaitList(queue, events_list.size(), events_list.data(), nullptr);
+}
 void Queue::synchronize()
 {
 	clFinish(queue);

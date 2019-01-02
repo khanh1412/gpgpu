@@ -24,14 +24,14 @@ namespace CL
 	};
 	class Argument
 	{
-		private:
-			friend class Queue;
+		public:
 			void *data;
 			size_t size;
 		public:
 			Argument(){}
 			Argument(const Buffer& buffer);
 			Argument(const float& num);
+			Argument(const Event& event);
 			~Argument(){};
 	};
 	class Context: public Singleton
@@ -82,15 +82,18 @@ namespace CL
 			void executeNDRangeKernel(
 					Kernel& kernel, const std::vector<Argument>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
-			void enqueueBarrierWaitForEvents(std::vector<Event*> events);
+			void enqueueBarrierWaitForEvents(const std::vector<Argument>& events);
 			void synchronize();
 	};
 	class Event: public Singleton
 	{
 		private:
-			friend class Context;
+			friend class Context; friend class Queue; friend class Argument;
 			cl_event event;
 			Event(const cl_context& context);
-	}
+		public:
+			void wait();
+			~Event();
+	};
 }
 #endif

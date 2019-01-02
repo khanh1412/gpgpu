@@ -57,9 +57,9 @@ char num2char(uint8_t i)
 	}
 	return ret;
 }
-void print_data(const std::string& name, void *data, size_t size)
+void print_data(const std::string& name, const void *data, size_t size)
 {
-	uint8_t *ptr = reinterpret_cast<uint8_t*>(data);
+	const uint8_t *ptr = reinterpret_cast<const uint8_t*>(data);
 
 	uint64_t len = 2*size+size;
 

@@ -6,7 +6,7 @@
 #ifdef DEBUG
 #include<stdexcept>
 #endif
-void print_data(const std::string& name, void *data, size_t size);
+void print_data(const std::string& name, const void *data, size_t size);
 namespace CL
 {
 	class Singleton;

@@ -60,6 +60,7 @@ int main()
 	print_array(a0, COUNT);
 	print_array(a1, COUNT);
 	//SWAP WITHOUT EVENTS
+	std::cout<<std::endl;
 	for (uint64_t i=0; i<COUNT; i++)
 	{
 		a0[i] = 13;

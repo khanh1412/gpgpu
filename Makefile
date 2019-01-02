@@ -21,6 +21,8 @@ vecAdd: lib
 .PHONY: performance
 performance: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LDFLAGS) -lpthread
+event: lib
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/2_event/main.cc ./libCL.so $(LDFLAGS) -lpthread
 .PHONY: lib
 lib: clean
 	mkdir objects

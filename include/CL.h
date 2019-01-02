@@ -82,7 +82,7 @@ namespace CL
 			Event executeNDRangeKernel(
 					Kernel& kernel, const std::vector<Argument>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
-			Event enqueueBarrierWaitForEvents(const std::vector<Argument>& events);
+			Event waitForEvents(const std::vector<Argument>& events);
 			void synchronize();
 	};
 	class Event: public Singleton
@@ -94,6 +94,7 @@ namespace CL
 			Event(const cl_event& event);
 		public:
 			void wait();
+			void setCompleted();
 			~Event();
 	};
 }

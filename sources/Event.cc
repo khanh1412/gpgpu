@@ -9,9 +9,13 @@ Event::Event(const cl_event& event)
 {}
 Event::~Event()
 {
-	clReleaseEvent(event);
+//	clReleaseEvent(event);
 }
 void Event::wait()
 {
 	clWaitForEvents(1, &event);
+}
+void Event::setCompleted()
+{
+	clSetUserEventStatus(event, CL_COMPLETE);
 }

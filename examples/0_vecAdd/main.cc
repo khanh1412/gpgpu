@@ -6,7 +6,7 @@
 
 const uint64_t COUNT = 10;
 
-void clCAL(float *s, float *a, float *b, uint64_t COUNT)
+void ADD(float *s, float *a, float *b, uint64_t COUNT)
 {
 	auto context = CL::Context::initContext(1,0);
 
@@ -38,7 +38,7 @@ int main()
 		b[i] = static_cast<float>(COUNT - i);
 		s[i] = 0;
 	}
-	clCAL(s, a, b, COUNT);
+	ADD(s, a, b, COUNT);
 	std::cout<<"a = ";
 	for (uint64_t i=0; i<COUNT; i++)
 	{

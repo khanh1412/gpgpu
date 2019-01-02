@@ -1,25 +1,34 @@
+DEBUG = 0
+
 CC = g++
-CC_FLAGS = -std=c++17 -g -Wall
+CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
+
+ifeq (1, $(DEBUG))
+CCFLAGS += -g -DDEBUG -O0
+else
+CCFLAGS += -O3
+endif
+
 INCLUDE = -I./include
-LIBRARY = -lOpenCL
+LDFLAGS = -lOpenCL
 
 .PHONY: vecAdd
 vecAdd: lib
-	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LIBRARY)
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LDFLAGS)
 .PHONY: performance
 performance: lib
-	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LIBRARY) -lpthread
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LDFLAGS) -lpthread
 
 .PHONY: lib
 lib:
 	rm -rf objects
 	mkdir objects
-	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Buffer.o sources/Buffer.cc
-	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Kernel.o sources/Kernel.cc
-	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Queue.o sources/Queue.cc
-	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Context.o sources/Context.cc
-	$(CC) $(CC_FLAGS) $(INCLUDE) -c -fPIC -o objects/Debugger.o sources/Debugger.cc
-	$(CC) $(CC_FLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Buffer.o sources/Buffer.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Kernel.o sources/Kernel.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Queue.o sources/Queue.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Context.o sources/Context.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Debugger.o sources/Debugger.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 	rm -rf objects
 .PHONY: clinfo
 clinfo:

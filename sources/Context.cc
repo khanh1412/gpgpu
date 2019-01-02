@@ -40,7 +40,7 @@ Context Context::initContext(uint32_t PlatformID, uint32_t DeviceID)
 
 	return Context(all_devices[DeviceID]);
 }
-Buffer Context::allocateBuffer(cl_mem_flags flags, size_t size)
+Buffer Context::createBuffer(cl_mem_flags flags, size_t size)
 {
 	return Buffer(context, flags, size);
 }

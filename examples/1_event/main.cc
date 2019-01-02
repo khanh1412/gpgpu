@@ -6,7 +6,7 @@ const uint64_t COUNT = 100;
 void SWAP(float *a0, float *a1, uint64_t COUNT)
 {
 	auto context = CL::Context::initContext(1,0);
-	auto d = context.allocateBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
+	auto d = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
 	auto q1 = context.createQueue();
 	auto q0 = context.createQueue();

@@ -28,3 +28,5 @@ Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Con
 
 `Kernel` : the object holding GPU code (kernel code)
 
+- "DIDNOT SUPPORT OUT-OF-ORDER EXECUTION" - simply because my shitty intel gpu running on fedora doesnot support it
+

@@ -12,6 +12,9 @@ CCFLAGS += -O3
 endif
 
 
+.PHONY: test
+test: lib
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/test.cc ./libCL.so $(LDFLAGS)
 .PHONY: vecAdd
 vecAdd: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LDFLAGS)

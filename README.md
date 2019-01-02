@@ -1,6 +1,6 @@
 # opencl
 
-CL on top of OpenCL C++ Binding
+CL C++ simple wrapper (OpenCL 2.0)
 
 ![alt text](https://raw.githubusercontent.com/khanh1412/opencl/c/images/20181216_204709.jpg)
 

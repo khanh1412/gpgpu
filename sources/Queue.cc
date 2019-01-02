@@ -2,11 +2,8 @@
 using namespace CL;
 Queue::Queue(const cl_context& context, const cl_device_id& device)
 {
-	//OPENCL 2.0
 	cl_command_queue_properties properties[] = {0};
 	queue = clCreateCommandQueueWithProperties(context, device, &(properties[0]), nullptr);
-	//OPENCL 1.0
-//	queue = clCreateCommandQueue(context, device, 0, nullptr);
 }
 Queue::~Queue()
 {

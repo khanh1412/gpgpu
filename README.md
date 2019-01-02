@@ -28,9 +28,13 @@ Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Con
 
 `Kernel` : the object holding GPU code (kernel code)
 
-# Tested Machine (Intel core i7 5500U, Intel HD Graphics 5500, AMD R7 M270)
+# Tested Machine (Intel core i7 5500U, Intel HD Graphics 5500)
 
-- Fedora 29 with mesa driver : works only on INTEL GPU (version)
+- GPU : Intel HD Graphics 5500
+
+- Host machine : Fedora 29
+
+- Driver : Intel Gen OCL Driver (OpenCL 2.0 beignet 1.3)
 
 # TO DO
 

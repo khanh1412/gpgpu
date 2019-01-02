@@ -79,16 +79,8 @@ namespace CL
 			size_t size;
 		public:
 			Argument(){}
-			Argument(const Buffer& buffer)
-			{
-				data = (void*)(&(buffer.buffer));
-				size = sizeof(cl_mem);
-			}
-			Argument(const float& num)
-			{
-				data = (void*)(&num);
-				size = sizeof(float);
-			}
+			Argument(const Buffer& buffer);
+			Argument(const float& num);
 			~Argument(){};
 	};
 }

@@ -3,11 +3,14 @@ CC_FLAGS = -std=c++17 -g -Wall
 INCLUDE = -I./include
 LIBRARY = -lOpenCL
 
+.PHONY: vecAdd
 vecAdd: lib
 	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LIBRARY)
+.PHONY: performance
 performance: lib
 	$(CC) $(CC_FLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LIBRARY) -lpthread
-	
+
+.PHONY: lib
 lib:
 	rm -rf objects
 	mkdir objects

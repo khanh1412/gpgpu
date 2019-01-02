@@ -22,7 +22,7 @@ vecAdd: lib
 performance: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/1_performance/main.cc ./libCL.so $(LDFLAGS) -lpthread
 event: lib
-	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/2_event/main.cc ./libCL.so $(LDFLAGS) -lpthread
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/2_event/main.cc ./libCL.so $(LDFLAGS)
 .PHONY: lib
 lib: clean
 	mkdir objects

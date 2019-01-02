@@ -58,6 +58,12 @@ Event Queue::waitForEvents(const std::vector<Argument>& events)
 }
 Event Queue::waitForEventsWithBarrier(const std::vector<Argument>& events)
 {
+	cl_event event;
+	std::vector<cl_event> event_list;
+	for (auto it = events.begin(); it != events.end(); it++)
+		event_list.push_back(*reinterpret_cast<cl_event*>((*it).data));
+	clEnqueueBarrierWithWaitList(queue, event_list.size(), event_list.data(), &event);
+	return Event(event);
 }
 void Queue::flush()
 {

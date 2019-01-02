@@ -14,7 +14,7 @@ void SWAP(float *a0, float *a1, uint64_t COUNT)
 	auto write = q0.writeBuffer(d, a0, COUNT*sizeof(float));
 	//q0.synchronize();
 	//write.wait();
-	q1.waitForEvents({write});
+	q1.waitForEventsWithBarrier({write});
 	auto read = q1.readBuffer(d, a1, COUNT*sizeof(float));
 	
 

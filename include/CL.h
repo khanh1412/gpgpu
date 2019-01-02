@@ -92,7 +92,7 @@ namespace CL
 	};
 	class Event: public Singleton
 	{
-		private:
+		public:
 			friend class Context; friend class Queue; friend class Argument;
 			cl_event event;
 			Event(const cl_context& context);

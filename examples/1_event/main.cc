@@ -2,6 +2,7 @@
 #include<iostream>
 #include<chrono>
 #include<thread>
+#include<cstdio>
 const uint64_t COUNT = 100;
 void SWAP(float *a0, float *a1, uint64_t COUNT)
 {
@@ -11,17 +12,13 @@ void SWAP(float *a0, float *a1, uint64_t COUNT)
 	auto q1 = context.createQueue();
 	auto q0 = context.createQueue();
 
-	/*
-	auto control = context.createUserEvent();
-	q1.waitForEventsWithBarrier({control});
-	auto read = q1.readBuffer(d, a1, COUNT*sizeof(float));
 	auto write = q0.writeBuffer(d, a0, COUNT*sizeof(float));
-	write.wait();
-	control.setCompleted();
-	*/
-	auto write = q0.writeBuffer(d, a0, COUNT*sizeof(float));
-	q1.waitForEventsWithBarrier({write});
+	//q0.synchronize();
+	//write.wait();
+	std::printf("out: %p\n", write.event);
+	q1.waitForEvents({write});
 	auto read = q1.readBuffer(d, a1, COUNT*sizeof(float));
+	
 
 	q1.synchronize();
 	q0.synchronize();

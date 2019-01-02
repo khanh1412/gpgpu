@@ -14,8 +14,6 @@ CL C++ simple wrapper (OpenCL 2.0)
 
 - add in "Event"
 
-- add in "singleton" for `Buffer`
-
 - add in "Context of multiple devices"
 
 - add in "Scalar argument to NDRangeKernel"

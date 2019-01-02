@@ -22,6 +22,17 @@ namespace CL
 			Singleton(){}
 			virtual ~Singleton(){}
 	};
+	class Argument
+	{
+		public:
+			void *data;
+			size_t size;
+		public:
+			Argument(){}
+			Argument(const Buffer& buffer);
+			Argument(const float& num);
+			~Argument(){};
+	};
 	class Context: public Singleton
 	{
 		private:
@@ -35,7 +46,7 @@ namespace CL
 			Kernel loadKernel(const std::string& program_path, const std::string& kernel_name);
 			~Context();
 	};
-	class Buffer
+	class Buffer: public Singleton
 	{
 		private:
 			friend class Queue; friend class Context; friend class Argument;
@@ -71,17 +82,6 @@ namespace CL
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
 			void enqueueBarrierWaitForEvents(std::vector<Event*> events);
 			void synchronize();
-	};
-	class Argument
-	{
-		public:
-			void *data;
-			size_t size;
-		public:
-			Argument(){}
-			Argument(const Buffer& buffer);
-			Argument(const float& num);
-			~Argument(){};
 	};
 }
 #endif

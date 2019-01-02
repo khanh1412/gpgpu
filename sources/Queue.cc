@@ -9,34 +9,46 @@ Queue::~Queue()
 {
 	clReleaseCommandQueue(queue);
 }
-void Queue::writeBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
+Event Queue::writeBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
 {
-	clEnqueueWriteBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, nullptr);
+	cl_event event;
+	clEnqueueWriteBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, &event);
+	return Event(event);
 }
-void Queue::readBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
+Event Queue::readBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
 {
-	clEnqueueReadBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, nullptr);
+	cl_event event;
+	clEnqueueReadBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, &event);
+	return Event(event);
 }
-void Queue::copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset, size_t src_offset)
+Event Queue::copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset, size_t src_offset)
 {
-	clEnqueueCopyBuffer(queue, src.buffer, dst.buffer, src_offset, dst_offset, size, 0, nullptr, nullptr);
+	cl_event event;
+	clEnqueueCopyBuffer(queue, src.buffer, dst.buffer, src_offset, dst_offset, size, 0, nullptr, &event);
+	return Event(event);
 }
-void Queue::fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset)
+Event Queue::fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset)
 {
-	clEnqueueFillBuffer(queue, buffer.buffer, pattern, pattern_size, offset, size, 0, nullptr, nullptr);
+	cl_event event;
+	clEnqueueFillBuffer(queue, buffer.buffer, pattern, pattern_size, offset, size, 0, nullptr, &event);
+	return Event(event);
 }
-void Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Argument>& arguments, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim)
+Event Queue::executeNDRangeKernel(Kernel& kernel, const std::vector<Argument>& arguments, const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim)
 {
+	cl_event event;
 	for (cl_uint i=0; i < arguments.size(); i++)
 		clSetKernelArg(kernel.kernel, i, arguments[i].size, arguments[i].data);
-	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), nullptr, global_dim.data(), local_dim.data(), 0, nullptr, nullptr);
+	clEnqueueNDRangeKernel(queue, kernel.kernel, global_dim.size(), nullptr, global_dim.data(), local_dim.data(), 0, nullptr, &event);
+	return Event(event);
 }
-void Queue::enqueueBarrierWaitForEvents(const std::vector<Argument>& events)
+Event Queue::enqueueBarrierWaitForEvents(const std::vector<Argument>& events)
 {
+	cl_event event;
 	std::vector<cl_event> events_list;
 	for (auto it = events.begin(); it != events.end(); it++)
 		events_list.push_back(reinterpret_cast<Event*>((*it).data)->event);
-	clEnqueueBarrierWithWaitList(queue, events_list.size(), events_list.data(), nullptr);
+	clEnqueueBarrierWithWaitList(queue, events_list.size(), events_list.data(), &event);
+	return Event(event);
 }
 void Queue::synchronize()
 {

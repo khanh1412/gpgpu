@@ -75,14 +75,14 @@ namespace CL
 			Queue(const cl_context& context, const cl_device_id& device);
 		public:
 			~Queue();
-			void writeBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
-			void readBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
-			void copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
-			void fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset=0);
-			void executeNDRangeKernel(
+			Event writeBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
+			Event readBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
+			Event copyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
+			Event fillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset=0);
+			Event executeNDRangeKernel(
 					Kernel& kernel, const std::vector<Argument>& arguments, 
 					const std::vector<uint64_t>& global_dim, const std::vector<uint64_t>& local_dim);
-			void enqueueBarrierWaitForEvents(const std::vector<Argument>& events);
+			Event enqueueBarrierWaitForEvents(const std::vector<Argument>& events);
 			void synchronize();
 	};
 	class Event: public Singleton
@@ -91,6 +91,7 @@ namespace CL
 			friend class Context; friend class Queue; friend class Argument;
 			cl_event event;
 			Event(const cl_context& context);
+			Event(const cl_event& event);
 		public:
 			void wait();
 			~Event();

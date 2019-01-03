@@ -35,6 +35,8 @@ Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std:
 			break;
 		std::printf("Kernel build is in progress ...\n");
 	}
+	std::printf("Kernel build ...Done\n");
+	std::printf("---------------------\n");
 	char log[1024];
 	if (CL_BUILD_SUCCESS != status)
 	{

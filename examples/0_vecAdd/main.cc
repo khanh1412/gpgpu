@@ -1,7 +1,7 @@
 #include<iostream>
 #include"CL.h"
 
-const uint64_t COUNT = 10;
+const uint64_t COUNT = 1000000;
 
 void ADD(float *s, float *a, float *b, uint64_t COUNT)
 {
@@ -22,8 +22,18 @@ void ADD(float *s, float *a, float *b, uint64_t COUNT)
 	auto read = queue.enqueueReadBuffer(ds, s, COUNT*sizeof(float));
 	auto barrier3 = queue.enqueueBarrier({read});
 	barrier3.wait();
+	std::cout<<"write1: "<<write1.profileComplete() - write1.profileStart()<<" ns"<<std::endl;
+	std::cout<<"write2: "<<write2.profileComplete() - write2.profileStart()<<" ns"<<std::endl;
+	std::cout<<"kernel: "<<kernel.profileComplete() - kernel.profileStart()<<" ns"<<std::endl;
+	std::cout<<"read  : "<<read.profileComplete() - read.profileStart()<<" ns"<<std::endl;
 
 	queue.synchronize();
+}
+void print_array(float *a)
+{
+	for (uint64_t i=0; i<10; i++)
+		std::cout<<a[i]<<" ";
+	std::cout<<"..."<<std::endl;
 }
 int main()
 {
@@ -38,26 +48,9 @@ int main()
 		s[i] = 0;
 	}
 	ADD(s, a, b, COUNT);
-	std::cout<<"a = ";
-	for (uint64_t i=0; i<COUNT; i++)
-	{
-		std::cout<<a[i]<<" ";
-	}
-	std::cout<<std::endl;
-
-	std::cout<<"b = ";
-	for (uint64_t i=0; i<COUNT; i++)
-	{
-		std::cout<<b[i]<<" ";
-	}
-	std::cout<<std::endl;
-
-	std::cout<<"s = ";
-	for (uint64_t i=0; i<COUNT; i++)
-	{
-		std::cout<<s[i]<<" ";
-	}
-	std::cout<<std::endl;
+	print_array(a);
+	print_array(b);
+	print_array(s);
 	return 0;
 
 

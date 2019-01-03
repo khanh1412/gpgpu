@@ -112,6 +112,13 @@ namespace CL
 		public:
 			void wait();
 			void setCompleted();
+#ifdef PROFILE
+			uint64_t profileQueued();
+			uint64_t profileSubmit();
+			uint64_t profileStart();
+			uint64_t profileEnd();
+			uint64_t profileComplete();
+#endif
 			~Event();
 	};
 }

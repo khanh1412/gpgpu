@@ -26,3 +26,35 @@ void Event::setCompleted()
 {
 	clSetUserEventStatus(event, CL_COMPLETE);
 }
+#ifdef PROFILE
+uint64_t Event::profileQueued()
+{
+	uint64_t res;
+	clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_QUEUED, sizeof(uint64_t), &res, nullptr);
+	return res;
+}
+uint64_t Event::profileSubmit()
+{
+	uint64_t res;
+	clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_SUBMIT, sizeof(uint64_t), &res, nullptr);
+	return res;
+}
+uint64_t Event::profileStart()
+{
+	uint64_t res;
+	clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_START, sizeof(uint64_t), &res, nullptr);
+	return res;
+}
+uint64_t Event::profileEnd()
+{
+	uint64_t res;
+	clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_END, sizeof(uint64_t), &res, nullptr);
+	return res;
+}
+uint64_t Event::profileComplete()
+{
+	uint64_t res;
+	clGetEventProfilingInfo(event, CL_PROFILING_COMMAND_COMPLETE, sizeof(uint64_t), &res, nullptr);
+	return res;
+}
+#endif

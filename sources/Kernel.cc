@@ -18,6 +18,11 @@ Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std:
 
 	program = clCreateProgramWithSource(context, 1, &program_string, &program_length, &err);
 #ifdef DEBUG
+	std::printf("---------------------\n");
+	std::printf("PROGRAM: %ld bytes\n", program_length);
+	std::printf("---------------------\n");
+	std::printf("%s\n", program_string);
+	std::printf("---------------------\n");
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Create Program failed!");
 #endif

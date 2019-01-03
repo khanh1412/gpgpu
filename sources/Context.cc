@@ -1,5 +1,4 @@
 #include"CL.h"
-#include<cstdio>
 using namespace CL;
 Context::Context(const cl_device_id& device)
 	: device(device)

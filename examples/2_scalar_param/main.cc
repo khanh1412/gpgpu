@@ -3,17 +3,18 @@
 #include<chrono>
 #include<thread>
 const uint64_t COUNT = 100;
-void FILL(float *a, uint64_t COUNT, float value)
-{
 	auto context = CL::Context::initContext(1,0);
 	auto d_a = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
 	auto q = context.createQueue();
-	auto k = context.loadKernel("./kernels/fill.cl.c", "fill");
+	auto k = context.loadKernel("./examples/2_scalar_param/fill.cl.c", "fill");
 
+void FILL(float *a, uint64_t COUNT, float value)
+{
 	auto write = q.enqueueWriteBuffer(d_a, a, COUNT*sizeof(float));
 	auto kernel = q.enqueueNDRangeKernel(k, {d_a, value}, {COUNT, 1, 1}, {1, 1, 1});
 	auto read = q.enqueueReadBuffer(d_a, a, COUNT*sizeof(float));
+
 	q.synchronize();
 }
 void print_array(float *a, uint64_t COUNT)

@@ -15,7 +15,7 @@ void ADD(float *s, float *a, float *b, uint64_t COUNT)
 	auto db = context.createBuffer(CL_MEM_READ_ONLY , COUNT*sizeof(float));
 
 	auto queue = context.createQueue();
-	auto add = context.loadKernel("examples/kernels/add.cl.c", "add");
+	auto add = context.loadKernel("./examples/0_vecAdd/add.cl.c", "add");
 
 	auto w1 = queue.enqueueWriteBuffer(da, a, COUNT*sizeof(float));
 	auto w2 = queue.enqueueWriteBuffer(db, b, COUNT*sizeof(float));

@@ -6,6 +6,7 @@
 
 #ifdef DEBUG
 #include<stdexcept>
+#include<cstdio>
 void print_data(const std::string& name, const void *data, size_t size);
 #endif
 

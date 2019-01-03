@@ -33,6 +33,7 @@ Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std:
 		clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_STATUS, sizeof(cl_build_status), &status, nullptr);
 		if (CL_BUILD_IN_PROGRESS != status)
 			break;
+		std::printf("Kernel build is in progress ...\n");
 	}
 	char log[1024];
 	if (CL_BUILD_SUCCESS != status)

@@ -10,9 +10,12 @@ LDFLAGS = -lOpenCL
 
 ifeq (1, $(DEBUG))
 CCFLAGS += -g -DDEBUG -O0
+else
+CCFLAGS += -O3
 endif
+
 ifeq (1, $(PROFILE))
-CCFLAGS += -DPROFILE -O3
+CCFLAGS += -DPROFILE
 endif
 
 

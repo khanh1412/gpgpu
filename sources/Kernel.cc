@@ -40,7 +40,7 @@ Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std:
 	if (CL_BUILD_SUCCESS != status)
 	{
 		clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 1024, &(log[0]), nullptr);
-		throw std::runtime_error("Build Error:" + std::string(log));
+		throw std::runtime_error("Build Error: " + std::string(log));
 	}
 	kernel = clCreateKernel(program, kernel_name.c_str(), &err);
 	if (CL_SUCCESS != err)

@@ -9,7 +9,7 @@ inline std::string read_program(const std::string& filepath)
 	return content;
 }
 
-Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std::string& program_path, const std::string& kernel_name)
+Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std::string& program_path, const std::string& kernel_name, const std::string& build_flags)
 {
 	auto content = read_program(program_path);
 	auto program_string = content.c_str();
@@ -25,8 +25,7 @@ Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std:
 	std::printf("---------------------\n");
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Create Program failed!");
-
-	clBuildProgram(program, 1, &device, nullptr, nullptr, nullptr);
+	clBuildProgram(program, 1, &device, build_flags.c_str(), nullptr, nullptr);
 	cl_build_status status;
 	while (1)
 	{

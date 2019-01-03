@@ -47,9 +47,9 @@ Queue Context::createQueue()
 {
 	return Queue(context, device);
 }
-Kernel Context::createKernel(const std::string& program_path, const std::string& kernel_name)
+Kernel Context::createKernel(const std::string& program_path, const std::string& kernel_name, const std::string& build_flags)
 {
-	return Kernel(context, device, program_path, kernel_name);
+	return Kernel(context, device, program_path, kernel_name, build_flags);
 }
 Event Context::createUserEvent()
 {

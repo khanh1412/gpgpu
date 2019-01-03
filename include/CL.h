@@ -58,7 +58,7 @@ namespace CL
 			static Context initContext(uint32_t PlatformID, uint32_t DeviceID);
 			Buffer createBuffer(cl_mem_flags flags, size_t size);
 			Queue createQueue();
-			Kernel createKernel(const std::string& program_path, const std::string& kernel_name);
+			Kernel createKernel(const std::string& program_path, const std::string& kernel_name, const std::string& build_flags = "-cl-std=CL1.2");
 			Event createUserEvent();
 			~Context();
 	};
@@ -77,7 +77,7 @@ namespace CL
 			friend class Queue; friend class Context;
 			cl_program program;
 			cl_kernel kernel;
-			Kernel(const cl_context& context, const cl_device_id& device, const std::string& program_path, const std::string& kernel_name);
+			Kernel(const cl_context& context, const cl_device_id& device, const std::string& program_path, const std::string& kernel_name, const std::string& build_flags);
 		public:	
 			~Kernel();
 	};

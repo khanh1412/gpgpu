@@ -14,7 +14,7 @@ Supports almost every OpenCL features, except
 
 5. Multiple kernels in the same program. (use multiple programs instead).
 
-6. Profiling Operations (my shitty intel gpu does not support)
+6. ~~Profiling Operations (my shitty intel gpu does not support)~~
 
 7. Out-of-order executions (same as 6)
 

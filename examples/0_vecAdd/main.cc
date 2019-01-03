@@ -3,7 +3,7 @@
 #include<ctime>
 #include"CL.h"
 
-const uint64_t COUNT = 1936*1096;
+const uint64_t COUNT = 1000000;
 void ADD(float *s, float *a, float *b, uint64_t COUNT)
 {
 	auto context = CL::Context::initContext(1,0);
@@ -63,8 +63,8 @@ std::srand(std::time(nullptr));
 
 	for (uint64_t i=0; i<COUNT; i++)
 	{
-		a[i] = static_cast<float>(std::rand()%100)/100;
-		b[i] = static_cast<float>(std::rand()%100)/100;
+		a[i] = static_cast<float>(std::rand()%10)/10;
+		b[i] = static_cast<float>(std::rand()%10)/10;
 		s[i] = 0;
 	}
 	ADD(s, a, b, COUNT);

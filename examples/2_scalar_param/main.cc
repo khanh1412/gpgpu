@@ -5,7 +5,7 @@ auto context = CL::Context::initContext(1,0);
 auto d_a = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
 auto q = context.createQueue();
-auto k = context.createKernel("./examples/2_scalar_param/fill.cl.c", "fill");
+auto k = context.createKernel("./examples/2_scalar_param/fill.cl.c", "fill", "-cl-std=CL1.2");
 
 void FILL(float *a, uint64_t COUNT, float value)
 {

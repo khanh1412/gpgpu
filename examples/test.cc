@@ -1,7 +1,4 @@
-#include"CL.h"
-#include<iostream>
-#define a (1<<0)
-#define b (1<<1)
+#include<>
 int main()
 {
 	int x[] = {a|b};

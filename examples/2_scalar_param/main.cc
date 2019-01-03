@@ -2,12 +2,12 @@
 #include<iostream>
 #include<chrono>
 #include<thread>
-const uint64_t COUNT = 100;
-	auto context = CL::Context::initContext(1,0);
-	auto d_a = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
+const uint64_t COUNT = 10;
+auto context = CL::Context::initContext(1,0);
+auto d_a = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
-	auto q = context.createQueue();
-	auto k = context.createKernel("./examples/2_scalar_param/fill.cl.c", "fill");
+auto q = context.createQueue();
+auto k = context.createKernel("./examples/2_scalar_param/fill.cl.c", "fill");
 
 void FILL(float *a, uint64_t COUNT, float value)
 {

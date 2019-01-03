@@ -1,6 +1,6 @@
 # opencl
 
-CL C++ simple wrapper (OpenCL 2.0)
+CL C++ simple wrapper
 
 Supports almost every OpenCL features, except
 
@@ -29,7 +29,11 @@ Supports almost every OpenCL features, except
 
 - Host machine : Fedora 29
 
-- Driver : Intel Gen OCL Driver (OpenCL 2.0 beignet 1.3)
+- Driver : Intel Gen OCL Driver
+
+- Platform ver: 2.0
+
+- Device ver: 1.2
 
 # TO DO
 

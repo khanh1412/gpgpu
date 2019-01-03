@@ -12,7 +12,7 @@ ifeq (1, $(DEBUG))
 CCFLAGS += -g -DDEBUG -O0
 endif
 ifeq (1, $(PROFILE))
-CCFLAGS += -DPROFILE
+CCFLAGS += -DPROFILE -O3
 endif
 
 

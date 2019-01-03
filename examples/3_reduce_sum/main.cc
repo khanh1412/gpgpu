@@ -14,7 +14,7 @@ void REDUCE_SUM(float *s, float *a, uint64_t COUNT)
 
 	auto write = q.enqueueWriteBuffer(da, a, COUNT*sizeof(float));
 	auto barrier1 = q.enqueueBarrier({write});
-	auto kernel = q.enqueueNDRangeKernel(k, {da}, {COUNT, 1, 1}, {512,1,1});
+	auto kernel = q.enqueueNDRangeKernel(k, {da}, {COUNT, 1, 1}, {256,1,1});
 	auto barrier2 = q.enqueueBarrier({kernel});
 	auto read = q.enqueueReadBuffer(da, s, 1*sizeof(float));
 	auto barrier3 = q.enqueueBarrier({read});

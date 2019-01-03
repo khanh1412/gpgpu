@@ -6,7 +6,7 @@ __kernel void sum(__global float* a)
 	ulong local_id = get_local_id(0);
 	ulong local_size = get_local_size(0);
 
-	__local float temp[512];
+	__local float temp[256];
 	temp[local_id] = a[global_id];
 	barrier(CLK_LOCAL_MEM_FENCE);
 

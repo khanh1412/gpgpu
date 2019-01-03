@@ -11,7 +11,7 @@ void REDUCE_SUM(float *s, float *a, uint64_t COUNT)
 
 	auto q = context.createQueue();
 	auto k = context.createKernel("./examples/3_reduce_sum/sum.cl.c", "sum", "-cl-std=CL1.2");
-
+	{
 	auto write = q.enqueueWriteBuffer(da, a, COUNT*sizeof(float));
 	auto barrier1 = q.enqueueBarrier({write});
 	auto kernel = q.enqueueNDRangeKernel(k, {da}, {COUNT, 1, 1}, {256,1,1});
@@ -21,6 +21,7 @@ void REDUCE_SUM(float *s, float *a, uint64_t COUNT)
 	barrier3.wait();
 
 	q.synchronize();
+	}
 }
 void print_array(float *a)
 {

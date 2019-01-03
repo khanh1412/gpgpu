@@ -9,16 +9,17 @@ void SWAP(float *a0, float *a1, uint64_t COUNT)
 	auto q1 = context.createQueue();
 	auto q0 = context.createQueue();
 
+	{
 	auto control = context.createUserEvent();
 	q1.enqueueBarrier({control});
 	auto read = q1.enqueueReadBuffer(d, a1, COUNT*sizeof(float));
 	auto write = q0.enqueueWriteBuffer(d, a0, COUNT*sizeof(float));
 	write.wait();
 	control.setCompleted();
-	
 
 	q1.synchronize();
 	q0.synchronize();
+	}
 }
 void SWAPwithoutEvents(float *a0, float *a1, uint64_t COUNT)
 {

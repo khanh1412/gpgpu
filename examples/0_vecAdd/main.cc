@@ -14,7 +14,7 @@ void ADD(float *s, float *a, float *b, uint64_t COUNT)
 
 	auto queue = context.createQueue();
 	auto add = context.createKernel("./examples/0_vecAdd/add.cl.c", "add");
-
+	{
 	auto barrier0 = queue.enqueueBarrier({});
 	auto write1 = queue.enqueueWriteBuffer(da, a, COUNT*sizeof(float));
 	auto write2 = queue.enqueueWriteBuffer(db, b, COUNT*sizeof(float));
@@ -25,6 +25,7 @@ void ADD(float *s, float *a, float *b, uint64_t COUNT)
 	auto barrier3 = queue.enqueueBarrier({read});
 	barrier3.wait();
 	queue.synchronize();
+	}
 }
 void print_array(float *a)
 {

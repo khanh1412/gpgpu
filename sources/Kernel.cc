@@ -47,7 +47,7 @@ Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std:
 		throw std::runtime_error("Create Kernel failed!");
 #else
 	program = clCreateProgramWithSource(context, 1, &program_string, &program_length, nullptr);
-	clBuildProgram(program, 1, &device, nullptr, nullptr, nullptr);
+	clBuildProgram(program, 1, &device, build_flags.c_str(), nullptr, nullptr);
 	cl_build_status status;
 	while (1)
 	{

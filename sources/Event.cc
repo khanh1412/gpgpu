@@ -2,11 +2,13 @@
 using namespace CL;
 Event::Event(const cl_context& context)
 {
+#ifdef DEBUG
 	cl_int err;
 	event = clCreateUserEvent(context, &err);
-#ifdef DEBUG
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Create User Event failed!");
+#else
+	event = clCreateUserEvent(context, nullptr);
 #endif
 }
 Event::Event(const cl_event& event)

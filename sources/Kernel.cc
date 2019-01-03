@@ -11,13 +11,13 @@ inline std::string read_program(const std::string& filepath)
 
 Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std::string& program_path, const std::string& kernel_name)
 {
-	cl_int err;
 	auto content = read_program(program_path);
 	auto program_string = content.c_str();
 	auto program_length = content.length();
 
-	program = clCreateProgramWithSource(context, 1, &program_string, &program_length, &err);
 #ifdef DEBUG
+	cl_int err;
+	program = clCreateProgramWithSource(context, 1, &program_string, &program_length, &err);
 	std::printf("---------------------\n");
 	std::printf("PROGRAM: %ld bytes\n", program_length);
 	std::printf("---------------------\n");
@@ -25,9 +25,8 @@ Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std:
 	std::printf("---------------------\n");
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Create Program failed!");
-#endif
+
 	clBuildProgram(program, 1, &device, nullptr, nullptr, nullptr);
-#ifdef DEBUG
 	cl_build_status status;
 	while (1)
 	{
@@ -39,14 +38,22 @@ Kernel::Kernel(const cl_context& context, const cl_device_id& device, const std:
 	if (CL_BUILD_SUCCESS != status)
 	{
 		clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 1024, &(log[0]), nullptr);
-		throw std::runtime_error(log);
+		throw std::runtime_error("Build Error:" + std::string(log));
 	}
-#endif
-
 	kernel = clCreateKernel(program, kernel_name.c_str(), &err);
-#ifdef DEBUG
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Create Kernel failed!");
+#else
+	program = clCreateProgramWithSource(context, 1, &program_string, &program_length, nullptr);
+	clBuildProgram(program, 1, &device, nullptr, nullptr, nullptr);
+	cl_build_status status;
+	while (1)
+	{
+		clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_STATUS, sizeof(cl_build_status), &status, nullptr);
+		if (CL_BUILD_IN_PROGRESS != status)
+			break;
+	}
+	kernel = clCreateKernel(program, kernel_name.c_str(), nullptr);
 #endif
 }
 Kernel::~Kernel()

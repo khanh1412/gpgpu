@@ -1,9 +1,6 @@
 #include<iostream>
 #include"CL.h"
 
-#include<ctime>
-#include<thread>
-
 const uint64_t COUNT = 10;
 
 void ADD(float *s, float *a, float *b, uint64_t COUNT)
@@ -17,13 +14,14 @@ void ADD(float *s, float *a, float *b, uint64_t COUNT)
 	auto queue = context.createQueue();
 	auto add = context.createKernel("./examples/0_vecAdd/add.cl.c", "add");
 
-	auto w1 = queue.enqueueWriteBuffer(da, a, COUNT*sizeof(float));
-	auto w2 = queue.enqueueWriteBuffer(db, b, COUNT*sizeof(float));
-	auto b1 = queue.enqueueBarrier({w1, w2});
-	auto c = queue.enqueueNDRangeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {512,1,1});
-	auto r = queue.enqueueReadBuffer(ds, s, COUNT*sizeof(float));
-	auto b2 = queue.enqueueBarrier({r});
-	b2.wait();
+	auto write1 = queue.enqueueWriteBuffer(da, a, COUNT*sizeof(float));
+	auto write2 = queue.enqueueWriteBuffer(db, b, COUNT*sizeof(float));
+	auto barrier1 = queue.enqueueBarrier({write1, write2});
+	auto kernel = queue.enqueueNDRangeKernel(add, {ds, da, db}, {COUNT, 1, 1}, {512,1,1});
+	auto barrier2 = queue.enqueueBarrier({kernel});
+	auto read = queue.enqueueReadBuffer(ds, s, COUNT*sizeof(float));
+	auto barrier3 = queue.enqueueBarrier({read});
+	barrier3.wait();
 
 	queue.synchronize();
 }

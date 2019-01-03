@@ -1,7 +1,5 @@
 #include"CL.h"
 #include<iostream>
-#include<chrono>
-#include<thread>
 const uint64_t COUNT = 100;
 void SWAP(float *a0, float *a1, uint64_t COUNT)
 {

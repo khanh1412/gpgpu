@@ -3,11 +3,13 @@ using namespace CL;
 Context::Context(const cl_device_id& device)
 	: device(device)
 {
+#ifdef DEBUG
 	cl_int err;
 	context = clCreateContext(nullptr, 1, &device, nullptr, nullptr, &err);
-#ifdef DEBUG
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Create Context failed!");
+#else
+	context = clCreateContext(nullptr, 1, &device, nullptr, nullptr, nullptr);
 #endif
 }
 Context::~Context()
@@ -34,8 +36,6 @@ Context Context::initContext(uint32_t PlatformID, uint32_t DeviceID)
 	clGetDeviceInfo(all_devices[DeviceID], CL_DEVICE_NAME, 256*sizeof(char), &(name[0]), nullptr);
 	std::printf("Device: %s\n", name);
 #endif
-
-
 
 	return Context(all_devices[DeviceID]);
 }

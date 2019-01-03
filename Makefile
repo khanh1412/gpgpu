@@ -15,6 +15,9 @@ endif
 .PHONY: test
 test: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/test.cc ./libCL.so $(LDFLAGS)
+.PHONY: reduce_sum
+reduce_sum: lib
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/3_reduce_sum/main.cc ./libCL.so $(LDFLAGS)
 .PHONY: scalar_param
 scalar_param: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/2_scalar_param/main.cc ./libCL.so $(LDFLAGS)

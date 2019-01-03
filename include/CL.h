@@ -30,7 +30,8 @@ namespace CL
 	enum ParamType
 	{
 		EVENT,
-		BUFFER
+		BUFFER,
+		SCALAR
 	};
 	class Param
 	{
@@ -43,6 +44,7 @@ namespace CL
 			Param(){}
 			Param(const Buffer& buffer);
 			Param(const Event& event);
+			Param(const float& num);
 			~Param(){};
 	};
 	class Context: public Singleton

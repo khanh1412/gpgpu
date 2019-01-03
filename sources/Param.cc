@@ -14,3 +14,10 @@ Param::Param(const Event& event)
 	data = (void*)(&(event.event));
 	size = sizeof(cl_event);
 }
+Param::Param(const float& num)
+{
+	param = (void*)(&num);
+	type = SCALAR;
+	data = (void*)(&num);
+	size = sizeof(float);
+}

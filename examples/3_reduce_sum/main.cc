@@ -10,7 +10,7 @@ void REDUCE_SUM(float *s, float *a, uint64_t COUNT)
 	auto da = context.createBuffer(CL_MEM_READ_WRITE , COUNT*sizeof(float));
 
 	auto q = context.createQueue();
-	auto k = context.createKernel("./examples/3_reduce_sum/sum.cl.c", "sum", "-cl-std=CL2.0");
+	auto k = context.createKernel("./examples/3_reduce_sum/sum.cl.c", "sum", "-cl-std=CL1.2");
 
 	auto write = q.enqueueWriteBuffer(da, a, COUNT*sizeof(float));
 	auto barrier1 = q.enqueueBarrier({write});

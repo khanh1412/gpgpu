@@ -1,3 +1,4 @@
+#pragma OPENCL EXTENSION cl_khr_int32_base_atomics : enable
 __kernel void sum(__global float* a)
 {
 	ulong global_id = get_global_id(0);
@@ -27,13 +28,13 @@ __kernel void sum(__global float* a)
 		sum_size = sum_size/2;
 		barrier(CLK_LOCAL_MEM_FENCE);
 	}
-	__global atomic_ulong *mutex; *mutex = 0;
-	ulong res;
+	__global int *mutex; *mutex = 0;
+	int res;
 	if (local_id == 0)
 	{
 		while (1)
 		{
-			res = atomic_exchange(mutex, -1);
+			res = atomic_xchg(mutex, -1);
 			if (-1 != res)
 				break;
 		}
@@ -45,7 +46,7 @@ __kernel void sum(__global float* a)
 	{
 		while (1)
 		{
-			res = atomic_exchange(mutex, -1);
+			res = atomic_xchg(mutex, -1);
 			if ((global_size-1)/2+1 == res)
 				break;
 		}

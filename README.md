@@ -15,6 +15,3 @@ CL C++ simple wrapper (OpenCL 2.0)
 - rename functions
 
 - add in "Context of multiple devices"
-
-- add in "Scalar argument to NDRangeKernel"
-

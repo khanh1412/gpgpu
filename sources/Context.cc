@@ -47,7 +47,7 @@ Queue Context::createQueue()
 {
 	return Queue(context, device);
 }
-Kernel Context::loadKernel(const std::string& program_path, const std::string& kernel_name)
+Kernel Context::createKernel(const std::string& program_path, const std::string& kernel_name)
 {
 	return Kernel(context, device, program_path, kernel_name);
 }

@@ -58,7 +58,7 @@ namespace CL
 			static Context initContext(uint32_t PlatformID, uint32_t DeviceID);
 			Buffer createBuffer(cl_mem_flags flags, size_t size);
 			Queue createQueue();
-			Kernel loadKernel(const std::string& program_path, const std::string& kernel_name);
+			Kernel createKernel(const std::string& program_path, const std::string& kernel_name);
 			Event createUserEvent();
 			~Context();
 	};

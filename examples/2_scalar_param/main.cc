@@ -7,7 +7,7 @@ const uint64_t COUNT = 100;
 	auto d_a = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
 	auto q = context.createQueue();
-	auto k = context.loadKernel("./examples/2_scalar_param/fill.cl.c", "fill");
+	auto k = context.createKernel("./examples/2_scalar_param/fill.cl.c", "fill");
 
 void FILL(float *a, uint64_t COUNT, float value)
 {

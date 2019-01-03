@@ -1,8 +1,9 @@
 #include<iostream>
+#include<cstdlib>
+#include<ctime>
 #include"CL.h"
 
-const uint64_t COUNT = 1000000;
-
+const uint64_t COUNT = 1936*1096;
 void ADD(float *s, float *a, float *b, uint64_t COUNT)
 {
 	auto context = CL::Context::initContext(1,0);
@@ -14,6 +15,7 @@ void ADD(float *s, float *a, float *b, uint64_t COUNT)
 	auto queue = context.createQueue();
 	auto add = context.createKernel("./examples/0_vecAdd/add.cl.c", "add");
 
+	auto t1 = std::clock();
 	auto write1 = queue.enqueueWriteBuffer(da, a, COUNT*sizeof(float));
 	auto write2 = queue.enqueueWriteBuffer(db, b, COUNT*sizeof(float));
 	auto barrier1 = queue.enqueueBarrier({write1, write2});
@@ -22,12 +24,29 @@ void ADD(float *s, float *a, float *b, uint64_t COUNT)
 	auto read = queue.enqueueReadBuffer(ds, s, COUNT*sizeof(float));
 	auto barrier3 = queue.enqueueBarrier({read});
 	barrier3.wait();
-	std::cout<<"write1: "<<write1.profileComplete() - write1.profileStart()<<" ns"<<std::endl;
-	std::cout<<"write2: "<<write2.profileComplete() - write2.profileStart()<<" ns"<<std::endl;
-	std::cout<<"kernel: "<<kernel.profileComplete() - kernel.profileStart()<<" ns"<<std::endl;
-	std::cout<<"read  : "<<read.profileComplete() - read.profileStart()<<" ns"<<std::endl;
-
 	queue.synchronize();
+	auto t2 = std::clock();
+
+	std::cout<<"total (cpu): "<<1000000000*(t2-t1)/CLOCKS_PER_SEC<<" ns"<<std::endl;
+
+	std::cout<<"write1:"<<std::endl;
+	std::cout<<"\tqueued: "<<write1.profileSubmit() - write1.profileQueued()<<" ns"<<std::endl;
+	std::cout<<"\twait  : "<<write1.profileStart() - write1.profileSubmit()<<" ns"<<std::endl;
+	std::cout<<"\trun   : "<<write1.profileComplete() - write1.profileStart()<<" ns"<<std::endl;
+	std::cout<<"write2:"<<std::endl;
+	std::cout<<"\tqueued: "<<write2.profileSubmit() - write2.profileQueued()<<" ns"<<std::endl;
+	std::cout<<"\twait  : "<<write2.profileStart() - write2.profileSubmit()<<" ns"<<std::endl;
+	std::cout<<"\trun   : "<<write2.profileComplete() - write2.profileStart()<<" ns"<<std::endl;
+	std::cout<<"kernel:"<<std::endl;
+	std::cout<<"\tqueued: "<<kernel.profileSubmit() - kernel.profileQueued()<<" ns"<<std::endl;
+	std::cout<<"\twait  : "<<kernel.profileStart() - kernel.profileSubmit()<<" ns"<<std::endl;
+	std::cout<<"\trun   : "<<kernel.profileComplete() - kernel.profileStart()<<" ns"<<std::endl;
+	std::cout<<"read:"<<std::endl;
+	std::cout<<"\tqueued: "<<read.profileSubmit() - read.profileQueued()<<" ns"<<std::endl;
+	std::cout<<"\twait  : "<<read.profileStart() - read.profileSubmit()<<" ns"<<std::endl;
+	std::cout<<"\trun   : "<<read.profileComplete() - read.profileStart()<<" ns"<<std::endl;
+
+
 }
 void print_array(float *a)
 {
@@ -37,14 +56,15 @@ void print_array(float *a)
 }
 int main()
 {
+std::srand(std::time(nullptr));
 	auto a = new float[COUNT];
 	auto b = new float[COUNT];
 	auto s = new float[COUNT];
 
 	for (uint64_t i=0; i<COUNT; i++)
 	{
-		a[i] = static_cast<float>(i);
-		b[i] = static_cast<float>(COUNT - i);
+		a[i] = static_cast<float>(std::rand()%100)/100;
+		b[i] = static_cast<float>(std::rand()%100)/100;
 		s[i] = 0;
 	}
 	ADD(s, a, b, COUNT);

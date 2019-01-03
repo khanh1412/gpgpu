@@ -16,7 +16,7 @@ Supports almost every OpenCL features, except
 
 6. ~~Profiling Operations (my shitty intel gpu does not support)~~
 
-7. Out-of-order executions (same as 6)
+7. ~~Out-of-order executions (same as 6)~~
 
 8. Pipes (will be updated)
 

@@ -4,6 +4,8 @@ Queue::Queue(const cl_context& context, const cl_device_id& device)
 {
 #ifdef PROFILE
 	cl_command_queue_properties properties[] = {CL_QUEUE_PROPERTIES, CL_QUEUE_ON_DEVICE | CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE | CL_QUEUE_PROFILING_ENABLE, 0};
+//OpenCL 1.2 (doesnot support CL_QUEUE_ON_DEVICE's Barriers)
+//	cl_command_queue_properties properties[] = {CL_QUEUE_PROPERTIES, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE | CL_QUEUE_PROFILING_ENABLE, 0};
 #else
 	cl_command_queue_properties properties[] = {CL_QUEUE_PROPERTIES, CL_QUEUE_ON_DEVICE | CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, 0};
 #endif

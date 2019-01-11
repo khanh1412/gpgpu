@@ -1,6 +1,6 @@
 # opencl
 
-CL C++ simple wrapper (master)
+CL/CU C++ simple wrapper (master)
 
 ![alt text](https://raw.githubusercontent.com/khanh1412/opencl/master/images/20181216_204709.jpg)
 

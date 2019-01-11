@@ -2,6 +2,18 @@
 
 CL/CU C++ simple wrapper (master)
 
+# sources
+
+https://www.khronos.org/registry/OpenCL/sdk/2.0/docs/man/xhtml/
+
+https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/
+
+https://www.sharcnet.ca/help/index.php/Porting_CUDA_to_OpenCL
+
+https://docs.nvidia.com/cuda/cuda-runtime-api/index.html
+
+https://docs.nvidia.com/cuda/cuda-driver-api/index.html
+
 ![alt text](https://raw.githubusercontent.com/khanh1412/opencl/master/images/20181216_204709.jpg)
 
 Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Context`, `Buffer`, `Queue` and `Kernel`.

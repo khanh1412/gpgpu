@@ -9,8 +9,11 @@ int main()
 	int *x = 0;
 	int y = *x;
 	}
+	{
+	auto h = Handler::initHandler();
 	int *x = 0;
 	int y = *x;
+	}
  	return 0; 
 	
 }

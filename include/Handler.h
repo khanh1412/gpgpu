@@ -13,27 +13,27 @@ static void exit_handler(int signum, siginfo_t *si, void *context)
 	fprintf(stderr, "Segmentation fault (core dumped)\n");
 	exit(1);
 }
-void set_handler(void (*handler_func)(int, siginfo_t *, void *))
-{
-        struct sigaction action;
-        memset(&action, 0, sizeof(struct sigaction));
-        action.sa_flags = SA_SIGINFO;
-        action.sa_sigaction = handler_func;
-        sigaction(SIGSEGV, &action, NULL);	
-}
 class Handler
 {
 	private:
-		Handler(){}
+		Handler()
+		{
+			set_handler(ignore_handler);
+		}
 		static Handler *h;
+		static void set_handler(void (*handler_func)(int, siginfo_t*, void*))
+		{
+		        struct sigaction action;
+		        memset(&action, 0, sizeof(struct sigaction));
+		        action.sa_flags = SA_SIGINFO;
+		        action.sa_sigaction = handler_func;
+		        sigaction(SIGSEGV, &action, NULL);	
+		}
 	public:
 		static Handler& initHandler()
 		{
 			if (h == nullptr)
-			{
-				set_handler(ignore_handler);
 				h = new Handler();
-			}
 			return *h;
 		}
 		~Handler()

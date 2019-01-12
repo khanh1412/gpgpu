@@ -9,7 +9,7 @@ class Event: public Singleton
 			Event(const cl_context& context);
 			Event(const cl_event& event);
 		public:
-			void wait();
+			void join();
 			void setCompleted();
 			uint64_t profileQueued();
 			uint64_t profileSubmit();

@@ -14,7 +14,7 @@ Event::~Event()
 {
 	clReleaseEvent(event);
 }
-void Event::wait()
+void Event::join()
 {
 	clWaitForEvents(1, &event);
 }

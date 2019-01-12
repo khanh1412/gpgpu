@@ -32,14 +32,14 @@ Container<Context> Context::initContexts()
 		Array<cl_device_id> all_devices(num_devices);
 		clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ALL, num_devices, all_devices.data(), nullptr);
 
-
-
 		char name[256];
 		clGetPlatformInfo(platform_id, CL_PLATFORM_NAME, 256, &(name[0]), nullptr);
 		std::cout<<"platform "<<name<<std::endl;
-		std::cout<<"number of devices "<<num_devices<<std::endl;
 
-
+		if (std::string(name).find("Clover") == 0)
+			continue;
+		if (std::string(name).find("Intel Gen OCL Driver") == 0)
+			continue;
 
 
 

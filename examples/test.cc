@@ -1,24 +1,27 @@
 #include"Context.h"
 #include<iostream>
 #include"Handler.h"
-#include<thread>
-#include<chrono>
-void func()
-{
-		*(int*) 0 = 0;
-}
 int main()
 {
+	Container<Context> all_contexts;
 	{
-		Handler::initHandler(SIGTERM);
 		Handler::initHandler(SIGSEGV);
-		Handler::initHandler(SIGINT);
-		Handler::initHandler(SIGILL);
 		Handler::initHandler(SIGABRT);
-		Handler::initHandler(SIGFPE);
 
-		func();
-
+		all_contexts = Context::initContexts();
 	}
+
+	auto& context = all_contexts[0];
+
+	
+
+
+
+
+
+
+
+
+
  	return 0;	
 }

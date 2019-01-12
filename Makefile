@@ -20,12 +20,12 @@ endif
 
 
 test: lib
-	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/test.cc ./libCL.so $(LDFLAGS)
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/test.cc objects/*.o $(LDFLAGS)
 lib: clean
 	mkdir objects
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Device.o sources/Device.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Context.o sources/Context.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
+#	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 clean:
 	rm -rf objects
 	rm -f libCL.so

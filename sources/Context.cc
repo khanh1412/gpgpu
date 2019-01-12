@@ -12,7 +12,7 @@ Context::~Context()
 {
 	clReleaseContext(context);
 }
-std::vector<Context> all_contexts;
+std::vector<Context> Context::all_contexts;
 void Context::initContexts()
 {
 	if (not all_contexts.empty()) all_contexts.clear();

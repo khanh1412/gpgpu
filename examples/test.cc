@@ -4,10 +4,13 @@
 #include<thread>
 int main()
 {
-	enable_handler();
-		int *x = 0;
-		int y = *x;
-	disable_handler();
+	{
+	auto h = Handler::initHandler();
+	int *x = 0;
+	int y = *x;
+	}
+	int *x = 0;
+	int y = *x;
  	return 0; 
 	
 }

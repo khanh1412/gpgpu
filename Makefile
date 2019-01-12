@@ -6,7 +6,7 @@ PROFILE = 1
 CC = cuda-g++
 CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
 INCLUDE = -I./include
-LDFLAGS = -lOpenCL
+LDFLAGS = -lOpenCL -lpthread
 
 ifeq (1, $(DEBUG))
 CCFLAGS += -g -DDEBUG -O0

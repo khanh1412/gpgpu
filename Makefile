@@ -21,23 +21,10 @@ endif
 
 test: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/test.cc ./libCL.so $(LDFLAGS)
-reduce_sum: lib
-	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/3_reduce_sum/main.cc ./libCL.so $(LDFLAGS)
-scalar_param: lib
-	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/2_scalar_param/main.cc ./libCL.so $(LDFLAGS)
-vecAdd: lib
-	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/0_vecAdd/main.cc ./libCL.so $(LDFLAGS)
-event: lib
-	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/1_event/main.cc ./libCL.so $(LDFLAGS)
 lib: clean
 	mkdir objects
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Buffer.o sources/Buffer.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Kernel.o sources/Kernel.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Queue.o sources/Queue.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Context.o sources/Context.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Param.o sources/Param.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Event.o sources/Event.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -fPIC -o objects/Debugger.o sources/Debugger.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Device.o sources/Device.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Context.o sources/Context.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 clean:
 	rm -rf objects

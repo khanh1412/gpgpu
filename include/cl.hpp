@@ -6,11 +6,14 @@ namespace cl
 {
 	class Singleton
 	{
-		private:
-//			Singleton(const Singleton& obj);
-//			Singleton& operator=(const Singleton& obj);
+		protected:
+			bool release;
+			Singleton(Singleton& obj): release(true)
+			{obj.release = false;}
+			Singleton& operator=(Singleton& obj)
+			{release = true; obj.release = false; return *this;}
 		public:
-			Singleton(){}
+			Singleton(): release(true) {}
 			virtual ~Singleton(){}
 	};
 	class Device: public Singleton

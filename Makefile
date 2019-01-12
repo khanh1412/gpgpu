@@ -3,7 +3,7 @@ PROFILE = 1
 
 
 
-CC = g++
+CC = cuda-g++
 CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
 INCLUDE = -I./include
 LDFLAGS = -lOpenCL

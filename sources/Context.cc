@@ -8,11 +8,19 @@ Context::Context(const std::vector<cl_device_id>& device_ids)
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Context creation failed!");
 	for (auto& device_id : device_ids)
+	{
 		all_devices.push_back(Device(device_id));
+	}
+	
 }
+#include<iostream>
 Context::~Context()
 {
-	clReleaseContext(context);
+	if (release)
+	{
+		std::cout<<"Release "<<this<<std::endl;
+		clReleaseContext(context);
+	}
 }
 std::vector<Context> Context::all_contexts;
 void Context::initContexts()
@@ -31,8 +39,6 @@ void Context::initContexts()
 		std::vector<cl_device_id> all_devices(num_devices);
 		clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ALL, num_devices, all_devices.data(), nullptr);
 
-		auto context = Context(all_devices);
-
-//		all_contexts.push_back(Context(all_devices));
+		all_contexts.push_back(Context(all_devices));
 	}
 }

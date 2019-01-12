@@ -13,9 +13,9 @@ int main()
 
 	auto& context = all_contexts[0];
 
-	
+	auto& buffer = context.createBuffer(CL_MEM_READ_WRITE, sizeof(float));	
 
-
+	auto& program = context.createProgram("./examples/add.cl", ""); 
 
 
 

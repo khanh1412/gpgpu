@@ -24,8 +24,10 @@ test: lib
 lib: clean
 	mkdir objects
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Debugger.o sources/Debugger.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Device.o sources/Device.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Context.o sources/Context.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Device.o sources/Device.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Buffer.o sources/Buffer.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Program.o sources/Program.cc
 #	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 clean:
 	rm -rf objects

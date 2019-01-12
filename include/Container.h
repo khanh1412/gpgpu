@@ -15,7 +15,7 @@ class Container
 
 	public:	
 		inline size_t size() const {return array.size();}
-		inline obj_type& operator[](size_t i) {return *array[i];}
+		inline obj_type& operator[](size_t i) const {return *array[i];}
 		inline void push_back(const obj_type* ptr) {array.push_back((obj_type*)ptr);}
 		inline void pop_back() {array.pop_back();}
 		inline void clear() {while (not empty()) pop_back();}

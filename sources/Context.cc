@@ -12,6 +12,9 @@ Context::Context(const Array<cl_device_id>& device_ids)
 }
 Context::~Context()
 {
+	devices.flush();
+	buffers.flush();
+	programs.flush();
 	clReleaseContext(context);
 }
 Container<Context> Context::initContexts()
@@ -41,13 +44,17 @@ Container<Context> Context::initContexts()
 		if (std::string(name).find("Intel Gen OCL Driver") == 0)
 			continue;
 
-
-
-
-
-
-
 		all_contexts.push_back(new Context(all_devices));
 	}
 	return all_contexts;
+}
+Buffer& Context::createBuffer(cl_mem_flags flags, size_t size, void *host_ptr)
+{
+	buffers.push_back(new Buffer(context, flags, size, host_ptr));
+	return buffers[buffers.size() - 1];
+}
+Program& Context::createProgram(const std::string& program_path, const std::string& build_flags)
+{
+	programs.push_back(new Program(context, devices, program_path, build_flags));
+	return programs[programs.size() - 1];
 }

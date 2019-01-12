@@ -1,5 +1,7 @@
 #ifndef _BUFFER_H_
 #define _BUFFER_H_
+#include<CL/cl.h>
+#include"Singleton.h"
 class Buffer: public Singleton
 {
 	public:

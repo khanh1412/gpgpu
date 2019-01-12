@@ -1,19 +1,14 @@
 #include"Context.h"
 #include<iostream>
 #include"Handler.h"
-#include<thread>
+#include<signal.h>
 int main()
 {
 	{
-	auto h = Handler::initHandler();
-	int *x = 0;
-	int y = *x;
+		auto h0 = Handler::initHandler(SIGSEGV);
+		*(int*) nullptr = 0;
 	}
-	{
-	auto h = Handler::initHandler();
-	int *x = 0;
-	int y = *x;
-	}
+		*(int*) nullptr = 0;
  	return 0; 
 	
 }

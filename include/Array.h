@@ -14,6 +14,8 @@ class Array
 
 	public:	
 		Array(size_t count = 0): count(count) {ptr = (type*)std::malloc(count*sizeof(type));}
+		Array(const Array& obj): count(obj.count) {ptr = (type*)std::malloc(count*sizeof(type)); for (size_t i=0; i<count; ++i) ptr[i] = obj.ptr[i];}
+		Array& operator=(const Array& obj) {count = obj.count; std::free(ptr); ptr = (type*)std::malloc(count*sizeof(type)); for (size_t i=0; i<count; ++i) ptr[i] = obj.ptr[i]; return *this;}
 		~Array() {clear();}
 
 	public:	

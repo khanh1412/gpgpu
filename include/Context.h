@@ -10,11 +10,10 @@ class Context: public Singleton
 	public:
 		cl_context context;
 		Container<Device> devices;
-		static Container<Context> all_contexts;
 	private:
 		Context(const Array<cl_device_id>& device_ids);
 	public:
 		~Context();
-		static void initContexts();
+		static Container<Context> initContexts();
 };
 #endif

@@ -9,11 +9,11 @@ class Array
 		type *ptr;
 
 	private:
-		inline void extend() {++count; ptr = std::realloc(ptr, count*sizeof(type));}
-		inline void reduce() {--count; ptr = std::realloc(ptr, count*sizeof(type));}
+		inline void extend() {++count; ptr = (type*)std::realloc(ptr, count*sizeof(type));}
+		inline void reduce() {--count; ptr = (type*)std::realloc(ptr, count*sizeof(type));}
 
 	public:	
-		Array(size_t count = 0): count(count) {ptr = std::malloc(count*sizeof(type));}
+		Array(size_t count = 0): count(count) {ptr = (type*)std::malloc(count*sizeof(type));}
 		~Array() {clear();}
 
 	public:	

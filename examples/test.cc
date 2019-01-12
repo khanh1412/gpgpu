@@ -15,9 +15,9 @@ int main()
 
 	auto& buffer = context.createBuffer(CL_MEM_READ_WRITE, sizeof(float));	
 
-	auto& program = context.createProgram("./examples/add.cl", ""); 
+	auto& kernel = context.createKernel("./examples/add.cl", ""); 
 
-
+	auto& queue = context.devices[0].createQueue(false);
 
 
 

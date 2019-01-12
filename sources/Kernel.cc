@@ -1,4 +1,4 @@
-#include"Program.h"
+#include"Kernel.h"
 #include<fstream>
 #include<stdexcept>
 inline std::string read_file(const std::string& filepath)
@@ -8,7 +8,7 @@ inline std::string read_file(const std::string& filepath)
 			std::istreambuf_iterator<char>());
 	return content;
 }
-Program::Program(const cl_context& context, const Container<Device>& devices, const std::string& program_path, const std::string& build_flags)
+Kernel::Kernel(const cl_context& context, const Container<Device>& devices, const std::string& program_path, const std::string& build_flags)
 {
 	auto source = read_file(program_path);
 	auto program_string = source.c_str();
@@ -52,8 +52,20 @@ Program::Program(const cl_context& context, const Container<Device>& devices, co
 			throw std::runtime_error("Build Error: " + std::string(log));
 		}
 	}
+	char kernel_name[256];
+	clGetProgramInfo(program, CL_PROGRAM_KERNEL_NAMES, 256, &(kernel_name[0]), nullptr);
+	for (size_t i=0; i<256; ++i)
+		if (kernel_name[i] == ';')
+		{
+			kernel_name[i] = '\0';
+			break;
+		}
+	kernel = clCreateKernel(program, kernel_name, &err);
+	if (CL_SUCCESS != err)
+		throw std::runtime_error("Create Kernel failed!");
 }
-Program::~Program()
+Kernel::~Kernel()
 {
 	clReleaseProgram(program);
+	clReleaseKernel(kernel);
 }

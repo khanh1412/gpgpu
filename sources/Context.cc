@@ -14,7 +14,7 @@ Context::~Context()
 {
 	devices.flush();
 	buffers.flush();
-	programs.flush();
+	kernels.flush();
 	clReleaseContext(context);
 }
 Container<Context> Context::initContexts()
@@ -53,8 +53,8 @@ Buffer& Context::createBuffer(cl_mem_flags flags, size_t size, void *host_ptr)
 	buffers.push_back(new Buffer(context, flags, size, host_ptr));
 	return buffers[buffers.size() - 1];
 }
-Program& Context::createProgram(const std::string& program_path, const std::string& build_flags)
+Kernel& Context::createKernel(const std::string& program_path, const std::string& build_flags)
 {
-	programs.push_back(new Program(context, devices, program_path, build_flags));
-	return programs[programs.size() - 1];
+	kernels.push_back(new Kernel(context, devices, program_path, build_flags));
+	return kernels[kernels.size() - 1];
 }

@@ -27,7 +27,8 @@ lib: clean
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Context.o sources/Context.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Device.o sources/Device.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Buffer.o sources/Buffer.cc
-	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Program.o sources/Program.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Kernel.o sources/Kernel.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Queue.o sources/Queue.cc
 #	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 clean:
 	rm -rf objects

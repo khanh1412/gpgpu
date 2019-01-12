@@ -11,7 +11,7 @@ static void handler_func(int signum, siginfo_t *si, void *context)
 	((ucontext_t*)context)->uc_mcontext.gregs[REG_RIP]++;
 	signal_status = signum;
 }
-static void custom_handler(int signum, void (*handler_func)(int, siginfo_t*, void*))
+static inline void custom_handler(int signum, void (*handler_func)(int, siginfo_t*, void*))
 {
         struct sigaction action;
         memset(&action, 0, sizeof(struct sigaction));
@@ -19,7 +19,7 @@ static void custom_handler(int signum, void (*handler_func)(int, siginfo_t*, voi
         action.sa_sigaction = handler_func;
         sigaction(signum, &action, NULL);	
 }
-static void default_handler(int signum)
+static inline void default_handler(int signum)
 {
         struct sigaction action;
         memset(&action, 0, sizeof(struct sigaction));
@@ -27,7 +27,7 @@ static void default_handler(int signum)
         action.sa_handler = SIG_DFL;
         sigaction(signum, &action, NULL);	
 }
-void wait_for_handler(int signum)
+static inline void wait_for_handler(int signum)
 {
 	while (signal_status != signum);
 }

@@ -14,6 +14,8 @@ class Queue: public Singleton
 		Queue(const cl_context& context, const cl_device_id& device_id, bool isdevicequeue = false);
 		~Queue();
 	public:
+		Event enqueueWriteBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
+		Event enqueueReadBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset=0);
 		Event enqueueCopyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset = 0, size_t src_offset = 0);
 		Event enqueueFillBuffer(const Buffer& buffer, void* pattern, size_t pattern_size, size_t size, size_t offset = 0);
 

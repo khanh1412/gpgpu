@@ -18,6 +18,18 @@ Queue::~Queue()
 {
 	clReleaseCommandQueue(queue);
 }
+Event Queue::enqueueWriteBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
+{
+	cl_event event;
+	clEnqueueWriteBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, &event);
+	return Event(event);
+}
+Event Queue::enqueueReadBuffer(const Buffer& buffer, void* host_ptr, size_t size, size_t offset)
+{
+	cl_event event;
+	clEnqueueReadBuffer(queue, buffer.buffer, CL_FALSE, offset, size, host_ptr, 0, nullptr, &event);
+	return Event(event);
+}
 Event Queue::enqueueCopyBuffer(const Buffer& dst, const Buffer& src, size_t size, size_t dst_offset, size_t src_offset)
 {
 	cl_event event;

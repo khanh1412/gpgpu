@@ -1,7 +1,7 @@
 #include"Context.h"
 #include<iostream>
 
-void ADD(float *c, float *a, float *b, size_t COUNT)
+void ADD(float *hc, float *ha, float *hb, size_t COUNT)
 {
 	Container<Context> all_contexts = Context::initContexts();
 
@@ -10,16 +10,13 @@ void ADD(float *c, float *a, float *b, size_t COUNT)
 	auto& queue = context.devices[0].createQueue(false);
 
 
-	auto& hc = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float), c);
-	auto& ha = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float), a);	
-	auto& hb = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float), b);	
 	auto& dc = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));	
 	auto& da = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));	
 	auto& db = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));	
 
 	
-	auto w1 = queue.enqueueCopyBuffer(da, ha, COUNT*sizeof(float));
-	auto w2 = queue.enqueueCopyBuffer(db, hb, COUNT*sizeof(float));
+	auto w1 = queue.enqueueWriteBuffer(da, ha, COUNT*sizeof(float));
+	auto w2 = queue.enqueueWriteBuffer(db, hb, COUNT*sizeof(float));
 
 	auto b1 = queue.enqueueBarrier({w1, w2});
 
@@ -27,10 +24,15 @@ void ADD(float *c, float *a, float *b, size_t COUNT)
 
 	auto b2 = queue.enqueueBarrier({k});
 
-	auto r1 = queue.enqueueCopyBuffer(hc, dc, COUNT*sizeof(float));
+	auto r1 = queue.enqueueReadBuffer(dc, hc, COUNT*sizeof(float));
 
 	r1.join();
 	queue.synchronize();
+}
+
+void print(float *a)
+{
+	std::cout<<a[0]<<" "<<a[1]<<" "<<a[2]<<std::endl;
 }
 
 int main()
@@ -40,6 +42,7 @@ int main()
 	float c[3] = {1,1,1};
 
 	ADD(c, a, b, 3);
+	print(c);
 
 	return 0;
 }

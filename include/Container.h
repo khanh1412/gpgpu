@@ -1,7 +1,15 @@
 #ifndef _CONTAINER_H_
 #define _CONTAINER_H_
 #include"Array.h"
-#include"Argument.h"
+template<class obj_type>
+class Argument
+{
+	public:
+		const obj_type *ptr;
+	public:
+		Argument(const obj_type& obj): ptr(&obj) {}
+		~Argument(){}
+};
 template<class obj_type>
 class Container
 {

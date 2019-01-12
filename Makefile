@@ -29,6 +29,7 @@ lib: clean
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Buffer.o sources/Buffer.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Kernel.o sources/Kernel.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Queue.o sources/Queue.cc
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Event.o sources/Event.cc
 #	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 clean:
 	rm -rf objects

@@ -58,3 +58,8 @@ Kernel& Context::createKernel(const std::string& program_path, const std::string
 	kernels.push_back(new Kernel(context, devices, program_path, build_flags));
 	return kernels[kernels.size() - 1];
 }
+Event& Context::createUserEvent()
+{
+	user_events.push_back(new Event(context));
+	return user_events[user_events.size() - 1];
+}

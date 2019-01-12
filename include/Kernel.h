@@ -3,8 +3,8 @@
 #include<CL/cl.h>
 #include"Singleton.h"
 #include"Container.h"
-#include"Device.h"
 #include<string>
+#include"Device.h"
 class Kernel: public Singleton
 {
 	public:

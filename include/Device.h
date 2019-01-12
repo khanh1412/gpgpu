@@ -2,7 +2,6 @@
 #define _DEVICE_H_
 #include<CL/cl.h>
 #include"Singleton.h"
-#include"Container.h"
 #include"Queue.h"
 class Device: public Singleton
 {

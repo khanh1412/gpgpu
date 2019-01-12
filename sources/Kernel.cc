@@ -9,7 +9,7 @@ inline std::string read_file(const std::string& filepath)
 			std::istreambuf_iterator<char>());
 	return content;
 }
-Kernel::Kernel(const cl_context& context, const Container<Device>& devices, const std::string& program_path, const std::string& build_flags)
+Kernel::Kernel(const cl_context& context, const Array<cl_device_id>& devices, const std::string& program_path, const std::string& build_flags)
 {
 	auto source = read_file(program_path);
 	auto program_string = source.c_str();
@@ -24,18 +24,13 @@ Kernel::Kernel(const cl_context& context, const Container<Device>& devices, cons
 	std::printf("---------------------\n");
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Create Program failed!");
-
-
-	Array<cl_device_id> device_ptr(256);
-	for (size_t i=0; i<devices.size(); ++i)
-		device_ptr[i] = devices[i].device_id;
-
-	clBuildProgram(program, devices.size(), device_ptr.data(), build_flags.c_str(), nullptr, nullptr);
+	
+	clBuildProgram(program, devices.size(), devices.data(), build_flags.c_str(), nullptr, nullptr);
 	cl_build_status status;
 
 	for (size_t i=0; i<devices.size(); ++i)
 	{
-		auto& device = device_ptr[i];
+		auto& device = devices[i];
 		std::printf("Device: 0x%lX : ", (unsigned long)device);
 		while (1)
 		{

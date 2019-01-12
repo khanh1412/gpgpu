@@ -56,7 +56,13 @@ Buffer& Context::createBuffer(cl_mem_flags flags, size_t size, void *host_ptr)
 }
 Kernel& Context::createKernel(const std::string& program_path, const std::string& build_flags)
 {
-	kernels.push_back(new Kernel(context, devices, program_path, build_flags));
+	Array<cl_device_id> device_ptr(devices.size());
+	for (size_t i=0; i<devices.size(); ++i)
+		device_ptr[i] = devices[i].device_id;
+
+
+
+	kernels.push_back(new Kernel(context, device_ptr, program_path, build_flags));
 	return kernels[kernels.size() - 1];
 }
 Event& Context::createUserEvent()

@@ -2,10 +2,10 @@
 #define _QUEUE_H_
 #include<CL/cl.h>
 #include"Singleton.h"
-#include"Buffer.h"
-#include"Container.h"
 #include"Event.h"
+#include"Buffer.h"
 #include"Kernel.h"
+#include"Container.h"
 class Queue: public Singleton
 {
 	public:

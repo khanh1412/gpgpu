@@ -2,12 +2,8 @@
 #define _CONTEXT_H_
 #include<CL/cl.h>
 #include"Singleton.h"
-#include"Array.h"
 #include"Container.h"
 #include"Device.h"
-#include"Buffer.h"
-#include"Kernel.h"
-#include"Event.h"
 class Context: public Singleton
 {
 	public:

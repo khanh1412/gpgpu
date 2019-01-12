@@ -1,8 +1,17 @@
 #include"Context.h"
 #include<iostream>
 #include"Handler.h"
+void func()
+{
+	*(int*) 0 = 0;
+}
+
 int main()
 {
- 	return 0; 
-	
+	{
+		auto h = Handler::initHandler(SIGSEGV);
+		func();
+	}
+		
+ 	return 0;	
 }

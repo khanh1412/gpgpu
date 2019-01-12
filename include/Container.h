@@ -1,6 +1,7 @@
 #ifndef _CONTAINER_H_
 #define _CONTAINER_H_
 #include"Array.h"
+#include"Argument.h"
 template<class obj_type>
 class Container
 {
@@ -12,6 +13,15 @@ class Container
 		Container(const Container<obj_type>& obj) {array = obj.array;}
 		Container& operator=(const Container<obj_type>& obj) {array = obj.array; return *this;}
 		~Container() {clear();}
+		Container(const std::initializer_list<Argument<obj_type>>& list): array(list.size())
+		{
+			size_t i=0;
+			for (auto it = list.begin(); it != list.end(); ++it)
+			{
+				array[i] = (obj_type*)it->ptr;
+				++i;
+			}
+		}
 
 	public:	
 		inline size_t size() const {return array.size();}

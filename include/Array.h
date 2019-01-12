@@ -1,6 +1,7 @@
 #ifndef _ARRAY_H_
 #define _ARRAY_H_
 #include<cstdlib>
+#include<initializer_list>
 template<class type>
 class Array
 {
@@ -17,6 +18,16 @@ class Array
 		Array(const Array& obj): count(obj.count) {ptr = (type*)std::malloc(count*sizeof(type)); for (size_t i=0; i<count; ++i) ptr[i] = obj.ptr[i];}
 		Array& operator=(const Array& obj) {count = obj.count; std::free(ptr); ptr = (type*)std::malloc(count*sizeof(type)); for (size_t i=0; i<count; ++i) ptr[i] = obj.ptr[i]; return *this;}
 		~Array() {clear();}
+		Array(const std::initializer_list<type>& list): count(list.size())
+		{
+			ptr = (type*)std::malloc(count*sizeof(type));
+			size_t i=0;
+			for (auto it = list.begin(); it != list.end(); ++it)
+			{
+				ptr[i] = *it;
+				++i;
+			}
+		}
 
 	public:	
 		inline size_t size() const {return count;}

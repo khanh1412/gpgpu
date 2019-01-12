@@ -1,6 +1,7 @@
 #include"Context.h"
 #include<stdexcept>
 #include<iostream>
+#include"Array.h"
 Context::Context(const Array<cl_device_id>& device_ids)
 {
 	cl_int err;
@@ -35,13 +36,13 @@ Container<Context> Context::initContexts()
 		Array<cl_device_id> all_devices(num_devices);
 		clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ALL, num_devices, all_devices.data(), nullptr);
 
-		char name[256];
-		clGetPlatformInfo(platform_id, CL_PLATFORM_NAME, 256, &(name[0]), nullptr);
-		std::cout<<"platform "<<name<<std::endl;
+		Array<char> name(256);
+		clGetPlatformInfo(platform_id, CL_PLATFORM_NAME, 256, name.data(), nullptr);
+		std::cout<<"platform "<<name.data()<<std::endl;
 
-		if (std::string(name).find("Clover") == 0)
+		if (std::string(name.data()).find("Clover") == 0)
 			continue;
-		if (std::string(name).find("Intel Gen OCL Driver") == 0)
+		if (std::string(name.data()).find("Intel Gen OCL Driver") == 0)
 			continue;
 
 		all_contexts.push_back(new Context(all_devices));

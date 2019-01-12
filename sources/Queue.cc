@@ -29,4 +29,8 @@ Event Queue::enqueueFillBuffer(const Buffer& buffer, void* pattern, size_t patte
 	clEnqueueFillBuffer(queue, buffer.buffer, pattern, pattern_size, offset, size, 0, nullptr, &event);
 	return Event(event);
 }
+//Event Queue::enqueueMarker(const Container<Event>& events);
+//Event Queue::enqueueBarrier(const Container<Event>& events);
+//void Queue::flush();
+//void Queue::synchronize();
 

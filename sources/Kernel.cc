@@ -1,6 +1,7 @@
 #include"Kernel.h"
 #include<fstream>
 #include<stdexcept>
+#include"Array.h"
 inline std::string read_file(const std::string& filepath)
 {
 	std::ifstream ifs(filepath);
@@ -25,11 +26,11 @@ Kernel::Kernel(const cl_context& context, const Container<Device>& devices, cons
 		throw std::runtime_error("Create Program failed!");
 
 
-	cl_device_id device_ptr[256];
+	Array<cl_device_id> device_ptr(256);
 	for (size_t i=0; i<devices.size(); ++i)
 		device_ptr[i] = devices[i].device_id;
 
-	clBuildProgram(program, devices.size(), &(device_ptr[0]), build_flags.c_str(), nullptr, nullptr);
+	clBuildProgram(program, devices.size(), device_ptr.data(), build_flags.c_str(), nullptr, nullptr);
 	cl_build_status status;
 
 	for (size_t i=0; i<devices.size(); ++i)
@@ -52,15 +53,15 @@ Kernel::Kernel(const cl_context& context, const Container<Device>& devices, cons
 			throw std::runtime_error("Build Error: " + std::string(log));
 		}
 	}
-	char kernel_name[256];
-	clGetProgramInfo(program, CL_PROGRAM_KERNEL_NAMES, 256, &(kernel_name[0]), nullptr);
+	Array<char> kernel_name(256);
+	clGetProgramInfo(program, CL_PROGRAM_KERNEL_NAMES, 256, kernel_name.data(), nullptr);
 	for (size_t i=0; i<256; ++i)
 		if (kernel_name[i] == ';')
 		{
 			kernel_name[i] = '\0';
 			break;
 		}
-	kernel = clCreateKernel(program, kernel_name, &err);
+	kernel = clCreateKernel(program, kernel_name.data(), &err);
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Create Kernel failed!");
 }

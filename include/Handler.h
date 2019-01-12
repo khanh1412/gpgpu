@@ -3,22 +3,25 @@
 #include<signal.h>
 #include<stdio.h>
 #include<string.h>
-static void ignore_handler(int signum, siginfo_t *si, void *context)
+static void handler_func(int signum, siginfo_t *si, void *context)
 {
 	((ucontext_t*)context)->uc_mcontext.gregs[REG_RIP]++;
+	fprintf(stderr, "ERROR CODE: 0x%X\n", signum);
 }
-static void exit_handler(int signum, siginfo_t *si, void *context)
-{
-	((ucontext_t*)context)->uc_mcontext.gregs[REG_RIP]++;
-	fprintf(stderr, "ERROR CODE: %d\n", signum);
-	exit(1);
-}
-static void set_handler(int signum, void (*handler_func)(int, siginfo_t*, void*))
+static void custom_handler(int signum, void (*handler_func)(int, siginfo_t*, void*))
 {
         struct sigaction action;
         memset(&action, 0, sizeof(struct sigaction));
         action.sa_flags = SA_SIGINFO;
         action.sa_sigaction = handler_func;
+        sigaction(signum, &action, NULL);	
+}
+static void default_handler(int signum)
+{
+        struct sigaction action;
+        memset(&action, 0, sizeof(struct sigaction));
+        action.sa_flags = SA_SIGINFO;
+        action.sa_handler = SIG_DFL;
         sigaction(signum, &action, NULL);	
 }
 #include<unordered_map>
@@ -29,7 +32,7 @@ class Handler
 		static std::unordered_map<int, Handler*> pool;
 		Handler(int signum) : signum(signum)
 		{
-			set_handler(signum, ignore_handler);
+			custom_handler(signum, handler_func);
 			pool.emplace(signum, this);
 		}
 	public:
@@ -41,7 +44,7 @@ class Handler
 		}
 		~Handler()
 		{
-			set_handler(signum, exit_handler);
+			default_handler(signum);
 			pool.erase(signum);
 		}
 };

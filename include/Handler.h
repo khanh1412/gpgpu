@@ -4,7 +4,7 @@
 #include<stdio.h>
 #include<string.h>
 
-volatile int signal_status = 0;
+volatile sig_atomic_t signal_status = 0;
 
 static void handler_func(int signum, siginfo_t *si, void *context)
 {

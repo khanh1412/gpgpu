@@ -4,13 +4,7 @@
 
 int main()
 {
-	Container<Context> all_contexts;
-	{
-		Handler::initHandler(SIGSEGV);
-		Handler::initHandler(SIGABRT);
-
-		all_contexts = Context::initContexts();
-	}
+	Container<Context> all_contexts = Context::initContexts();
 
 	auto& context = all_contexts[0];
 

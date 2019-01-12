@@ -2,6 +2,7 @@
 #define _KERNEL_H_
 #include<CL/cl.h>
 #include<string>
+#include"Singleton.h"
 #include"Array.h"
 class Kernel: public Singleton
 {

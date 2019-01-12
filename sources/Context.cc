@@ -29,6 +29,6 @@ void Context::initContexts()
 		std::vector<cl_device_id> all_devices(num_devices);
 		clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ALL, num_devices, all_devices.data(), nullptr);
 
-//		all_contexts.push_back(Context(all_devices));
+		all_contexts.push_back(Context(all_devices));
 	}
 }

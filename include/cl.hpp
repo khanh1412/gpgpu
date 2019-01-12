@@ -7,8 +7,8 @@ namespace cl
 	class Singleton
 	{
 		private:
-			Singleton(const Singleton& obj);
-			Singleton& operator=(const Singleton& obj);
+//			Singleton(const Singleton& obj);
+//			Singleton& operator=(const Singleton& obj);
 		public:
 			Singleton(){}
 			virtual ~Singleton(){}

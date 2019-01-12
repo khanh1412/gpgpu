@@ -7,6 +7,8 @@ Context::Context(const std::vector<cl_device_id>& device_ids)
 	context = clCreateContext(nullptr, device_ids.size(), device_ids.data(), nullptr, nullptr, &err);
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Context creation failed!");
+	for (auto& device_id : device_ids)
+		all_devices.push_back(Device(device_id));
 }
 Context::~Context()
 {
@@ -29,6 +31,8 @@ void Context::initContexts()
 		std::vector<cl_device_id> all_devices(num_devices);
 		clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ALL, num_devices, all_devices.data(), nullptr);
 
-		all_contexts.push_back(Context(all_devices));
+		auto context = Context(all_devices);
+
+//		all_contexts.push_back(Context(all_devices));
 	}
 }

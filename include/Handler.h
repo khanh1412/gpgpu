@@ -3,10 +3,14 @@
 #include<signal.h>
 #include<stdio.h>
 #include<string.h>
+
+volatile int signal_status = 0;
+
 static void handler_func(int signum, siginfo_t *si, void *context)
 {
 	((ucontext_t*)context)->uc_mcontext.gregs[REG_RIP]++;
 	fprintf(stderr, "ERROR CODE: 0x%X\n", signum);
+	signal_status = signum;
 }
 static void custom_handler(int signum, void (*handler_func)(int, siginfo_t*, void*))
 {
@@ -23,6 +27,10 @@ static void default_handler(int signum)
         action.sa_flags = SA_SIGINFO;
         action.sa_handler = SIG_DFL;
         sigaction(signum, &action, NULL);	
+}
+void wait_for_handler(int signum)
+{
+	while (signal_status != signum);
 }
 #include<unordered_map>
 class Handler
@@ -41,6 +49,10 @@ class Handler
 			if (pool.end() == pool.find(signum))
 				new Handler(signum);
 			return *pool.find(signum)->second;
+		}
+		void wait()
+		{
+			wait_for_handler(signum);
 		}
 		~Handler()
 		{

@@ -27,10 +27,6 @@ static inline void default_handler(int signum)
         action.sa_handler = SIG_DFL;
         sigaction(signum, &action, NULL);	
 }
-static inline void wait_for_handler(int signum)
-{
-	while (signal_status != signum);
-}
 #include<unordered_map>
 class Handler
 {
@@ -48,10 +44,6 @@ class Handler
 			if (pool.end() == pool.find(signum))
 				new Handler(signum);
 			return *pool.find(signum)->second;
-		}
-		void wait()
-		{
-			wait_for_handler(signum);
 		}
 		~Handler()
 		{

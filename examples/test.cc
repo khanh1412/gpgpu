@@ -11,10 +11,10 @@ void func()
 int main()
 {
 	{
+		auto h0 = Handler::initHandler(SIGABRT);
 		auto h1 = Handler::initHandler(SIGSEGV);
-		std::thread t(func); t.detach();
-		h1.wait();
-		std::cout<<"Done!"<<std::endl;
+		std::thread(func).detach();
+		while (true) std::cout<<signal_status<<std::endl;
 	}
  	return 0;	
 }

@@ -1,13 +1,24 @@
 #include"Context.h"
 #include<iostream>
 #include"Handler.h"
+#include<thread>
+#include<chrono>
+void func()
+{
+		*(int*) 0 = 0;
+}
 int main()
 {
 	{
-		auto h1 = Handler::initHandler(SIGABRT);
-		auto h2 = Handler::initHandler(SIGSEGV);
+		Handler::initHandler(SIGTERM);
+		Handler::initHandler(SIGSEGV);
+		Handler::initHandler(SIGINT);
+		Handler::initHandler(SIGILL);
+		Handler::initHandler(SIGABRT);
+		Handler::initHandler(SIGFPE);
 
-		*(int*) 0 = 0;
+		func();
+
 	}
  	return 0;	
 }

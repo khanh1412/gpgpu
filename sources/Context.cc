@@ -16,6 +16,7 @@ Context::~Context()
 	devices.flush();
 	buffers.flush();
 	kernels.flush();
+	user_events.flush();
 	clReleaseContext(context);
 }
 Container<Context> Context::initContexts()

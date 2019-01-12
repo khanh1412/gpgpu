@@ -15,16 +15,16 @@ void ADD(float *hc, float *ha, float *hb, size_t COUNT)
 	auto& db = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));	
 
 	
-	auto w1 = queue.enqueueWriteBuffer(da, ha, COUNT*sizeof(float));
-	auto w2 = queue.enqueueWriteBuffer(db, hb, COUNT*sizeof(float));
+	auto& w1 = queue.enqueueWriteBuffer(da, ha, COUNT*sizeof(float));
+	auto& w2 = queue.enqueueWriteBuffer(db, hb, COUNT*sizeof(float));
 
-	auto b1 = queue.enqueueBarrier({w1, w2});
+	auto& b1 = queue.enqueueBarrier({w1, w2});
 
-	auto k = queue.enqueueNDRangeKernel(kernel, {dc, da, db}, {COUNT, 1, 1}, {1, 1, 1});
+	auto& k = queue.enqueueNDRangeKernel(kernel, {dc, da, db}, {COUNT, 1, 1}, {1, 1, 1});
 
-	auto b2 = queue.enqueueBarrier({k});
+	auto& b2 = queue.enqueueBarrier({k});
 
-	auto r1 = queue.enqueueReadBuffer(dc, hc, COUNT*sizeof(float));
+	auto& r1 = queue.enqueueReadBuffer(dc, hc, COUNT*sizeof(float));
 
 	r1.join();
 	queue.synchronize();

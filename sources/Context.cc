@@ -8,7 +8,7 @@ Context::Context(const Array<cl_device_id>& device_ids)
 	if (CL_SUCCESS != err)
 		throw std::runtime_error("Context creation failed!");
 	for (size_t i=0; i<device_ids.size(); ++i)
-		devices.push_back(new Device(device_ids[i]));
+		devices.push_back(new Device(device_ids[i], context));
 }
 Context::~Context()
 {

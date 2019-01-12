@@ -6,8 +6,9 @@ class Device: public Singleton
 {
 	public:
 		cl_device_id device_id;
+		cl_context context;
 	public:
-		Device(const cl_device_id& device_id);
+		Device(const cl_device_id& device_id, const cl_context& context);
 		~Device();
 };
 #endif

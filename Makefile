@@ -23,6 +23,7 @@ test: lib
 	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/test.cc objects/*.o $(LDFLAGS)
 lib: clean
 	mkdir objects
+	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Debugger.o sources/Debugger.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Device.o sources/Device.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Context.o sources/Context.cc
 #	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o

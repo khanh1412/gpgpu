@@ -4,7 +4,7 @@ CL C++ simple wrapper
 
 Supports almost every OpenCL features, except
 
-1. Multiple devices (same platform)
+1. ~~Multiple devices (same platform)~~
 
 2. Callback functions (it can be easily solved by a host thread waiting for some specific events)
 
@@ -23,20 +23,17 @@ Supports almost every OpenCL features, except
 9. Shared Virtual Memory (SVM)
 
 
-# Tested Machine (Intel core i7 5500U, Intel HD Graphics 5500)
+# Tested Machine (Intel core i3 6100, GTX 745)
 
-- GPU : Intel HD Graphics 5500
+- GPU : GTX 745
 
 - Host machine : Fedora 29
 
-- Driver : Intel Gen OCL Driver
+- Driver : CUDA
 
-- Platform ver: 2.0
+- Platform ver: 1.2 (some of 2.0 features)
 
 - Device ver: 1.2
 
 # TO DO
 
-- rename functions
-
-- add in "Context of multiple devices"

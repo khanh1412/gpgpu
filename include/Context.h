@@ -16,7 +16,8 @@ class Context: public Singleton
 		Context(const Array<cl_device_id>& device_ids);
 	public:
 		~Context();
-		static Container<Context> initContexts();
+		static Container<Context> all_contexts;
+		static Container<Context>& initContexts();
 	public:
 		Buffer& createBuffer(cl_mem_flags flags, size_t size, void *host_ptr = nullptr);
 		Kernel& createKernel(const std::string& program_path, const std::string& build_flags);

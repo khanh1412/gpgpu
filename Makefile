@@ -20,7 +20,11 @@ endif
 
 
 test: lib
-	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/test.cc objects/*.o $(LDFLAGS)
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/test.cc ./libCL.so $(LDFLAGS)
+vecadd: lib
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/0_vecadd/main.cc ./libCL.so $(LDFLAGS)
+event: lib
+	$(CC) $(CCFLAGS) $(INCLUDE) -o run examples/1_event/main.cc ./libCL.so $(LDFLAGS)
 lib: clean
 	mkdir objects
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Debugger.o sources/Debugger.cc
@@ -30,7 +34,7 @@ lib: clean
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Kernel.o sources/Kernel.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Queue.o sources/Queue.cc
 	$(CC) $(CCFLAGS) $(INCLUDE) -c -o objects/Event.o sources/Event.cc
-#	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
+	$(CC) $(CCFLAGS) $(INCLUDE) -shared -o libCL.so objects/*.o
 clean:
 	rm -rf objects
 	rm -f libCL.so

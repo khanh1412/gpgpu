@@ -19,14 +19,15 @@ Context::~Context()
 	user_events.flush();
 	clReleaseContext(context);
 }
-Container<Context> Context::initContexts()
+Container<Context> Context::all_contexts;
+Container<Context>& Context::initContexts()
 {
+	if (all_contexts.size() != 0) all_contexts.flush();
+
 	cl_uint num_platforms;
 	clGetPlatformIDs(0, nullptr, &num_platforms);
 	Array<cl_platform_id> all_platforms(num_platforms);
 	clGetPlatformIDs(num_platforms, all_platforms.data(), nullptr);
-
-	Container<Context> all_contexts;
 
 	for (size_t i=0; i<num_platforms; ++i)
 	{

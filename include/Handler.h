@@ -9,7 +9,6 @@ volatile int signal_status = 0;
 static void handler_func(int signum, siginfo_t *si, void *context)
 {
 	((ucontext_t*)context)->uc_mcontext.gregs[REG_RIP]++;
-	fprintf(stderr, "ERROR CODE: 0x%X\n", signum);
 	signal_status = signum;
 }
 static void custom_handler(int signum, void (*handler_func)(int, siginfo_t*, void*))

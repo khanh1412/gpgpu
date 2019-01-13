@@ -47,8 +47,10 @@ Event& Queue::enqueueFillBuffer(const Buffer& buffer, void* pattern, size_t patt
 	queue_events.push_back(new Event(event));
 	return queue_events[queue_events.size() - 1];
 }
-Event& Queue::enqueueNDRangeKernel(const Kernel& kernel, const Container<Buffer>& parameters, const Array<size_t>& global_dim, const Array<size_t>& local_dim)
+Event& Queue::enqueueNDRangeKernel(const Kernel& kernel, const Container<Buffer>& parameters, Array<size_t> global_dim, Array<size_t> local_dim)
 {
+	while (local_dim.size() < global_dim.size()) local_dim.push_back(1);
+
 	cl_event event;
 	for (cl_uint i=0; i < parameters.size(); i++)
 		clSetKernelArg(kernel.kernel, i, sizeof(cl_mem), &parameters[i].buffer);

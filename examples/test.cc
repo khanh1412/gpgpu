@@ -14,20 +14,8 @@ int main()
 		std::cout<<"error catched"<<std::endl;
 		std::cout<<err.what()<<std::endl;
 	}
-	try
-	{
-		auto all_devices = cl::device::get_all_devices();
-		std::cout<<"Number of devices: "<<all_devices.size()<<std::endl;
-		for (size_t j=0; j<all_devices.size(); ++j)
-		{
-			auto device = all_devices[j];
-			std::cout<<"\tDevice name: "<<device.name()<<std::endl;
-			std::cout<<"\tDevice version: "<<device.version()<<std::endl;
-		}
-	}
-	catch (cl::error& err)
-	{
-		std::cout<<"catched error: "<<err.what()<<std::endl;
-	}
+	auto all_platforms = cl::platform::get_all_platforms();
+	auto all_devices = cl::device::get_all_devices(all_platforms[0]);
+	std::cout<<all_devices[0].name()<<std::endl;
 	return 0;
 }

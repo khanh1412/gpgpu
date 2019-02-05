@@ -14,8 +14,11 @@ extern "C" void CL_CALLBACK build_callback(cl_program program, void *user_data)
 }
 namespace cl {
 class program;
+class call;
 class kernel: public singleton
 {
+	private:
+		friend class call;
 	private:
 		cl_kernel handler;
 		kernel(const cl_kernel& kernel_id);

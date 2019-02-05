@@ -5,10 +5,12 @@
 #include"CL/opencl/error.h"
 namespace cl {
 class param;
+class call;
 class event
 {
 	private:
 		friend class param;
+		friend class call;
 	private:
 		cl_event handler;
 	private:

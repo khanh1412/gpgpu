@@ -6,10 +6,12 @@
 #include"CL/opencl/context.h"
 namespace cl {
 class param;
+class call;
 class buffer: public singleton
 {
 	private:
 		friend class param;
+		friend class call;
 	private:
 		cl_mem handler;
 		context *target_context;

@@ -11,10 +11,11 @@ class error: public std::exception
 		int line;
 		std::string file;
 		std::string errorname();
+		std::string message;
 	public:
 		error(const cl_int& error_code, int line, const std::string& file);
 		~error() {}
-		std::string what();
+		 virtual const char *what() const throw();
 };
 std::string error::errorname()
 {
@@ -88,14 +89,16 @@ std::string error::errorname()
 }
 error::error(const cl_int& error_code, int line, const std::string& file)
 	: error_code(error_code), line(line), file(file)
-{}
-std::string error::what()
 {
-	return
+	message = 
 	std::string("ERROR CODE: ") + std::to_string(error_code) + std::string("\n") +
 	std::string("ERROR NAME: ") + errorname() + std::string("\n") +
 	std::string("LINE: ") + std::to_string(line) + std::string("\n") +
 	std::string("FILE: ") + file;
+}
+const char* error::what() const throw()
+{
+	return message.c_str();
 }
 }
 #endif

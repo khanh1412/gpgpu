@@ -28,7 +28,7 @@ Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Con
             
             - Compile Kernel and Load into Devices
 
-`Buffer` : objects holding the allocated memory in GPU's global memory
+`Buffer` : objects holding the shared memory across devices
 
 `Queue` : similar to CUDA stream, Queue is a list of calls from CPU to GPU
 

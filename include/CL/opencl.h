@@ -12,5 +12,4 @@
 #include"CL/opencl/buffer.h"
 #include"CL/opencl/kernel.h"
 #include"CL/opencl/event.h"
-#include"CL/opencl/call.h"
 #endif

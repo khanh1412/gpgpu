@@ -1,77 +1,67 @@
+#include"CL/opencl.h"
 #include<iostream>
-#include<omp.h>
-#include<vector>
-#include"opencl.h"
-
-double OMP_CALL(float *res, float a, float *x, float *y, uint64_t COUNT)
+#include<fstream>
+inline std::string read_file(const std::string& filepath)
 {
-	double t1 = omp_get_wtime();
-	#pragma omp parallel
+	std::ifstream ifs(filepath);
+	std::string content((std::istreambuf_iterator<char>(ifs)),
+		std::istreambuf_iterator<char>());
+	return content;
+}
+double cl_call(float *z, float a, float *x, float *y, size_t COUNT)
+{
+	auto all_platforms = cl::platform::get_all_platforms();
+	auto all_devices = cl::device::get_all_devices(all_platforms[0]);
+	auto context = cl::context({all_devices[0]});
+	double kernel_time;
 	{
-		#pragma omp for nowait
-		for (uint64_t i=0; i<COUNT; ++i)
-			res[i] = a*x[i] + y[i];
-	}
-	double t2 = omp_get_wtime();
-	return 1e9*(t2-t1);
-}
+	auto queue = cl::queue(all_devices[0], context);
+	auto kernel = cl::kernel(context, {read_file("examples/0_axpy/axpy.cl.c")}, "-cl-std=CL2.0", all_devices[0]);
 
-double CL_CALL(float *res, float a, float *x, float *y, uint64_t COUNT)
-{
-	auto& context = Context::initContext("CUDA");
-//	auto& context = Context::initContext("Intel");
-	
-	auto& device = context.all_devices[0];
-	auto& kernel = context.createKernelFromFile("./examples/0_axpy/axpy.cl.c", "");
-	auto& queue = device.createQueue();
+	cl::array<size_t> global_dim({COUNT});
+	cl::array<size_t> local_dim({1});
 
-	Array<size_t> local_dim({1});
-	Array<size_t> global_dim({COUNT});
+	auto b_x = cl::buffer(context, CL_MEM_READ_ONLY, COUNT*sizeof(float));
+	auto b_y = cl::buffer(context, CL_MEM_READ_ONLY, COUNT*sizeof(float));
+	auto b_z = cl::buffer(context, CL_MEM_WRITE_ONLY, COUNT*sizeof(float));
 
+	auto e1 = queue.enqueueWriteBuffer(b_x, x, COUNT*sizeof(float));
+	auto e2 = queue.enqueueWriteBuffer(b_y, y, COUNT*sizeof(float));
 
-	auto& d_res = context.createBuffer(CL_MEM_WRITE_ONLY, COUNT*sizeof(float));
-	auto& d_x = context.createBuffer(CL_MEM_READ_ONLY, COUNT*sizeof(float));
-	auto& d_y = context.createBuffer(CL_MEM_READ_ONLY, COUNT*sizeof(float));
-
-	auto& w_x = queue.enqueueWriteBuffer(d_x, x, COUNT*sizeof(float));
-	auto& w_y = queue.enqueueWriteBuffer(d_y, y, COUNT*sizeof(float));
-	queue.enqueueBarrier({w_x, w_y});
-	auto& k = queue.enqueueNDRangeKernel(kernel, {d_res, a, d_x, d_y, COUNT}, global_dim, local_dim);
-	queue.enqueueBarrier({k});
-	auto& r1 = queue.enqueueReadBuffer(d_res, res, COUNT*sizeof(float));
-	r1.join();
+	queue.enqueueBarrier({e1, e2});
+	auto ek = queue.enqueueNDRangeKernel(kernel, {b_z, a, b_x, b_y}, global_dim, local_dim);
+	queue.enqueueBarrier({ek});
+	auto e3 = queue.enqueueReadBuffer(b_z, z, COUNT*sizeof(float));
 	queue.join();
-	double t = k.profileEnd() - k.profileStart();
-	Context::flushContext("CUDA");
-	return t;
+	kernel_time = ek.profileEnd() - ek.profileStart();
+	}
+	return kernel_time;
 }
-
-void print_array(float *a)
-{
-	for (uint64_t i=0; i<10; i++)
-		std::cout<<a[i]<<" ";
-	std::cout<<" ..."<<std::endl;
-}
-
+const float tol = 0.001;
 int main(int argc, char **argv)
 {
-	const uint64_t COUNT = (argc < 2) ? 2 : std::stoi(argv[1]);
+	const size_t COUNT = (argc < 2) ? 2 : std::stoi(argv[1]);
+	cl::array<float> x(COUNT);
+	cl::array<float> y(COUNT);
+	cl::array<float> z(COUNT);
 
-	std::vector<float> x(COUNT);
-	std::vector<float> y(COUNT);
-	std::vector<float> res(COUNT);
-	float a = 1.21;
-
-	double cl_time = CL_CALL(res.data(), a, x.data(), y.data(), COUNT);
-	std::cout<<"time: "<<cl_time/1e6<<" millisec"<<std::endl;
-	std::cout<<"performance: "<<(2*COUNT)/cl_time<<" GFLOPS"<<std::endl;
-
-	double omp_time = OMP_CALL(res.data(), a, x.data(), y.data(), COUNT);
-	std::cout<<"time: "<<omp_time/1e6<<" millisec"<<std::endl;
-	std::cout<<"performance: "<<(2*COUNT)/omp_time<<" GFLOPS"<<std::endl;
+	for (size_t i=0; i<COUNT; ++i)
+	{
+		x[i] = i;
+		y[i] = COUNT-i;
+		z[i] = 0;
+	}
+	std::cout<<"time: "<<cl_call(z.data(), 1, x.data(), y.data(), COUNT)<<std::endl;
+	size_t fail = 0;
+	for (size_t i=0; i<COUNT; ++i)
+	{
+		float diff = z[i] - (x[i] + y[i]);
+		if (diff*diff > tol*tol)
+			fail++;
+	}
+	std::cout<<"fail: "<<fail<<"/"<<COUNT<<std::endl;
 
 
 
 	return 0;
 }
-

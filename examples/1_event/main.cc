@@ -1,40 +1,39 @@
-#include"opencl.h"
+#include"CL/opencl.h"
 #include<iostream>
 const uint64_t COUNT = 100;
-auto& context = Context::initContext("NVIDIA CUDA");
+auto all_platforms = cl::platform::get_all_platforms();
+auto all_devices = cl::device::get_all_devices(all_platforms[0]);
+auto context = cl::context({all_devices[0]});
 void COPY(float *a0, float *a1, uint64_t COUNT)
 {
+	auto b = cl::buffer(context, CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
-	auto& d = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
-
-	auto& q1 = context.all_devices[0].createQueue();
-	auto& q0 = context.all_devices[0].createQueue();
-
+	auto q0 = cl::queue(all_devices[0], context);
+	auto q1 = cl::queue(all_devices[0], context);
 	{
-		auto& control = context.createUserEvent();
-		q1.enqueueBarrier({control});
-		auto& read = q1.enqueueReadBuffer(d, a1, COUNT*sizeof(float));
-		auto& write = q0.enqueueWriteBuffer(d, a0, COUNT*sizeof(float));
+		auto controller = cl::event(context);
+		q1.enqueueBarrier({controller});
+		auto read = q1.enqueueReadBuffer(b, a1, COUNT*sizeof(float));
+		auto write = q0.enqueueWriteBuffer(b, a0, COUNT*sizeof(float));
 		write.join();
-		control.setCompleted();
-
-		q1.join();
+		controller.setComplete();
 		q0.join();
+		q1.join();
 	}
 }
 void COPYwithoutEvents(float *a0, float *a1, uint64_t COUNT)
 {
-	auto& d = context.createBuffer(CL_MEM_READ_WRITE, COUNT*sizeof(float));
+	auto b = cl::buffer(context, CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
-	auto& q1 = context.all_devices[0].createQueue();
-	auto& q0 = context.all_devices[0].createQueue();
-
-	auto& read = q1.enqueueReadBuffer(d, a1, COUNT*sizeof(float));
-	auto& write = q0.enqueueWriteBuffer(d, a0, COUNT*sizeof(float));
-	
-
-	q1.join();
-	q0.join();
+	auto q0 = cl::queue(all_devices[0], context);
+	auto q1 = cl::queue(all_devices[0], context);
+	{
+		auto read = q1.enqueueReadBuffer(b, a1, COUNT*sizeof(float));
+		auto write = q0.enqueueWriteBuffer(b, a0, COUNT*sizeof(float));
+		write.join();
+		q0.join();
+		q1.join();
+	}
 }
 void print_array(float *a)
 {

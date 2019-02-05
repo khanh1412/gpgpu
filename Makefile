@@ -14,5 +14,9 @@ endif
 
 test: 
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/test.cc 
+axpy: 
+	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/0_axpy/main.cc
+event: 
+	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/1_event/main.cc
 clean:
 	rm -f run

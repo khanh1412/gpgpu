@@ -17,3 +17,4 @@ class alarm: public singleton
 		{std::unique_lock<std::mutex> signal_lock(signal_m);signal_v.wait(signal_lock);}
 };
 }
+#endif

@@ -23,11 +23,6 @@ class context: public singleton
 	public:
 		context(const container<device>& target);
 		~context();
-	public:
-		inline buffer createBuffer(cl_mem_flags flags, size_t size, void *host_ptr = nullptr);
-		inline queue createQueue();
-		inline kernel createKernel(const container<std::string>& source, const std::string& options);
-		inline event createUserEvent();
 };
 #include"CL/opencl/platform.h"
 #include"CL/opencl/device.h"
@@ -43,15 +38,5 @@ context::~context()
 {
 	clReleaseContext(handler);
 }
-/*
-inline buffer context::createBuffer(cl_mem_flags flags, size_t size, void *host_ptr)
-{return buffer(*this, flags, size, host_ptr);}
-inline queue context::createQueue()
-{return queue(*this, default_device);}
-inline kernel context::createKernel(const container<std::string>& source, const std::string& options)
-{return kernel(*this, default_device, source, options);}
-inline event context::createUserEvent()
-{return event(*this);}
-*/
 }
 #endif

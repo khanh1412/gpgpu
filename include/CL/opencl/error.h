@@ -100,5 +100,11 @@ const char* error::what() const throw()
 {
 	return message.c_str();
 }
+void assert(const cl_int err, int line, const std::string& file)
+{
+	if (err != CL_SUCCESS)
+		throw error(err, line, file);
 }
+}
+#define cl_assert(x) cl::assert(x, __LINE__, __FILE__)
 #endif

@@ -1,8 +1,11 @@
 #ifndef _CONTEXT_H_
 #define _CONTEXT_H_
+#include<CL/cl.h>
 #include"CL/utils/container.h"
 #include"CL/utils/singleton.h"
 #include"CL/opencl/error.h"
+#include"CL/opencl/platform.h"
+#include"CL/opencl/device.h"
 namespace cl {
 class queue;
 class buffer;
@@ -24,8 +27,6 @@ class context: public singleton
 		context(const container<device>& target);
 		~context();
 };
-#include"CL/opencl/platform.h"
-#include"CL/opencl/device.h"
 context::context(const container<device>& target)
 	: default_device(target[0])
 {

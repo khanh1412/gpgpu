@@ -1,5 +1,6 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
+#include<CL/cl.h>
 #include"CL/utils/field.h"
 #include"CL/utils/container.h"
 #include"CL/opencl/error.h"

@@ -11,5 +11,5 @@ void assert(int line, const std::string& file, cl_int err)
 		throw std::runtime_error(std::string("ERROR CODE: ") + std::to_string(err) + std::string("\nline: ") + std::to_string(line) + std::string("\nfile: ") + file);
 }
 }
-#define assert(x) cl::assert(__LINE__, __FILE__, x)
+#define cl_assert(x) cl::assert(__LINE__, __FILE__, x)
 #endif

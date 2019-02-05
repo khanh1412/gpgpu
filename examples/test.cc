@@ -14,5 +14,6 @@ int main()
 		std::cout<<"error catched"<<std::endl;
 		std::cout<<err.what()<<std::endl;
 	}
+	auto all_platforms = cl::platform::get_all_platforms();
 	return 0;
 }

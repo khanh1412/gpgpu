@@ -4,7 +4,15 @@ int main()
 {
 	cl::array<float> arr1({1,2,3,4});
 	cl::container<float> arr2({1,2,3,4});
-	cl_assert(CL_SUCCESS);
-	cl_assert(CL_INVALID_VALUE);
+	try
+	{
+		cl_assert(CL_SUCCESS);
+		cl_assert(CL_INVALID_VALUE);
+	}
+	catch (std::exception& err)
+	{
+		std::cout<<"error catched"<<std::endl;
+		std::cout<<err.what()<<std::endl;
+	}
 	return 0;
 }

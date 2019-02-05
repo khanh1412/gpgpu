@@ -2,3 +2,4 @@
 #include"CL/utils/container.h"
 #include"CL/utils/singleton.h"
 #include"CL/opencl/error.h"
+#include"CL/opencl/platform.h"

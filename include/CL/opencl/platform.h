@@ -3,7 +3,7 @@
 #include"CL/utils/singleton.h"
 #include"CL/utils/container.h"
 #include<CL/cl.h>
-#include"CL/opencl/assert.h"
+#include"CL/opencl/error.h"
 namespace cl {
 class platform: public singleton
 {

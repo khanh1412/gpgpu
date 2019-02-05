@@ -13,9 +13,10 @@ class error: public std::exception
 		std::string errorname();
 		std::string message;
 	public:
+		static void assert(const cl_int err, int line, const std::string& file);
 		error(const cl_int& error_code, int line, const std::string& file);
 		~error() {}
-		 virtual const char *what() const throw();
+		virtual const char *what() const throw();
 };
 std::string error::errorname()
 {
@@ -100,11 +101,11 @@ const char* error::what() const throw()
 {
 	return message.c_str();
 }
-void assert(const cl_int err, int line, const std::string& file)
+void error::assert(const cl_int err, int line, const std::string& file)
 {
 	if (err != CL_SUCCESS)
 		throw error(err, line, file);
 }
 }
-#define cl_assert(x) cl::assert(x, __LINE__, __FILE__)
+#define cl_assert(x) cl::error::assert(x, __LINE__, __FILE__)
 #endif

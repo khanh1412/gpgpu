@@ -1,0 +1,45 @@
+---------------------
+PROGRAM: 291 bytes
+---------------------
+typedef ulong uint64_t;
+/* global_size(0) = ((int)sqrt(modulo) - 1)/2 */
+__kernel void factorization(__global uint64_t *factor, const uint64_t modulo)
+{
+	uint64_t p = 3 + 2*get_global_id(0);
+	if (modulo % p == 0) factor[0] = p;
+}
+
+---------------------
+Device: 0x52A340 : Kernel build ...Done
+---------------------
+All kernels name: factorization
+---------------------
+Kernel name: factorization
+---------------------
+bit length: 36
+public  key: 
+	value : 31
+	modulo: 48546812591
+
+private key: 
+	value : 34452244975
+	modulo: 48546812591
+
+
+brute-force loop: 110166
+cracked key: 
+	value : 34452244975
+	modulo: 48546812591
+
+OCL Time: 0.00241397 sec
+cracked key: 
+	value : 34452244975
+	modulo: 48546812591
+
+OMP Time: 63.1397 sec
+cracked key: 
+	value : 34452244975
+	modulo: 48546812591
+
+Single thread Time: 180.206 sec
+

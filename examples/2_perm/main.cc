@@ -1,0 +1,41 @@
+#include<cstdint>
+#include<string>
+#include<iostream>
+#include"opencl.h"
+int64_t fac(int8_t COUNT)
+{
+	int64_t perms = 1;
+	for (int8_t i=2; i<=COUNT; i++) perms *= i;
+	return perms;
+}
+double CL_CALL(int8_t COUNT)
+{
+	uint64_t num_threads = fac(COUNT);
+	auto& context = Context::initContext("CUDA");
+//	auto& context = Context::initContext("Portable");
+	auto& device = context.all_devices[0];
+	auto& queue = device.createQueue();
+	auto& kernel = context.createKernelFromFile("./examples/2_perm/perm.cl.c", "");
+	
+	auto& k = queue.enqueueNDRangeKernel(kernel, {COUNT, (int64_t)0, Local(COUNT*sizeof(int8_t)), Local(COUNT*sizeof(int8_t))}, {num_threads});
+	queue.enqueueBarrier({k});
+	queue.join();
+	double t = k.profileEnd() - k.profileStart();
+	
+	Context::flushAllContexts();
+	return t;
+}
+int main(int argc, char *argv[])
+{
+	int8_t COUNT = (argc < 2) ? 2 : std::stoi(argv[1]);
+	int64_t num_threads = fac(COUNT);
+
+	double cl_time = CL_CALL(COUNT);
+	std::cout<<"COUNT  : "<<(int)COUNT<<std::endl;
+	std::cout<<"number of permutations: "<<num_threads<<std::endl;
+	std::cout<<"avg permutation time: "<<cl_time/num_threads<<" nanosec"<<std::endl;
+	
+	return 0;
+}
+
+

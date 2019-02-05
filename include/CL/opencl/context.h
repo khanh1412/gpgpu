@@ -19,13 +19,19 @@ class context: public singleton
 		friend class event;
 	private:
 		cl_context handler;
+		device default_device;
 	public:
 		context(const container<device>& target);
 		~context();
+	public:
+//		inline buffer createBuffer(cl_mem_flags flags, size_t size, void *host_ptr = nullptr)
+//		{return buffer(*this, flags, size, host_ptr);}
+//		inline queue createQueue()
+//		{return queue(*this, default_device);}
 };
 context::context(const container<device>& target)
+	: default_device(target[0])
 {
-
 	array<cl_device_id> all_device_ids(target.size());
 	for (size_t i=0; i<all_device_ids.size(); ++i)
 		all_device_ids[i] = target[i].handler;

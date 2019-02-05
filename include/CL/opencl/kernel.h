@@ -25,9 +25,9 @@ class kernel: public singleton
 		cl_kernel handler;
 		kernel(const cl_kernel& kernel_id);
 	public:
-		kernel(const context& target_context, const container<std::string>& source, const std::string& options, const device& target_device);
+		kernel(const context& target_context, const device& target_device, const container<std::string>& source, const std::string& options);
 		~kernel();
-		static container<kernel> build(const context& target_context, const container<std::string>& source, const std::string& options, const container<device>& target_devices);
+		static container<kernel> build(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options);
 };
 class program
 {
@@ -36,24 +36,24 @@ class program
 	private:
 		cl_program handler;
 	private:
-		program(const context& target_context, const container<std::string>& source, const std::string& options, const container<device>& target_devices);
+		program(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options);
 		~program();
 };
 kernel::kernel(const cl_kernel& kernel_id)
 	: handler(kernel_id)
 {}
-kernel::kernel(const context& target_context, const container<std::string>& source, const std::string& options, const device& target_device)
+kernel::kernel(const context& target_context, const device& target_device, const container<std::string>& source, const std::string& options)
 {
-	program prog(target_context, source, options, {target_device});
+	program prog(target_context, {target_device}, source, options);
 	cl_assert(clCreateKernelsInProgram(prog.handler, 1, &handler, nullptr));
 }
 kernel::~kernel()
 {
 	clReleaseKernel(handler);
 }
-container<kernel> kernel::build(const context& target_context, const container<std::string>& source, const std::string& options, const container<device>& target_devices)
+container<kernel> kernel::build(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options)
 {
-	program prog(target_context, source, options, target_devices);
+	program prog(target_context, target_devices, source, options);
 	cl_uint num_kernels;
 	cl_assert(clCreateKernelsInProgram(prog.handler, 0, nullptr, &num_kernels));
 	array<cl_kernel> kernels(num_kernels);
@@ -64,7 +64,7 @@ container<kernel> kernel::build(const context& target_context, const container<s
 	return all_kernels;
 
 }
-program::program(const context& target_context, const container<std::string>& source, const std::string& options, const container<device>& target_devices)
+program::program(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options)
 {
 	cl_uint count = source.size();
 	array<const char*> charsource(count);

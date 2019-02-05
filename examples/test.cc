@@ -15,10 +15,10 @@ int main()
 	auto by = createBuffer(size);
 	auto bz = createBuffer(size);
 
-	std::cout<<"write x: "<<enqueueWriteBuffer(bx, x, size)<<std::endl;
-	std::cout<<"write y: "<<enqueueWriteBuffer(by, y, size)<<std::endl;
-	std::cout<<"kernel : "<<enqueueExecuteKernel(kernel, {bz, bx, by}, {3})<<std::endl;
-	std::cout<<"read z : "<<enqueueReadBuffer(bz, z, size)<<std::endl;
+	std::cout<<"write x: "<<enqueueWriteBuffer(bx, x, size)<<" ns"<<std::endl;
+	std::cout<<"write y: "<<enqueueWriteBuffer(by, y, size)<<" ns"<<std::endl;
+	std::cout<<"kernel : "<<enqueueExecuteKernel(kernel, {bz, bx, by}, {3})<<" ns"<<std::endl;
+	std::cout<<"read z : "<<enqueueReadBuffer(bz, z, size)<<" ns"<<std::endl;
 
 	std::cout<<z[0]<<z[1]<<z[2]<<std::endl;
 

@@ -19,14 +19,12 @@ inline std::string read_file(const std::string& filepath)
 auto all_platforms = cl::platform::get_all_platforms();
 auto all_devices = cl::device::get_all_devices(all_platforms[0]);
 auto context = cl::context({all_devices[0]});
+auto queue = cl::queue(all_devices[0], context);
+auto kernel = cl::kernel(context, {read_file("examples/2_perm/perm.cl.c")}, "-cl-std=CL2.0", all_devices[0]);
 double CL_CALL(int8_t COUNT)
 {
-	uint64_t num_threads = fac(COUNT);
-	auto queue = cl::queue(all_devices[0], context);
-	auto kernel = cl::kernel(context, {read_file("examples/2_perm/perm.cl.c")}, "-cl-std=CL2.0", all_devices[0]);
-	
+	uint64_t num_threads = fac(COUNT);	
 	auto k = queue.enqueueNDRangeKernel(kernel, {COUNT, (int64_t)0, cl::localmem(COUNT*sizeof(int8_t)), cl::localmem(COUNT*sizeof(int8_t))}, {num_threads});
-	queue.enqueueBarrier({k});
 	queue.join();
 	double t = k.profileEnd() - k.profileStart();
 	return t;

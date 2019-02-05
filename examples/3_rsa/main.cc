@@ -1,10 +1,11 @@
-#include"opencl.h"
+#include"CL/opencl.h"
 #include"keypair.h"
 #include<cstdint>
 #include<vector>
 #include<thread>
 #include<gmpxx.h>
 #include<omp.h>
+#include<fstream>
 const size_t pubkey = 31;
 int_t factorization(const int_t& modulo)
 {
@@ -73,15 +74,20 @@ key omp_crack(const key& pub)
 	}
 }
 
-//auto& context = Context::initContext("CUDA");
-//auto& context = Context::initContext("Portable Computing Language");
-auto& context = Context::initContext("Intel Gen OCL");
-auto& kernel = context.createKernelFromFile("./examples/4_rsa/factorization.cl.c", "");
 //SET UP
-auto& device = context.all_devices[0];
-auto& d_factor = context.createBuffer(CL_MEM_WRITE_ONLY, sizeof(uint64_t));
-auto& queue = device.createQueue();
-
+inline std::string read_file(const std::string& filepath)
+{
+	std::ifstream ifs(filepath);
+	std::string content((std::istreambuf_iterator<char>(ifs)),
+		std::istreambuf_iterator<char>());
+	return content;
+}
+auto all_platforms = cl::platform::get_all_platforms();
+auto all_devices = cl::device::get_all_devices(all_platforms[0]);
+auto context = cl::context({all_devices[0]});
+auto queue = cl::queue(all_devices[0], context);
+auto kernel = cl::kernel(context, {read_file("examples/3_rsa/factorization.cl.c")}, "-cl-std=CL2.0", all_devices[0]);
+auto factor = cl::buffer(context, CL_MEM_WRITE_ONLY, sizeof(uint64_t));
 int_t cl_factorization(const int_t& modulo)
 {
 	//CL CALL
@@ -90,10 +96,9 @@ int_t cl_factorization(const int_t& modulo)
 	int_t global_dim = ((sqrt(modulo)-1)/2);
 	uint64_t global_dim64 = global_dim.get_ui();
 	{
-		auto& k = queue.enqueueNDRangeKernel(kernel, {d_factor, modulo64}, {global_dim64});
+		auto k = queue.enqueueNDRangeKernel(kernel, {factor, modulo64}, {global_dim64});
 		queue.enqueueBarrier({k});
-		auto& w = queue.enqueueReadBuffer(d_factor, &factor64, sizeof(uint64_t));
-		queue.enqueueBarrier({w});
+		auto w = queue.enqueueReadBuffer(factor, &factor64, sizeof(uint64_t));
 	}
 	queue.join();
 	std::cout<<"one of the factors = "<<factor64<<std::endl;

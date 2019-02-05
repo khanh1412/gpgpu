@@ -20,5 +20,7 @@ event:
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/1_event/main.cc
 perm: 
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/2_perm/main.cc
+rsa: 
+	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/3_rsa/main.cc -I./examples/3_rsa -fopenmp -lgmp -lgmpxx
 clean:
 	rm -f run

@@ -23,7 +23,7 @@ int main()
 	auto all_devices = cl::device::get_all_devices(all_platforms[0]);
 	std::cout<<all_devices[0].name()<<std::endl;
 
-	auto context = cl::context(all_devices[0]);
+	auto context = cl::context({all_devices[0]});
 
 	cl::device device(all_devices[0]);
 

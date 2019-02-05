@@ -38,7 +38,7 @@ container<device> device::get_all_devices()
 	{
 		auto some_devices = get_all_devices(all_platforms[i]);
 		for (size_t j=0; j<some_devices.size(); ++j)
-			all_devices.push_back(new device(some_devices[j].handler));	
+			all_devices.push_back(new device(some_devices[j]));	
 	}
 	return all_devices;
 }

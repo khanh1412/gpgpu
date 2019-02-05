@@ -13,6 +13,7 @@ class device
 		device(const cl_device_id& device_id);
 	public:
 		~device() {}
+		static container<device> get_all_devices();
 		static container<device> get_all_devices(const platform& target);
 	public:
 		std::string version();
@@ -21,6 +22,18 @@ class device
 device::device(const cl_device_id& device_id)
 	: handler(device_id)
 {}
+container<device> device::get_all_devices()
+{
+	auto all_platforms = platform::get_all_platforms();
+	container<device> all_devices;
+	for (size_t i=0; i<all_platforms.size(); ++i)
+	{
+		auto some_devices = get_all_devices(all_platforms[i]);
+		for (size_t j=0; j<some_devices.size(); ++j)
+			all_devices.push_back(new device(some_devices[j].handler));	
+	}
+	return all_devices;
+}
 container<device> device::get_all_devices(const platform& target)
 {
 	cl_uint num_devices;

@@ -14,28 +14,20 @@ int main()
 		std::cout<<"error catched"<<std::endl;
 		std::cout<<err.what()<<std::endl;
 	}
-	auto all_platforms = cl::platform::get_all_platforms();
-	for (size_t i=0; i<all_platforms.size(); ++i)
+	try
 	{
-		auto platform = all_platforms[i];
-		std::cout<<"Platform name: "<<platform.name()<<std::endl;
-		std::cout<<"Platform version: "<<platform.version()<<std::endl;
-		try
+		auto all_devices = cl::device::get_all_devices();
+		std::cout<<"Number of devices: "<<all_devices.size()<<std::endl;
+		for (size_t j=0; j<all_devices.size(); ++j)
 		{
-			auto all_devices = cl::device::get_all_devices(platform);
-			std::cout<<"Number of devices: "<<all_devices.size()<<std::endl;
-			for (size_t j=0; j<all_devices.size(); ++j)
-			{
-				auto device = all_devices[j];
-				std::cout<<"\tDevice name: "<<device.name()<<std::endl;
-				std::cout<<"\tDevice version: "<<device.version()<<std::endl;
-			}
+			auto device = all_devices[j];
+			std::cout<<"\tDevice name: "<<device.name()<<std::endl;
+			std::cout<<"\tDevice version: "<<device.version()<<std::endl;
 		}
-		catch (cl::error& err)
-		{
-			std::cout<<"catched error: "<<err.what()<<std::endl;
-			continue;
-		}
+	}
+	catch (cl::error& err)
+	{
+		std::cout<<"catched error: "<<err.what()<<std::endl;
 	}
 	return 0;
 }

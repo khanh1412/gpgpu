@@ -24,18 +24,20 @@ cl::buffer createBuffer(size_t size, void *host_ptr = nullptr)
 {
 	return cl::buffer(*context, CL_MEM_READ_WRITE, size, host_ptr);
 }
-cl::kernel compileKernel(std::string& filepath)
+cl::kernel createKernel(const std::string& filepath, const std::string& options = "")
 {
-	return cl::kernel(*context, device, {readfile(filepath)}, "-c-std=CL2.0");
+	return cl::kernel(*context, device, {readfile(filepath)}, options);
 }
 double enqueueWriteBuffer(const cl::buffer& b, void *host_ptr, size_t size)
 {
 	cl::event e = queue->enqueueWriteBuffer(b, host_ptr, size);
+	e.join();
 	return e.profileEnd() - e.profileStart();
 }
 double enqueueReadBuffer(const cl::buffer& b, void *host_ptr, size_t size)
 {
 	cl::event e = queue->enqueueReadBuffer(b, host_ptr, size);
+	e.join();
 	return e.profileEnd() - e.profileStart();
 }
 double enqueueExecuteKernel(const cl::kernel& kernel, const std::initializer_list<cl::param>& p, cl::array<size_t> global_dim)

@@ -45,6 +45,7 @@ class program
 		friend class kernel;
 	private:
 		cl_program handler;
+	private:
 		program(const context& target_context, const container<std::string>& source, const container<device>& target_devices, const std::string& options);
 		~program();
 };

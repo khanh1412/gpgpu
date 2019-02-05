@@ -4,14 +4,17 @@
 #include"CL/utils/container.h"
 #include"CL/opencl/error.h"
 #include"CL/opencl/platform.h"
+#include<string>
 namespace cl {
 class context;
 class queue;
+class compiler;
 class device: public field
 {
 	private:
 		friend class queue;
 		friend class context;
+		friend class compiler;
 	private:
 		cl_device_id handler;
 		device(const cl_device_id& device_id);

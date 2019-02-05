@@ -15,11 +15,27 @@ int main()
 		std::cout<<err.what()<<std::endl;
 	}
 	auto all_platforms = cl::platform::get_all_platforms();
-	auto& platform = all_platforms[0];
-	std::cout<<platform.profile()<<std::endl;
-	std::cout<<platform.version()<<std::endl;
-	std::cout<<platform.name()<<std::endl;
-	std::cout<<platform.vendor()<<std::endl;
-	std::cout<<platform.extensions()<<std::endl;
+	for (size_t i=0; i<all_platforms.size(); ++i)
+	{
+		auto platform = all_platforms[i];
+		std::cout<<"Platform name: "<<platform.name()<<std::endl;
+		std::cout<<"Platform version: "<<platform.version()<<std::endl;
+		try
+		{
+			auto all_devices = cl::device::get_all_devices(platform);
+			std::cout<<"Number of devices: "<<all_devices.size()<<std::endl;
+			for (size_t j=0; j<all_devices.size(); ++j)
+			{
+				auto device = all_devices[j];
+				std::cout<<"\tDevice name: "<<device.name()<<std::endl;
+				std::cout<<"\tDevice version: "<<device.version()<<std::endl;
+			}
+		}
+		catch (cl::error& err)
+		{
+			std::cout<<"catched error: "<<err.what()<<std::endl;
+			continue;
+		}
+	}
 	return 0;
 }

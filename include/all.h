@@ -3,3 +3,4 @@
 #include"CL/utils/singleton.h"
 #include"CL/opencl/error.h"
 #include"CL/opencl/platform.h"
+#include"CL/opencl/device.h"

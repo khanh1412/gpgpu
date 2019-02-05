@@ -51,7 +51,7 @@ container<device> device::get_all_devices(const platform& target)
 	cl_uint num_devices;
 	try {
 	cl_assert(clGetDeviceIDs(target.handler, CL_DEVICE_TYPE_ALL, 0, nullptr, &num_devices));
-	} catch (cl::error& err) { if (-1 == err.error_code) return container<device>();}
+	} catch (cl::error& err) { if (CL_DEVICE_NOT_FOUND == err.error_code) return container<device>();}
 	array<cl_device_id> all_device_ids(num_devices);
 	cl_assert(clGetDeviceIDs(target.handler, CL_DEVICE_TYPE_ALL, num_devices, all_device_ids.data(), nullptr));
 	container<device> all_devices;

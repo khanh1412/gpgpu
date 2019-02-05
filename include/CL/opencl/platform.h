@@ -32,7 +32,7 @@ container<platform> platform::get_all_platforms()
 	cl_uint num_platforms;
 	try {
 	cl_assert(clGetPlatformIDs(0, nullptr, &num_platforms));
-	} catch (cl::error& err) { if (-1 == err.error_code) return container<platform>();}
+	} catch (cl::error& err) { if (CL_OUT_OF_HOST_MEMORY == err.error_code) return container<platform>();}
 	array<cl_platform_id> all_platform_ids(num_platforms);
 	cl_assert(clGetPlatformIDs(num_platforms, all_platform_ids.data(), nullptr));
 	container<platform> all_platforms;

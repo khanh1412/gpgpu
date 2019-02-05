@@ -1,12 +1,11 @@
 #ifndef _PLATFORM_H_
 #define _PLATFORM_H_
-#include"CL/utils/array.h"
+#include"CL/utils/field.h"
 #include"CL/utils/container.h"
-#include<CL/cl.h>
 #include"CL/opencl/error.h"
 namespace cl {
 class device;
-class platform
+class platform: public field
 {
 	private:
 		friend class device;
@@ -14,12 +13,19 @@ class platform
 		cl_platform_id handler;
 		platform(const cl_platform_id& platform_id);
 	public:
+		platform(const platform& target);
 		~platform() {}
 		static container<platform> get_all_platforms();
 	public:
 		std::string version();
 		std::string name();
 };
+platform::platform(const cl_platform_id& platform_id)
+	: handler(platform_id)
+{}
+platform::platform(const platform& target)
+	: handler(target.handler)
+{}
 container<platform> platform::get_all_platforms()
 {
 	cl_uint num_platforms;
@@ -31,9 +37,6 @@ container<platform> platform::get_all_platforms()
 		all_platforms.push_back(new platform(all_platform_ids[i]));
 	return all_platforms;
 }
-platform::platform(const cl_platform_id& platform_id)
-	: handler(platform_id)
-{}
 std::string platform::version()
 {
 	size_t size;

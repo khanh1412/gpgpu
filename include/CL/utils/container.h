@@ -1,6 +1,7 @@
 #ifndef _CONTAINER_H_
 #define _CONTAINER_H_
 #include"CL/utils/array.h"
+#include"CL/utils/field.h"
 namespace cl {
 //holder : support class used for initializaer_list of references
 template<class obj_type>
@@ -13,7 +14,7 @@ class holder
 		~holder();
 };
 template<class obj_type>
-class container
+class container: public field
 {
 	private:
 		array<obj_type*> arr;

@@ -1,17 +1,22 @@
 #ifndef _DEVICE_H_
 #define _DEVICE_H_
-#include"CL/utils/array.h"
+#include"CL/utils/field.h"
 #include"CL/utils/container.h"
-#include<CL/cl.h>
 #include"CL/opencl/error.h"
 #include"CL/opencl/platform.h"
 namespace cl {
-class device
+class context;
+class queue;
+class device: public field
 {
+	private:
+		friend class queue;
+		friend class context;
 	private:
 		cl_device_id handler;
 		device(const cl_device_id& device_id);
 	public:
+		device(const device& target);
 		~device() {}
 		static container<device> get_all_devices();
 		static container<device> get_all_devices(const platform& target);
@@ -21,6 +26,9 @@ class device
 };
 device::device(const cl_device_id& device_id)
 	: handler(device_id)
+{}
+device::device(const device& target)
+	: handler(target.handler)
 {}
 container<device> device::get_all_devices()
 {

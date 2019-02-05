@@ -3,9 +3,10 @@
 #include<cstdlib>
 #include<cstring>
 #include<initializer_list>
+#include"CL/utils/field.h"
 namespace cl {
 template<class type>
-class array
+class array: public field
 {
 	private:
 		size_t count;

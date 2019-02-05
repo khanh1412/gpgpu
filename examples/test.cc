@@ -38,6 +38,7 @@ int main()
 	}
 
 	auto queue = cl::queue(device, context);
+	auto buffer = cl::buffer(context, CL_MEM_READ_ONLY, 1);
 
 
 	return 0;

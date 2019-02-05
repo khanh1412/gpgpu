@@ -7,10 +7,12 @@
 #include"CL/opencl/device.h"
 namespace cl {
 class queue;
+class buffer;
 class context: public singleton
 {
 	private:
 		friend class queue;
+		friend class buffer;
 	private:
 		cl_context handler;
 		container<device> all_devices;

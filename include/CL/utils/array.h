@@ -7,11 +7,10 @@ namespace cl {
 template<class type>
 class array
 {
-	public:
+	private:
 		size_t count;
 		type *ptr;
-
-	public:
+	private:
 		inline void extend();
 		inline void reduce();
 

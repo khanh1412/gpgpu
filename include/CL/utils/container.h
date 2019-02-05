@@ -15,7 +15,7 @@ class holder
 template<class obj_type>
 class container
 {
-	public:
+	private:
 		array<obj_type*> arr;
 
 	public:	

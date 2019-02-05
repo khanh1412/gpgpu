@@ -2,29 +2,14 @@
 #define _KERNEL_H_
 #include"CL/utils/container.h"
 #include"CL/utils/singleton.h"
+#include"CL/utils/alarm.h"
 #include"CL/opencl/error.h"
 #include"CL/opencl/context.h"
 #include"CL/opencl/device.h"
-#include<mutex>
-#include<condition_variable>
-#include<string>
-class Event: public cl::singleton
-{
-	private:
-		std::mutex signal_m;
-		std::condition_variable signal_v;
-	public:
-		Event(){}
-		~Event(){}
-		inline void signal()
-		{signal_v.notify_all();}
-		inline void wait_for_signal()
-		{std::unique_lock<std::mutex> signal_lock(signal_m);signal_v.wait(signal_lock);}
-};
-Event e;
+cl::alarm e;
 extern "C" void CL_CALLBACK build_callback(cl_program program, void *user_data)
 {
-	Event& e = *reinterpret_cast<Event*>(user_data);
+	cl::alarm& e = *reinterpret_cast<cl::alarm*>(user_data);
 	e.signal();
 }
 namespace cl {

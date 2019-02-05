@@ -3,7 +3,7 @@ OPENCL = 1
 
 CC = g++
 CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC -DCL -fopenmp
-INFLAGS = -I./include
+INFLAGS = -I./include -I./examples
 LDFLAGS = -lOpenCL
 
 ifeq (1, $(DEBUG))

@@ -6,15 +6,18 @@
 #include"CL/opencl/device.h"
 #include"CL/opencl/context.h"
 namespace cl {
-class queue
+class queue: public singleton
 {
 	private:
 		cl_command_queue handler;
+		const device target_device;
+		const context* target_context;
 	public:
 		queue(const device& target_device, const context& target_context);
 		~queue();
 };
 queue::queue(const device& target_device, const context& target_context)
+	: target_device(target_device), target_context(&target_context)
 {
 	bool isdevicequeue = false;
 	cl_command_queue_properties properties[] = {CL_QUEUE_PROPERTIES, 0, 0};

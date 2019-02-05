@@ -37,6 +37,8 @@ int main()
 		std::cout<<"error catched: "<<err.what()<<std::endl;
 	}
 
+	auto queue = cl::queue(device, context);
+
 
 	return 0;
 }

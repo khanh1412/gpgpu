@@ -3,7 +3,6 @@
 #include"CL/utils/container.h"
 #include"CL/utils/singleton.h"
 #include"CL/opencl/error.h"
-#include"CL/opencl/context.h"
 namespace cl {
 class param;
 class queue;
@@ -18,6 +17,7 @@ class buffer: public singleton
 		buffer(context& target, cl_mem_flags flags, size_t size, void *host_ptr = nullptr);
 		~buffer();
 };
+#include"CL/opencl/context.h"
 buffer::buffer(context& target, cl_mem_flags flags, size_t size, void *host_ptr)
 {
 	cl_int err; handler = clCreateBuffer(target.handler, flags, size, host_ptr, &err); cl_assert(err);

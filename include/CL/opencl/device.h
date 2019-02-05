@@ -25,8 +25,8 @@ class device: public field
 		static container<device> get_all_devices();
 		static container<device> get_all_devices(const platform& target);
 	public:
-		std::string version();
-		std::string name();
+		std::string version() const;
+		std::string name() const;
 };
 device::device(const cl_device_id& device_id)
 	: handler(device_id)
@@ -49,7 +49,9 @@ container<device> device::get_all_devices()
 container<device> device::get_all_devices(const platform& target)
 {
 	cl_uint num_devices;
+	try {
 	cl_assert(clGetDeviceIDs(target.handler, CL_DEVICE_TYPE_ALL, 0, nullptr, &num_devices));
+	} catch (cl::error& err) { if (-1 == err.error_code) return container<device>();}
 	array<cl_device_id> all_device_ids(num_devices);
 	cl_assert(clGetDeviceIDs(target.handler, CL_DEVICE_TYPE_ALL, num_devices, all_device_ids.data(), nullptr));
 	container<device> all_devices;
@@ -57,7 +59,7 @@ container<device> device::get_all_devices(const platform& target)
 		all_devices.push_back(new device(all_device_ids[i]));
 	return all_devices;
 }
-std::string device::version()
+std::string device::version() const
 {
 	size_t size;
 	cl_assert(clGetDeviceInfo(handler, CL_DEVICE_VERSION, 0, nullptr, &size));
@@ -65,7 +67,7 @@ std::string device::version()
 	cl_assert(clGetDeviceInfo(handler, CL_DEVICE_VERSION, size, string.data(), nullptr));
 	return std::string(string.data(), string.size());
 }
-std::string device::name()
+std::string device::name() const
 {
 	size_t size;
 	cl_assert(clGetDeviceInfo(handler, CL_DEVICE_NAME, 0, nullptr, &size));

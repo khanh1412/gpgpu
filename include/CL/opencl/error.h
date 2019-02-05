@@ -6,10 +6,11 @@
 namespace cl {
 class error: public std::exception
 {
-	private:
+	public:
 		cl_int error_code;
 		int line;
 		std::string file;
+	private:
 		std::string errorname();
 		std::string message;
 	public:

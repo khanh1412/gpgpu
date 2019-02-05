@@ -1,3 +1,4 @@
+#include<iostream>
 #include"CL/opencl_lazy.h"
 int main()
 {

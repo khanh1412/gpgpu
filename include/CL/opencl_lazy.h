@@ -38,9 +38,9 @@ double enqueueReadBuffer(const cl::buffer& b, void *host_ptr, size_t size)
 	cl::event e = queue->enqueueReadBuffer(b, host_ptr, size);
 	return e.profileEnd() - e.profileStart();
 }
-double enqueueExecuteKernel(const cl::kernel& kernel, const std::initializer_list<param>& p, array<size_t> global_dim)
+double enqueueExecuteKernel(const cl::kernel& kernel, const std::initializer_list<cl::param>& p, cl::array<size_t> global_dim)
 {
-	cl::event e = queue->enqueueNDRangeKernel(kernel, p, global_dim, local_dim);
+	cl::event e = queue->enqueueNDRangeKernel(kernel, p, global_dim);
 	e.join();
 	return e.profileEnd() - e.profileStart();
 }

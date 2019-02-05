@@ -31,8 +31,6 @@ class context: public singleton
 };
 #include"CL/opencl/platform.h"
 #include"CL/opencl/device.h"
-#include"CL/opencl/buffer.h"
-#include"CL/opencl/kernel.h"
 context::context(const container<device>& target)
 	: default_device(target[0])
 {
@@ -45,6 +43,7 @@ context::~context()
 {
 	clReleaseContext(handler);
 }
+/*
 inline buffer context::createBuffer(cl_mem_flags flags, size_t size, void *host_ptr)
 {return buffer(*this, flags, size, host_ptr);}
 inline queue context::createQueue()
@@ -53,5 +52,6 @@ inline kernel context::createKernel(const container<std::string>& source, const 
 {return kernel(*this, default_device, source, options);}
 inline event context::createUserEvent()
 {return event(*this);}
+*/
 }
 #endif

@@ -5,6 +5,8 @@
 #include"CL/opencl/error.h"
 #include"CL/opencl/device.h"
 #include"CL/opencl/context.h"
+#include"CL/opencl/event.h"
+#include"CL/opencl/buffer.h"
 namespace cl {
 class queue: public singleton
 {
@@ -31,5 +33,29 @@ queue::~queue()
 {
 	clReleaseCommandQueue(handler);
 }
+
+enum paramtype {EVENT, BUFFER, NUMBER};
+class localmem
+{
+	private:
+		size_t size;
+	public:
+		localmem(size_t size): size(size) {}
+		~localmem(){}
+};
+class param
+{
+	private:
+		friend class queue;
+		paramtype type;
+		size_t size;
+		void *data;
+	public:
+		param(const event& obj): type(EVENT), size(sizeof(cl_event)), data((void*)&obj.handler) {}
+		param(const buffer& obj): type(BUFFER), size(sizeof(cl_mem)), data((void*)&obj.handler) {}
+		param(const localmem& obj): type(BUFFER), size(sizeof(cl_mem)), data(nullptr) {}
+		template<class numtype>
+		param(const numtype& obj): type(NUMBER), size(sizeof(numtype)), data((void*)&obj){}
+};
 }
 #endif

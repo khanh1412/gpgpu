@@ -4,8 +4,11 @@
 #include"CL/utils/singleton.h"
 #include"CL/opencl/error.h"
 namespace cl {
+class param;
 class event
 {
+	private:
+		friend class param;
 	private:
 		cl_event handler;
 	private:

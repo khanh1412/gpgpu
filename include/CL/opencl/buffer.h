@@ -5,8 +5,11 @@
 #include"CL/opencl/error.h"
 #include"CL/opencl/context.h"
 namespace cl {
+class param;
 class buffer: public singleton
 {
+	private:
+		friend class param;
 	private:
 		cl_mem handler;
 		context *target_context;

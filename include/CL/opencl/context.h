@@ -8,13 +8,13 @@
 namespace cl {
 class queue;
 class buffer;
-class compiler;
+class program;
 class context: public singleton
 {
 	private:
 		friend class queue;
 		friend class buffer;
-		friend class compiler;
+		friend class program;
 	private:
 		cl_context handler;
 		container<device> all_devices;

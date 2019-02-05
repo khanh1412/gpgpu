@@ -8,13 +8,13 @@
 namespace cl {
 class context;
 class queue;
-class compiler;
+class program;
 class device: public field
 {
 	private:
 		friend class queue;
 		friend class context;
-		friend class compiler;
+		friend class program;
 	private:
 		cl_device_id handler;
 		device(const cl_device_id& device_id);

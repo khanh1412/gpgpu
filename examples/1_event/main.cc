@@ -8,8 +8,8 @@ void COPY(float *a0, float *a1, uint64_t COUNT)
 {
 	auto b = cl::buffer(context, CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
-	auto q0 = cl::queue(all_devices[0], context);
-	auto q1 = cl::queue(all_devices[0], context);
+	auto q0 = cl::queue(context, all_devices[0]);
+	auto q1 = cl::queue(context, all_devices[0]);
 	{
 		auto controller = cl::event(context);
 		q1.enqueueBarrier({controller});
@@ -25,8 +25,8 @@ void COPYwithoutEvents(float *a0, float *a1, uint64_t COUNT)
 {
 	auto b = cl::buffer(context, CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
-	auto q0 = cl::queue(all_devices[0], context);
-	auto q1 = cl::queue(all_devices[0], context);
+	auto q0 = cl::queue(context, all_devices[0]);
+	auto q1 = cl::queue(context, all_devices[0]);
 	{
 		auto read = q1.enqueueReadBuffer(b, a1, COUNT*sizeof(float));
 		auto write = q0.enqueueWriteBuffer(b, a0, COUNT*sizeof(float));

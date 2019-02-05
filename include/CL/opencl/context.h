@@ -19,7 +19,6 @@ class context: public singleton
 		friend class event;
 	private:
 		cl_context handler;
-		container<device> all_devices;
 	public:
 		context(const container<device>& target);
 		~context();
@@ -29,10 +28,7 @@ context::context(const container<device>& target)
 
 	array<cl_device_id> all_device_ids(target.size());
 	for (size_t i=0; i<all_device_ids.size(); ++i)
-	{
 		all_device_ids[i] = target[i].handler;
-		all_devices.push_back(new device(target[i]));
-	}
 	cl_int err; handler = clCreateContext(nullptr, all_device_ids.size(), all_device_ids.data(), nullptr, nullptr, &err); cl_assert(err);
 }
 context::~context()

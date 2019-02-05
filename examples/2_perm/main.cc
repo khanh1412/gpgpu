@@ -19,7 +19,7 @@ inline std::string read_file(const std::string& filepath)
 auto all_platforms = cl::platform::get_all_platforms();
 auto all_devices = cl::device::get_all_devices(all_platforms[0]);
 auto context = cl::context({all_devices[0]});
-auto queue = cl::queue(all_devices[0], context);
+auto queue = cl::queue(context, all_devices[0]);
 auto kernel = cl::kernel(context, {read_file("examples/2_perm/perm.cl.c")}, "-cl-std=CL2.0", all_devices[0]);
 double CL_CALL(int8_t COUNT)
 {

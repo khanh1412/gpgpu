@@ -13,10 +13,8 @@ class queue: public singleton
 {
 	private:
 		cl_command_queue handler;
-		device *target_device;
-		context *target_context;
 	public:
-		queue(device& target_device, context& target_context);
+		queue(const context& target_context, const device& target_device);
 		~queue();
 	public:
 		const event enqueueWriteBuffer(const buffer& b, void *host_ptr, size_t size, size_t offset=0);
@@ -29,8 +27,7 @@ class queue: public singleton
 		void flush();
 		void join();
 };
-queue::queue(device& target_device, context& target_context)
-	: target_device(&target_device), target_context(&target_context)
+queue::queue(const context& target_context, const device& target_device)
 {
 	bool isdevicequeue = false;
 	cl_command_queue_properties properties[] = {CL_QUEUE_PROPERTIES, 0, 0};

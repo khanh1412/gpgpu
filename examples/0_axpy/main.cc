@@ -15,7 +15,7 @@ double cl_call(float *z, float a, float *x, float *y, size_t COUNT)
 	auto context = cl::context({all_devices[0]});
 	double kernel_time;
 	{
-	auto queue = cl::queue(all_devices[0], context);
+	auto queue = cl::queue(context, all_devices[0]);
 	auto kernel = cl::kernel(context, {read_file("examples/0_axpy/axpy.cl.c")}, "-cl-std=CL2.0", all_devices[0]);
 
 	cl::array<size_t> global_dim({COUNT});

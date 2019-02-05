@@ -1,46 +1,66 @@
-#include"all.h"
+#include"CL/opencl.h"
 #include<iostream>
-class child: public cl::field
+#include<fstream>
+inline std::string read_file(const std::string& filepath)
 {
-	public:
-	child(){}
-	~child(){}
-};
-int main()
+	std::ifstream ifs(filepath);
+	std::string content((std::istreambuf_iterator<char>(ifs)),
+		std::istreambuf_iterator<char>());
+	return content;
+}
+double cl_call(float *z, float a, float *x, float *y, size_t COUNT)
 {
-	cl::array<float> arr1({1,2,3,4});
-	cl::container<float> arr2({1,2,3,4});
-	try
-	{
-		cl_assert(CL_SUCCESS);
-		cl_assert(CL_INVALID_VALUE);
-	}
-	catch (std::exception& err)
-	{
-		std::cout<<"error catched: "<<err.what()<<std::endl;
-	}
 	auto all_platforms = cl::platform::get_all_platforms();
 	auto all_devices = cl::device::get_all_devices(all_platforms[0]);
-	std::cout<<all_devices[0].name()<<std::endl;
-
 	auto context = cl::context({all_devices[0]});
-
-	cl::device device(all_devices[0]);
-
-	child a;
-	try
+	double kernel_time;
 	{
-		child b(a);
+	auto queue = cl::queue(all_devices[0], context);
+	auto kernel = cl::kernel(context, {read_file("examples/axpy.cl.c")}, "-cl-std=CL2.0", all_devices[0]);
+
+	cl::array<size_t> global_dim({COUNT});
+	cl::array<size_t> local_dim({1});
+
+	auto b_x = cl::buffer(context, CL_MEM_READ_ONLY, COUNT*sizeof(float));
+	auto b_y = cl::buffer(context, CL_MEM_READ_ONLY, COUNT*sizeof(float));
+	auto b_z = cl::buffer(context, CL_MEM_WRITE_ONLY, COUNT*sizeof(float));
+
+	auto e1 = cl::call::enqueueWriteBuffer(queue, b_x, x, COUNT*sizeof(float));
+	auto e2 = cl::call::enqueueWriteBuffer(queue, b_y, y, COUNT*sizeof(float));
+
+	cl::call::enqueueBarrier(queue, {e1, e2});
+	auto ek = cl::call::enqueueNDRangeKernel(queue, kernel, {b_z, a, b_x, b_y}, global_dim, local_dim);
+	cl::call::enqueueBarrier(queue, {ek});
+	auto e3 = cl::call::enqueueReadBuffer(queue, b_z, z, COUNT*sizeof(float));
+	cl::call::join(queue);
+	kernel_time = ek.profileEnd() - ek.profileStart();
 	}
-	catch (std::exception& err)
+	return kernel_time;
+}
+const float tol = 0.001;
+int main(int argc, char **argv)
+{
+	const size_t COUNT = (argc < 2) ? 2 : std::stoi(argv[1]);
+	cl::array<float> x(COUNT);
+	cl::array<float> y(COUNT);
+	cl::array<float> z(COUNT);
+
+	for (size_t i=0; i<COUNT; ++i)
 	{
-		std::cout<<"error catched: "<<err.what()<<std::endl;
+		x[i] = i;
+		y[i] = COUNT-i;
+		z[i] = 0;
 	}
+	std::cout<<"time: "<<cl_call(z.data(), 1, x.data(), y.data(), COUNT)<<std::endl;
+	size_t fail = 0;
+	for (size_t i=0; i<COUNT; ++i)
+	{
+		float diff = z[i] - (x[i] + y[i]);
+		if (diff*diff > tol*tol)
+			fail++;
+	}
+	std::cout<<"fail: "<<fail<<"/"<<COUNT<<std::endl;
 
-	auto queue = cl::queue(device, context);
-	auto buffer = cl::buffer(context, CL_MEM_READ_ONLY, 1);
-
-	cl::param p(3);
 
 
 	return 0;

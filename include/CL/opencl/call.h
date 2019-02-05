@@ -36,15 +36,15 @@ class param
 class call
 {
 	public:
-const event enqueueWriteBuffer(const queue& q, const buffer& b, void *host_ptr, size_t size, size_t offset=0);
-const event enqueueReadBuffer (const queue& q, const buffer& b, void *host_ptr, size_t size, size_t offset=0);
-const event enqueueCopyBuffer (const queue& q, const buffer& dst, const buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
-const event enqueueFillBuffer (const queue& q, const buffer& b, const void *pattern, size_t pattern_size, size_t size, size_t offset=0);
-const event enqueueMarker (const queue& q, const std::initializer_list<param>& events);
-const event enqueueBarrier(const queue& q, const std::initializer_list<param>& events);
-const event enqueueNDRangeKernel(const queue& q, const kernel& k, const std::initializer_list<param>& p, array<size_t> global_dim, array<size_t> local_dim = array<size_t>());
-void flush(const queue& q);
-void join(const queue& q);
+static const event enqueueWriteBuffer(const queue& q, const buffer& b, void *host_ptr, size_t size, size_t offset=0);
+static const event enqueueReadBuffer (const queue& q, const buffer& b, void *host_ptr, size_t size, size_t offset=0);
+static const event enqueueCopyBuffer (const queue& q, const buffer& dst, const buffer& src, size_t size, size_t dst_offset=0, size_t src_offset=0);
+static const event enqueueFillBuffer (const queue& q, const buffer& b, const void *pattern, size_t pattern_size, size_t size, size_t offset=0);
+static const event enqueueMarker (const queue& q, const std::initializer_list<param>& events);
+static const event enqueueBarrier(const queue& q, const std::initializer_list<param>& events);
+static const event enqueueNDRangeKernel(const queue& q, const kernel& k, const std::initializer_list<param>& p, array<size_t> global_dim, array<size_t> local_dim = array<size_t>());
+static void flush(const queue& q);
+static void join(const queue& q);
 };
 const event call::enqueueWriteBuffer(const queue& q, const buffer& b, void *host_ptr, size_t size, size_t offset)
 {

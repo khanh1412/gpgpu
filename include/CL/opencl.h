@@ -1,3 +1,5 @@
+#ifndef _OPENCL_H_
+#define _OPENCL_H_
 #include"CL/utils/field.h"
 #include"CL/utils/singleton.h"
 #include"CL/utils/array.h"
@@ -11,3 +13,4 @@
 #include"CL/opencl/kernel.h"
 #include"CL/opencl/event.h"
 #include"CL/opencl/call.h"
+#endif

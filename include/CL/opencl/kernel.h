@@ -7,8 +7,10 @@
 #include"CL/opencl/context.h"
 #include"CL/opencl/device.h"
 cl::alarm e;
+bool builddone;
 extern "C" void CL_CALLBACK build_callback(cl_program program, void *user_data)
 {
+	builddone = true;
 	cl::alarm& e = *reinterpret_cast<cl::alarm*>(user_data);
 	e.signal();
 }
@@ -23,9 +25,9 @@ class kernel: public singleton
 		cl_kernel handler;
 		kernel(const cl_kernel& kernel_id);
 	public:
-		kernel(const context& target_context, const container<std::string>& source, const device& target_device, const std::string& options);
+		kernel(const context& target_context, const container<std::string>& source, const std::string& options, const device& target_device);
 		~kernel();
-		static container<kernel> build(const context& target_context, const container<std::string>& source, const container<device>& target_devices, const std::string& options);
+		static container<kernel> build(const context& target_context, const container<std::string>& source, const std::string& options, const container<device>& target_devices);
 };
 class program
 {
@@ -34,24 +36,24 @@ class program
 	private:
 		cl_program handler;
 	private:
-		program(const context& target_context, const container<std::string>& source, const container<device>& target_devices, const std::string& options);
+		program(const context& target_context, const container<std::string>& source, const std::string& options, const container<device>& target_devices);
 		~program();
 };
 kernel::kernel(const cl_kernel& kernel_id)
 	: handler(kernel_id)
 {}
-kernel::kernel(const context& target_context, const container<std::string>& source, const device& target_device, const std::string& options)
+kernel::kernel(const context& target_context, const container<std::string>& source, const std::string& options, const device& target_device)
 {
-	program prog(target_context, source, {target_device}, options);
+	program prog(target_context, source, options, {target_device});
 	cl_assert(clCreateKernelsInProgram(prog.handler, 1, &handler, nullptr));
 }
 kernel::~kernel()
 {
 	clReleaseKernel(handler);
 }
-container<kernel> kernel::build(const context& target_context, const container<std::string>& source, const container<device>& target_devices, const std::string& options)
+container<kernel> kernel::build(const context& target_context, const container<std::string>& source, const std::string& options, const container<device>& target_devices)
 {
-	program prog(target_context, source, target_devices, options);
+	program prog(target_context, source, options, target_devices);
 	cl_uint num_kernels;
 	cl_assert(clCreateKernelsInProgram(prog.handler, 0, nullptr, &num_kernels));
 	array<cl_kernel> kernels(num_kernels);
@@ -62,7 +64,7 @@ container<kernel> kernel::build(const context& target_context, const container<s
 	return all_kernels;
 
 }
-program::program(const context& target_context, const container<std::string>& source, const container<device>& target_devices, const std::string& options)
+program::program(const context& target_context, const container<std::string>& source, const std::string& options, const container<device>& target_devices)
 {
 	cl_uint count = source.size();
 	array<const char*> charsource(count);
@@ -76,8 +78,9 @@ program::program(const context& target_context, const container<std::string>& so
 	array<cl_device_id> device_ids(target_devices.size());
 	for (size_t i=0; i<device_ids.size(); ++i)
 		device_ids[i] = target_devices[i].handler;
+	builddone = false;
 	cl_assert(clBuildProgram(handler, device_ids.size(), device_ids.data(), options.c_str(), build_callback, &e));
-	e.wait_for_signal();
+	if (not builddone) e.wait_for_signal();
 	for (size_t i=0; i<target_devices.size(); ++i)
 	{
 		cl_build_status sts;

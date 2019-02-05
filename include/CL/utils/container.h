@@ -12,11 +12,6 @@ class holder
 		holder(const obj_type& obj);
 		~holder();
 };
-template<class obj_type> holder<obj_type>::holder(const obj_type& obj)
-	: ptr(&obj)
-{}
-template<class obj_type> holder<obj_type>::~holder()
-{}
 template<class obj_type>
 class container
 {
@@ -42,6 +37,11 @@ class container
 		inline void flush_all();
 		inline size_t find(const obj_type& obj) const;
 };
+template<class obj_type> holder<obj_type>::holder(const obj_type& obj)
+	: ptr(&obj)
+{}
+template<class obj_type> holder<obj_type>::~holder()
+{}
 template<class obj_type> container<obj_type>::container()
 	:arr()
 {}

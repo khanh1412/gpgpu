@@ -18,5 +18,7 @@ axpy:
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/0_axpy/main.cc
 event: 
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/1_event/main.cc
+perm: 
+	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/2_perm/main.cc
 clean:
 	rm -f run

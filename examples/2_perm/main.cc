@@ -1,28 +1,34 @@
 #include<cstdint>
 #include<string>
 #include<iostream>
-#include"opencl.h"
+#include<fstream>
+#include"CL/opencl.h"
 int64_t fac(int8_t COUNT)
 {
 	int64_t perms = 1;
 	for (int8_t i=2; i<=COUNT; i++) perms *= i;
 	return perms;
 }
+inline std::string read_file(const std::string& filepath)
+{
+	std::ifstream ifs(filepath);
+	std::string content((std::istreambuf_iterator<char>(ifs)),
+		std::istreambuf_iterator<char>());
+	return content;
+}
+auto all_platforms = cl::platform::get_all_platforms();
+auto all_devices = cl::device::get_all_devices(all_platforms[0]);
+auto context = cl::context({all_devices[0]});
 double CL_CALL(int8_t COUNT)
 {
 	uint64_t num_threads = fac(COUNT);
-	auto& context = Context::initContext("CUDA");
-//	auto& context = Context::initContext("Portable");
-	auto& device = context.all_devices[0];
-	auto& queue = device.createQueue();
-	auto& kernel = context.createKernelFromFile("./examples/2_perm/perm.cl.c", "");
+	auto queue = cl::queue(all_devices[0], context);
+	auto kernel = cl::kernel(context, {read_file("examples/2_perm/perm.cl.c")}, "-cl-std=CL2.0", all_devices[0]);
 	
-	auto& k = queue.enqueueNDRangeKernel(kernel, {COUNT, (int64_t)0, Local(COUNT*sizeof(int8_t)), Local(COUNT*sizeof(int8_t))}, {num_threads});
+	auto k = queue.enqueueNDRangeKernel(kernel, {COUNT, (int64_t)0, cl::localmem(COUNT*sizeof(int8_t)), cl::localmem(COUNT*sizeof(int8_t))}, {num_threads});
 	queue.enqueueBarrier({k});
 	queue.join();
 	double t = k.profileEnd() - k.profileStart();
-	
-	Context::flushAllContexts();
 	return t;
 }
 int main(int argc, char *argv[])

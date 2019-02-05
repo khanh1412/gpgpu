@@ -8,3 +8,4 @@
 #include"CL/opencl/context.h"
 #include"CL/opencl/queue.h"
 #include"CL/opencl/buffer.h"
+#include"CL/opencl/kernel.h"

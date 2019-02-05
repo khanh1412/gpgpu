@@ -9,11 +9,13 @@ class buffer: public singleton
 {
 	private:
 		cl_mem handler;
+		context *target_context;
 	public:
-		buffer(const context& target, cl_mem_flags flags, size_t size, void *host_ptr = nullptr);
+		buffer(context& target, cl_mem_flags flags, size_t size, void *host_ptr = nullptr);
 		~buffer();
 };
-buffer::buffer(const context& target, cl_mem_flags flags, size_t size, void *host_ptr)
+buffer::buffer(context& target, cl_mem_flags flags, size_t size, void *host_ptr)
+	: target_context(&target)
 {
 	cl_int err; handler = clCreateBuffer(target.handler, flags, size, host_ptr, &err); cl_assert(err);
 }

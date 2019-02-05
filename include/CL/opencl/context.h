@@ -22,13 +22,11 @@ class context: public singleton
 		friend class event;
 	private:
 		cl_context handler;
-		device default_device;
 	public:
 		context(const container<device>& target);
 		~context();
 };
 context::context(const container<device>& target)
-	: default_device(target[0])
 {
 	array<cl_device_id> all_device_ids(target.size());
 	for (size_t i=0; i<all_device_ids.size(); ++i)

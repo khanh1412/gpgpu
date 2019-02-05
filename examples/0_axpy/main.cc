@@ -12,11 +12,12 @@ double cl_call(float *z, float a, float *x, float *y, size_t COUNT)
 {
 	auto all_platforms = cl::platform::get_all_platforms();
 	auto all_devices = cl::device::get_all_devices(all_platforms[0]);
-	auto context = cl::context({all_devices[0]});
+	auto& device = all_devices[0];
+	auto context = cl::context({device});
 	double kernel_time;
 	{
-	auto queue = cl::queue(context, all_devices[0]);
-	auto kernel = cl::kernel(context, all_devices[0], {read_file("examples/0_axpy/axpy.cl.c")}, "-cl-std=CL2.0");
+	auto queue = cl::queue(context, device);
+	auto kernel = cl::kernel(context, device, {read_file("examples/0_axpy/axpy.cl.c")}, "-cl-std=CL2.0");
 
 	cl::array<size_t> global_dim({COUNT});
 	cl::array<size_t> local_dim({1});

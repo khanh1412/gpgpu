@@ -3,13 +3,14 @@
 const uint64_t COUNT = 100;
 auto all_platforms = cl::platform::get_all_platforms();
 auto all_devices = cl::device::get_all_devices(all_platforms[0]);
-auto context = cl::context({all_devices[0]});
+auto& device = all_devices[0];
+auto context = cl::context({device});
 void COPY(float *a0, float *a1, uint64_t COUNT)
 {
 	auto b = cl::buffer(context, CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
-	auto q0 = cl::queue(context, all_devices[0]);
-	auto q1 = cl::queue(context, all_devices[0]);
+	auto q0 = cl::queue(context, device);
+	auto q1 = cl::queue(context, device);
 	{
 		auto controller = cl::event(context);
 		q1.enqueueBarrier({controller});
@@ -25,8 +26,8 @@ void COPYwithoutEvents(float *a0, float *a1, uint64_t COUNT)
 {
 	auto b = cl::buffer(context, CL_MEM_READ_WRITE, COUNT*sizeof(float));
 
-	auto q0 = cl::queue(context, all_devices[0]);
-	auto q1 = cl::queue(context, all_devices[0]);
+	auto q0 = cl::queue(context, device);
+	auto q1 = cl::queue(context, device);
 	{
 		auto read = q1.enqueueReadBuffer(b, a1, COUNT*sizeof(float));
 		auto write = q0.enqueueWriteBuffer(b, a0, COUNT*sizeof(float));

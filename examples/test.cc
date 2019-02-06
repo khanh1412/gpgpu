@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 	float y[3] = {3,2,1};
 	float z[3];
 
-	chooseDevice(1);
+	chooseDevice(0);
 	auto kernel = createKernel("./examples/kernel.cl");
 	auto bx = createBuffer(size);
 	auto by = createBuffer(size);

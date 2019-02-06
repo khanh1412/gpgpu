@@ -146,13 +146,13 @@ int main(int argc, char **argv)
 		auto t2 = omp_get_wtime();
 		std::cout<<"OCL Time: "<<(t2-t1)<<" sec"<<std::endl;
 	}
+	/*
 	{
 		auto t1 = omp_get_wtime();
 		std::cout<<"cracked "<<omp_crack(pair.pub)<<std::endl;
 		auto t2 = omp_get_wtime();
 		std::cout<<"OMP Time: "<<(t2-t1)<<" sec"<<std::endl;
 	}
-	/*
 	{
 		auto t1 = omp_get_wtime();
 		std::cout<<"cracked "<<crack(pair.pub)<<std::endl;

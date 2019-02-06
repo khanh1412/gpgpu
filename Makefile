@@ -2,7 +2,7 @@ DEBUG = 1
 OPENCL = 1
 
 CC = g++
-CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC -DCL -fopenmp
+CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
 INFLAGS = -I./include -I./examples
 LDFLAGS = -lOpenCL
 

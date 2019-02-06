@@ -1,9 +1,8 @@
 #include"CL/opencl.h"
 #include<fstream>
-auto all_devices = cl::device::get_all_devices();
-auto& device = all_devices[0];
-auto *context = new cl::context({device});
-auto *queue = new cl::queue(*context, device);
+cl::device *device = nullptr;
+cl::context *context = nullptr;
+cl::queue *queue = nullptr;
 inline std::string readfile(const std::string& filepath)
 {
 	std::ifstream ifs(filepath);
@@ -14,11 +13,13 @@ inline std::string readfile(const std::string& filepath)
 extern "C" {
 void chooseDevice(size_t i = 0)
 {
-	device = all_devices[i];
+	auto all_devices = cl::device::get_all_devices();
+	delete device;
+	device = new cl::device(all_devices[i]);
 	delete context;
+	context = new cl::context({*device});
 	delete queue;
-	context = new cl::context({device});
-	queue = new cl::queue(*context, device);
+	queue = new cl::queue(*context, *device);
 }
 cl::buffer createBuffer(size_t size, void *host_ptr = nullptr)
 {
@@ -26,7 +27,7 @@ cl::buffer createBuffer(size_t size, void *host_ptr = nullptr)
 }
 cl::kernel createKernel(const std::string& filepath, const std::string& options = "")
 {
-	return cl::kernel(*context, device, {readfile(filepath)}, options);
+	return cl::kernel(*context, *device, {readfile(filepath)}, options);
 }
 double enqueueWriteBuffer(const cl::buffer& b, void *host_ptr, size_t size)
 {

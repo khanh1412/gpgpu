@@ -1,5 +1,7 @@
 #ifndef _OPENCL_H_
 #define _OPENCL_H_
+#define CL_TARGET_OPENCL_VERSION 200
+#include<CL/cl.h>
 #include"CL/utils/field.h"
 #include"CL/utils/singleton.h"
 #include"CL/utils/array.h"

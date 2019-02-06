@@ -1,5 +1,4 @@
-DEBUG = 1
-OPENCL = 1
+DEBUG = 0
 
 CC = g++
 CCFLAGS = -std=c++17 -Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC

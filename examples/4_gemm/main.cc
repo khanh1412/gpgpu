@@ -72,17 +72,17 @@ double HOST_GEMM(float alpha, float beta, const matrix& A, const matrix& B, cons
 		}
 	}
 	auto t2 = omp_get_wtime();
-	return t2-t1;
+	return (t2-t1)*1e9;
 }
+auto device = cl::device::get_all_devices()[1];
+auto context = cl::context({device});
+auto queue = cl::queue(context, device);
 double CL_GEMM(float alpha, float beta, const matrix& A, const matrix& B, const matrix& C)
 {
-	auto device = cl::device::get_all_devices()[1];
-	auto context = cl::context({device});
+	double time = 0;
 	auto bA = cl::buffer(context, CL_MEM_READ_ONLY, A.m*A.n*sizeof(float));
 	auto bB = cl::buffer(context, CL_MEM_READ_ONLY, B.m*B.n*sizeof(float));
 	auto bC = cl::buffer(context, CL_MEM_READ_WRITE, C.m*C.n*sizeof(float));
-	auto queue = cl::queue(context, device);
-	double time = 0;
 	{
 		auto wA = queue.enqueueWriteBuffer(bA, A.data, A.m*A.n*sizeof(float));
 		auto wB = queue.enqueueWriteBuffer(bB, B.data, B.m*B.n*sizeof(float));
@@ -107,7 +107,17 @@ int main(int argc, char **argv)
 		matrix C(size, size); C.randomize();
 		double time = HOST_GEMM(dist(gen), dist(gen), A, B, C);
 		std::cout<<"time: "<<time<<std::endl;
-		std::cout<<"flops: "<<hfo/(1e9*time)<<std::endl;
+		std::cout<<"gflops: "<<hfo/time<<std::endl;
+	}
+	size_t dfo = (3+std::log(size)/std::log(2))*size*size;
+	std::cout<<"device floating pointer operations: "<<dfo<<std::endl;
+	{
+		matrix A(size, size); A.randomize();
+		matrix B(size, size); B.randomize();
+		matrix C(size, size); C.randomize();
+		double time = CL_GEMM(dist(gen), dist(gen), A, B, C);
+		std::cout<<"time: "<<time<<std::endl;
+		std::cout<<"gflops: "<<dfo/time<<std::endl;
 	}
 
 	return 0;

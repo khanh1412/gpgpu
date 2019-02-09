@@ -5,35 +5,37 @@ template<class type>
 class matrix
 {
 	public:
-		std::default_random_engine gen;
+		static std::default_random_engine gen;
 		size_t m, n;
-		type *data;
+		type *dataptr;
+	public:
 		matrix(size_t m, size_t n = 1)
-			:gen(std::time(nullptr)), m(m), n(n)
+			:m(m), n(n)
 		{
-			data = (type*)std::malloc(m*n*sizeof(type));
+			dataptr = (type*)std::malloc(m*n*sizeof(type));
 		}
 		~matrix()
 		{
-			std::free(data);
+			std::free(dataptr);
 		}
 		type& index(size_t i, size_t j) const
 		{
-			return data[i*m + j];
+			return dataptr[i*m + j];
 		}
 		void set(type value = 0)
 		{
 			for (size_t i=0; i<m*n; ++i)
-				data[i] = value;
+				dataptr[i] = value;
 		}
 		void randomize()
 		{
 			std::normal_distribution<type> dist(0, 1);
 			for (size_t i=0; i<m*n; ++i)
-				data[i] = dist(gen);
+				dataptr[i] = dist(gen);
 		}
 		template<class objtype> friend std::ostream& operator<<(std::ostream& out, const matrix<objtype>& M);
 };
+template<> std::default_random_engine matrix<float>::gen(std::time(nullptr));
 template<class objtype>
 std::ostream& operator<<(std::ostream& out, const matrix<objtype>& M)
 {
@@ -47,10 +49,26 @@ std::ostream& operator<<(std::ostream& out, const matrix<objtype>& M)
 	out<<std::defaultfloat;
 	return out;
 }
+template<class type>
+void HOST_GEMM(type alpha, type beta, const matrix<type>& A, const matrix<type>& B, const matrix<type>& C)
+{
+	for (size_t i=0; i<A.m; ++i)
+	for (size_t k=0; k<B.n; ++k)
+	{
+		type c = 0;
+		for (size_t j=0; j<A.n; ++j)
+			c += alpha*A.index(i, j)*B.index(j, k);
+		C.index(i, k) = c + beta*C.index(i, k);
+	}
+}
 int main()
 {
-	matrix<float> M(2, 3);
-	M.randomize();
-	std::cout<<M<<std::endl;
+	matrix<float> A(2, 2), B(2, 2), C(2, 2);
+	A.randomize(); B.randomize(); C.randomize();
+	std::cout<<A<<std::endl;
+	std::cout<<B<<std::endl;
+	std::cout<<C<<std::endl;
+	HOST_GEMM(1.0f, 0.5f, A, B, C);
+	std::cout<<C<<std::endl;
 	return 0;
 }

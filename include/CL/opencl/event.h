@@ -29,6 +29,7 @@ event::event(const context& target)
 }
 event::~event()
 {
+	join();
 	clReleaseEvent(handler);
 }
 void event::setComplete()

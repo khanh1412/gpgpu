@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 	auto w1 = queue.enqueueWriteBuffer(A, a, 4*sizeof(float));
 	auto w2 = queue.enqueueWriteBuffer(B, b, 4*sizeof(float));
 	queue.enqueueBarrier({w1,w2});
-	auto k = queue.enqueueNDRangeKernel(kernel, {(size_t)2, (size_t)2, (size_t)2, (size_t)2, A, B, C, cl::localmem(sizeof(float))}, {4, 4}, {2, 2});
+	auto k = queue.enqueueNDRangeKernel(kernel, {(size_t)2, (size_t)2, (size_t)2, (size_t)2, A, B, C}, {4, 4}, {2, 2});
 	queue.enqueueBarrier({k});
 	queue.enqueueReadBuffer(C, c, 16*sizeof(float));
 	queue.join();

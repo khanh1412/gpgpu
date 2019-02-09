@@ -22,6 +22,6 @@ perm:
 rsa: 
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/3_rsa/main.cc -I./examples/3_rsa -fopenmp -lgmp -lgmpxx
 gemm: 
-	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/4_gemm/main.cc
+	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/4_gemm/main.cc -fopenmp -lclblast
 clean:
 	rm -f run

@@ -2,49 +2,49 @@
 #include<random>
 #include<ctime>
 #include<cstring>
-template<class type>
+#include"CL/opencl.h"
+#include"CL/builtin/gemm.h"
+#include<omp.h>
+std::default_random_engine gen(std::time(nullptr));
+std::normal_distribution<float> dist(0, 1);
 class matrix
 {
 	public:
-		static std::default_random_engine gen;
 		size_t m, n;
-		type *dataptr;
+		float *data;
 	public:
 		matrix(size_t m, size_t n = 1)
 			: m(m), n(n)
 		{
-			dataptr = (type*)std::malloc(m*n*sizeof(type));
+			data = (float*)std::malloc(m*n*sizeof(float));
 		}
-		matrix(const matrix<type>& M)
+		matrix(const matrix& M)
 			: m(M.m), n(M.n)
 		{
-			dataptr = (type*)std::malloc(m*n*sizeof(type));
-			std::memcpy(dataptr, M.dataptr, m*n*sizeof(type));
+			data = (float*)std::malloc(m*n*sizeof(float));
+			std::memcpy(data, M.data, m*n*sizeof(float));
 		}
 		~matrix()
 		{
-			std::free(dataptr);
+			std::free(data);
 		}
-		type& index(size_t i, size_t j) const
+		float& index(size_t i, size_t j) const
 		{
-			return dataptr[i*m + j];
+			return data[i*m + j];
 		}
-		void set(type value = 0)
+		void set(float value = 0)
 		{
 			for (size_t i=0; i<m*n; ++i)
-				dataptr[i] = value;
+				data[i] = value;
 		}
 		void randomize()
 		{
-			std::normal_distribution<type> dist(0, 1);
 			for (size_t i=0; i<m*n; ++i)
-				dataptr[i] = dist(gen);
+				data[i] = dist(gen);
 		}
-		template<class objtype> friend std::ostream& operator<<(std::ostream& out, const matrix<objtype>& M);
+		friend std::ostream& operator<<(std::ostream& out, const matrix& M);
 };
-template<> std::default_random_engine matrix<float>::gen(std::time(nullptr));
-template<class objtype>
-std::ostream& operator<<(std::ostream& out, const matrix<objtype>& M)
+std::ostream& operator<<(std::ostream& out, const matrix& M)
 {
 	out<<std::fixed;
 	for (size_t i=0; i<M.m; ++i)
@@ -56,31 +56,59 @@ std::ostream& operator<<(std::ostream& out, const matrix<objtype>& M)
 	out<<std::defaultfloat;
 	return out;
 }
-template<class type>
-void HOST_GEMM(type alpha, type beta, const matrix<type>& A, const matrix<type>& B, const matrix<type>& C)
+double HOST_GEMM(float alpha, float beta, const matrix& A, const matrix& B, const matrix& C)
 {
-	for (size_t i=0; i<A.m; ++i)
-	for (size_t k=0; k<B.n; ++k)
+	auto t1 = omp_get_wtime();
+	#pragma omp parallel
 	{
-		type c = 0;
-		for (size_t j=0; j<A.n; ++j)
-			c += alpha*A.index(i, j)*B.index(j, k);
-		C.index(i, k) = c + beta*C.index(i, k);
+		#pragma omp for nowait
+		for (size_t i=0; i<A.m; ++i)
+		for (size_t k=0; k<B.n; ++k)
+		{
+			float c = 0;
+			for (size_t j=0; j<A.n; ++j)
+				c += A.index(i, j)*B.index(j, k);
+			C.index(i, k) = alpha*c + beta*C.index(i, k);
+		}
 	}
+	auto t2 = omp_get_wtime();
+	return t2-t1;
 }
-template<class type>
-void CL_GEMM(type alpha, type beta, const matrix<type>& A, const matrix<type>& B, const matrix<type>& C)
+double CL_GEMM(float alpha, float beta, const matrix& A, const matrix& B, const matrix& C)
 {
-	
+	auto device = cl::device::get_all_devices()[1];
+	auto context = cl::context({device});
+	auto bA = cl::buffer(context, CL_MEM_READ_ONLY, A.m*A.n*sizeof(float));
+	auto bB = cl::buffer(context, CL_MEM_READ_ONLY, B.m*B.n*sizeof(float));
+	auto bC = cl::buffer(context, CL_MEM_READ_WRITE, C.m*C.n*sizeof(float));
+	auto queue = cl::queue(context, device);
+	double time = 0;
+	{
+		auto wA = queue.enqueueWriteBuffer(bA, A.data, A.m*A.n*sizeof(float));
+		auto wB = queue.enqueueWriteBuffer(bB, B.data, B.m*B.n*sizeof(float));
+		auto wC = queue.enqueueWriteBuffer(bC, C.data, C.m*C.n*sizeof(float));
+		queue.enqueueBarrier({wA, wB, wC});
+		auto k = cl::builtin::gemm(queue, A.m, A.n, B.n, alpha, beta, bA, bB, bC);
+		queue.enqueueBarrier({k});
+		auto rC = queue.enqueueReadBuffer(bC, C.data, C.m*C.n*sizeof(float));
+		queue.join();
+		time = k.profileEnd() - k.profileStart();
+	}
+	return time;
 }
-int main()
+int main(int argc, char **argv)
 {
-	matrix<float> A(2, 2), B(2, 2), C(2, 2);
-	A.randomize(); B.randomize(); C.randomize();
-	std::cout<<A<<std::endl;
-	std::cout<<B<<std::endl;
-	std::cout<<C<<std::endl;
-	HOST_GEMM(1.0f, 0.5f, A, B, C);
-	std::cout<<C<<std::endl;
+	size_t size = (argc >= 2) ? std::stoi(argv[1]) : 1;
+	size_t hfo = (3+size)*size*size;
+	std::cout<<"host floating pointer operations: "<<hfo<<std::endl;
+	{
+		matrix A(size, size); A.randomize();
+		matrix B(size, size); B.randomize();
+		matrix C(size, size); C.randomize();
+		double time = HOST_GEMM(dist(gen), dist(gen), A, B, C);
+		std::cout<<"time: "<<time<<std::endl;
+		std::cout<<"flops: "<<hfo/(1e9*time)<<std::endl;
+	}
+
 	return 0;
 }

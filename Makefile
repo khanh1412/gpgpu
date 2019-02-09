@@ -3,7 +3,7 @@ DEBUG = 0
 CC = g++
 CCFLAGS = -std=c++17 -fPIC -Wall -Wfatal-errors
 INFLAGS = -I./include -I./examples
-LDFLAGS = -lOpenCL -lclblast
+LDFLAGS = -lOpenCL
 
 ifeq (1, $(DEBUG))
 CCFLAGS += -g -O0
@@ -12,7 +12,7 @@ CCFLAGS += -DNDEBUG -O3
 endif
 
 test: 
-	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/test.cc 
+	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/test.cc  -lclblast
 axpy: 
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/0_axpy/main.cc
 event: 

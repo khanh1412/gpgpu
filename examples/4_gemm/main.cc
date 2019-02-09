@@ -99,6 +99,7 @@ double CL_GEMM(float alpha, float beta, const matrix& A, const matrix& B, const 
 int main(int argc, char **argv)
 {
 	size_t size = (argc >= 2) ? std::stoi(argv[1]) : 1;
+	/*
 	size_t hfo = (3+size)*size*size;
 	std::cout<<"host floating pointer operations: "<<hfo<<std::endl;
 	{
@@ -109,6 +110,7 @@ int main(int argc, char **argv)
 		std::cout<<"time: "<<time<<std::endl;
 		std::cout<<"gflops: "<<hfo/time<<std::endl;
 	}
+	*/
 	size_t dfo = (3+std::log(size)/std::log(2))*size*size;
 	std::cout<<"device floating pointer operations: "<<dfo<<std::endl;
 	{

@@ -13,12 +13,9 @@ inline std::string readfile(const std::string& filepath)
 void chooseDevice(size_t i = 0)
 {
 	auto all_devices = cl::device::get_all_devices();
-	delete device;
-	device = new cl::device(all_devices[i]);
-	delete context;
-	context = new cl::context({*device});
-	delete queue;
-	queue = new cl::queue(*context, *device);
+	delete device; device = new cl::device(all_devices[i]);
+	delete context; context = new cl::context({*device});
+	delete queue; queue = new cl::queue(*context, *device);
 }
 cl::buffer createBuffer(size_t size, void *host_ptr = nullptr)
 {

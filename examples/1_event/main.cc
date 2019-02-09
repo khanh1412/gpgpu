@@ -2,7 +2,7 @@
 #include<iostream>
 const uint64_t COUNT = 100;
 auto all_devices = cl::device::get_all_devices();
-auto& device = all_devices[1];
+auto& device = all_devices[2];
 auto context = cl::context({device});
 void COPY(float *a0, float *a1, uint64_t COUNT)
 {

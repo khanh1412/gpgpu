@@ -52,13 +52,13 @@ class param
 		template<class numtype>
 		param(const numtype& obj): type(NUMBER), size(sizeof(numtype)), data((void*)&obj){}
 };
-queue::queue(const context& target_context, const device& target_device, bool out_of_order)
+queue::queue(const context& target_context, const device& target_device, bool devicequeue)
 {
 	cl_command_queue_properties properties[] = {CL_QUEUE_PROPERTIES, 0, 0};
-	if (out_of_order)
+	if (devicequeue)
 		properties[1] = CL_QUEUE_ON_DEVICE | CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE | CL_QUEUE_PROFILING_ENABLE;
 	else
-		properties[1] = CL_QUEUE_PROFILING_ENABLE;
+		properties[1] = CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE | CL_QUEUE_PROFILING_ENABLE;
 	cl_int err; handler = clCreateCommandQueueWithProperties(target_context.handler, target_device.handler, &(properties[0]), &err); cl_assert(err);
 }
 queue::~queue()

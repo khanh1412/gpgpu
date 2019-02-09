@@ -1,20 +1,11 @@
 #include<iostream>
-#include<fstream>
 #include<cstdint>
-#include<clblast.h>
 #include"CL/opencl.h"
 #include"CL/builtin/gemm.h"
-inline std::string readfile(const std::string& filepath)
-{
-	std::ifstream ifs(filepath);
-	std::string content((std::istreambuf_iterator<char>(ifs)),
-		std::istreambuf_iterator<char>());
-	return content;
-}
+#include"CL/builtin/gkmm.h"
 auto device = cl::device::get_all_devices()[2];
 auto context = cl::context({device});
 auto queue = cl::queue(context, device);
-auto kernel = cl::kernel(context, device, {readfile("./examples/5_kronecker/kronecker.cl.c")}, "-Ddtype=float");
 auto A = cl::buffer(context, CL_MEM_READ_ONLY, 4*sizeof(float));
 auto B = cl::buffer(context, CL_MEM_READ_ONLY, 4*sizeof(float));
 auto C = cl::buffer(context, CL_MEM_READ_WRITE, 16*sizeof(float));
@@ -27,7 +18,7 @@ int main(int argc, char **argv)
 	auto w1 = queue.enqueueWriteBuffer(A, a, 4*sizeof(float));
 	auto w2 = queue.enqueueWriteBuffer(B, b, 4*sizeof(float));
 	queue.enqueueBarrier({w1,w2});
-	auto k = queue.enqueueNDRangeKernel(kernel, {(size_t)2, (size_t)2, (size_t)2, (size_t)2, A, B, C}, {4, 4}, {2, 2});
+	auto k = cl::builtin::gkmm(queue, 2, 2, 2, 2, 1, 0, A, B, C);
 	queue.enqueueBarrier({k});
 	queue.enqueueReadBuffer(C, c, 16*sizeof(float));
 	queue.join();

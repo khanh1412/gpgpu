@@ -12,9 +12,13 @@ class context: public singleton
 	public:
 		cl_context handler;
 	public:
+		context(cl_context handler);
 		context(const container<device>& target);
 		~context();
 };
+context::context(cl_context handler)
+	: handler(handler)
+{}
 context::context(const container<device>& target)
 {
 	array<cl_device_id> all_device_ids(target.size());

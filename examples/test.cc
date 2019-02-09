@@ -1,6 +1,6 @@
 #include<iostream>
 #include"CL/opencl.h"
-#include"CL/exts/gemm.h"
+#include"CL/builtin/gemm.h"
 int main(int argc, char **argv)
 {
 	float a[4] = {1, 2, 3, 4};
@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 		auto w1 = queue.enqueueWriteBuffer(A, a, 4*sizeof(float));
 		auto w2 = queue.enqueueWriteBuffer(B, b, 4*sizeof(float));
 		queue.enqueueBarrier({w1, w2});
-		auto k = cl::clblast::gemm(queue, 2, 2, 2, 1.0f, 0.0f, A, B, C);
+		auto k = cl::builtin::gemm(queue, 2, 2, 2, 1.0f, 0.0f, A, B, C);
 		queue.enqueueBarrier({k});
 		queue.enqueueReadBuffer(C, c, 4*sizeof(float));
 		queue.join();

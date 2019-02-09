@@ -22,8 +22,8 @@ int main(int argc, char **argv)
 
 	std::cout<<z[0]<<z[1]<<z[2]<<std::endl;
 
-
-
+	std::cout<<device->name()<<std::endl;
+	std::cout<<device->version()<<std::endl;
 	
 
 	return 0;

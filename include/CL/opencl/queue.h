@@ -40,9 +40,7 @@ class localmem
 };
 class param
 {
-	private:
-		friend class queue;
-	private:
+	public:
 		paramtype type;
 		size_t size;
 		void *data;

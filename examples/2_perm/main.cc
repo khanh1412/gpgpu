@@ -17,7 +17,7 @@ inline std::string read_file(const std::string& filepath)
 	return content;
 }
 auto all_platforms = cl::platform::get_all_platforms();
-auto all_devices = cl::device::get_all_devices(all_platforms[0]);
+auto all_devices = cl::device::get_all_devices(all_platforms[1]);
 auto& device = all_devices[0];
 auto context = cl::context({device});
 auto queue = cl::queue(context, device);

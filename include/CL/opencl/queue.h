@@ -15,7 +15,7 @@ class queue: public singleton
 	private:
 		cl_command_queue handler;
 	public:
-		queue(const context& target_context, const device& target_device);
+		queue(const context& target_context, const device& target_device, bool out_of_order = false);
 		~queue();
 	public:
 		const event enqueueWriteBuffer(const buffer& b, void *host_ptr, size_t size, size_t offset=0);
@@ -24,7 +24,8 @@ class queue: public singleton
 		const event enqueueFillBuffer (const buffer& b, const void *pattern, size_t pattern_size, size_t size, size_t offset=0);
 		const event enqueueMarker (const std::initializer_list<param>& events);
 		const event enqueueBarrier(const std::initializer_list<param>& events);
-		const event enqueueNDRangeKernel(const kernel& k, const std::initializer_list<param>& p, array<size_t> global_dim, array<size_t> local_dim = array<size_t>());
+		const event enqueueNDRangeKernel(const kernel& k, const std::initializer_list<param>& p, 
+				array<size_t> global_dim, array<size_t> local_dim = array<size_t>());
 		void flush();
 		void join();
 };
@@ -51,14 +52,13 @@ class param
 		template<class numtype>
 		param(const numtype& obj): type(NUMBER), size(sizeof(numtype)), data((void*)&obj){}
 };
-queue::queue(const context& target_context, const device& target_device)
+queue::queue(const context& target_context, const device& target_device, bool out_of_order)
 {
-	bool isdevicequeue = false;
 	cl_command_queue_properties properties[] = {CL_QUEUE_PROPERTIES, 0, 0};
-	if (isdevicequeue)
+	if (out_of_order)
 		properties[1] = CL_QUEUE_ON_DEVICE | CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE | CL_QUEUE_PROFILING_ENABLE;
 	else
-		properties[1] = CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE | CL_QUEUE_PROFILING_ENABLE;
+		properties[1] = CL_QUEUE_PROFILING_ENABLE;
 	cl_int err; handler = clCreateCommandQueueWithProperties(target_context.handler, target_device.handler, &(properties[0]), &err); cl_assert(err);
 }
 queue::~queue()

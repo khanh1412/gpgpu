@@ -1,4 +1,3 @@
-#define dtype float
 typedef ulong uint64_t;
 __kernel void kronecker(uint64_t m, uint64_t n, uint64_t p, uint64_t q, __global const dtype *A, __global const dtype *B, __global dtype *C, __local dtype *localmem)
 {

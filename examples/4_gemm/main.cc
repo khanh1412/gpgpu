@@ -1,6 +1,7 @@
 #include<iostream>
 #include<random>
 #include<ctime>
+#include<cstring>
 template<class type>
 class matrix
 {
@@ -10,9 +11,15 @@ class matrix
 		type *dataptr;
 	public:
 		matrix(size_t m, size_t n = 1)
-			:m(m), n(n)
+			: m(m), n(n)
 		{
 			dataptr = (type*)std::malloc(m*n*sizeof(type));
+		}
+		matrix(const matrix<type>& M)
+			: m(M.m), n(M.n)
+		{
+			dataptr = (type*)std::malloc(m*n*sizeof(type));
+			std::memcpy(dataptr, M.dataptr, m*n*sizeof(type));
 		}
 		~matrix()
 		{
@@ -60,6 +67,11 @@ void HOST_GEMM(type alpha, type beta, const matrix<type>& A, const matrix<type>&
 			c += alpha*A.index(i, j)*B.index(j, k);
 		C.index(i, k) = c + beta*C.index(i, k);
 	}
+}
+template<class type>
+void CL_GEMM(type alpha, type beta, const matrix<type>& A, const matrix<type>& B, const matrix<type>& C)
+{
+	
 }
 int main()
 {

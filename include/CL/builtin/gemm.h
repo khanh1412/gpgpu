@@ -4,15 +4,11 @@
 #include<clblast_c.h>
 namespace cl {
 namespace builtin {
-template<class type>
-event gemm(queue& q, size_t m, size_t n, size_t k, type alpha, type beta, const buffer& A, const buffer& B, buffer& C);
-event gemm(queue& q, size_t m, size_t n, size_t k, float alpha, float beta, const buffer& A, const buffer& B, buffer& C);
-event gemm(queue& q, size_t m, size_t n, size_t k, double alpha, double beta, const buffer& A, const buffer& B, buffer& C);
-event gemm(queue& q, size_t m, size_t n, size_t k, float alpha, float beta, const buffer& A, const buffer& B, buffer& C)
+event gemm(queue& q, size_t m, size_t n, size_t k, float alpha, float beta, const buffer& A, const buffer& B, buffer& C, size_t a_offset=0, size_t b_offset=0, size_t c_offset=0)
 {
-	size_t a_ld = k, a_offset = 0;
-	size_t b_ld = n, b_offset = 0;
-	size_t c_ld = n, c_offset = 0;
+	size_t a_ld = k;
+	size_t b_ld = n;
+	size_t c_ld = n;
 	CLBlastTranspose transposeA = CLBlastTransposeNo;
 	CLBlastTranspose transposeB = CLBlastTransposeNo;
 	cl_event e;
@@ -22,11 +18,11 @@ event gemm(queue& q, size_t m, size_t n, size_t k, float alpha, float beta, cons
 				beta, C.handler, c_offset, c_ld, &q.handler, &e));
 	return event(e);
 }
-event gemm(queue& q, size_t m, size_t n, size_t k, double alpha, double beta, const buffer& A, const buffer& B, buffer& C)
+event gemm(queue& q, size_t m, size_t n, size_t k, double alpha, double beta, const buffer& A, const buffer& B, buffer& C, size_t a_offset=0, size_t b_offset=0, size_t c_offset=0)
 {
-	size_t a_ld = k, a_offset = 0;
-	size_t b_ld = n, b_offset = 0;
-	size_t c_ld = n, c_offset = 0;
+	size_t a_ld = k;
+	size_t b_ld = n;
+	size_t c_ld = n;
 	CLBlastTranspose transposeA = CLBlastTransposeNo;
 	CLBlastTranspose transposeB = CLBlastTransposeNo;
 	cl_event e;

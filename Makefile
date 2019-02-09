@@ -12,7 +12,7 @@ CCFLAGS += -DNDEBUG -O3
 endif
 
 test: 
-	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/test.cc  -lclblast
+	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/test.cc
 axpy: 
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/0_axpy/main.cc
 event: 
@@ -23,5 +23,7 @@ rsa:
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/3_rsa/main.cc -I./examples/3_rsa -fopenmp -lgmp -lgmpxx
 gemm: 
 	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/4_gemm/main.cc -fopenmp -lclblast
+kronecker: 
+	$(CC) $(CCFLAGS) $(INFLAGS) $(LDFLAGS) -o run ./examples/5_kronecker/main.cc
 clean:
 	rm -f run

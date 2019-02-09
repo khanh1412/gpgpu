@@ -13,12 +13,12 @@ class event
 		event(const context& target);
 		~event();
 		void setComplete();
-		void join();
-		cl_ulong profileQueued();
-		cl_ulong profileSubmit();
-		cl_ulong profileStart();
-		cl_ulong profileEnd();
-		cl_ulong profileComplete();
+		void join() const;
+		cl_ulong profileQueued() const;
+		cl_ulong profileSubmit() const;
+		cl_ulong profileStart() const;
+		cl_ulong profileEnd() const;
+		cl_ulong profileComplete() const;
 };
 event::event(const cl_event& event_id)
 	: handler(event_id)
@@ -36,35 +36,35 @@ void event::setComplete()
 {
 	cl_assert(clSetUserEventStatus(handler, CL_COMPLETE));
 }
-void event::join()
+void event::join() const
 {
 	cl_assert(clWaitForEvents(1, &handler));
 }
-cl_ulong event::profileQueued()
+cl_ulong event::profileQueued() const
 {
 	cl_ulong res;
 	cl_assert(clGetEventProfilingInfo(handler, CL_PROFILING_COMMAND_QUEUED, sizeof(res), &res, nullptr));
 	return res;
 }
-cl_ulong event::profileSubmit()
+cl_ulong event::profileSubmit() const
 {
 	cl_ulong res;
 	cl_assert(clGetEventProfilingInfo(handler, CL_PROFILING_COMMAND_SUBMIT, sizeof(res), &res, nullptr));
 	return res;
 }
-cl_ulong event::profileStart()
+cl_ulong event::profileStart() const
 {
 	cl_ulong res;
 	cl_assert(clGetEventProfilingInfo(handler, CL_PROFILING_COMMAND_START, sizeof(res), &res, nullptr));
 	return res;
 }
-cl_ulong event::profileEnd()
+cl_ulong event::profileEnd() const
 {
 	cl_ulong res;
 	cl_assert(clGetEventProfilingInfo(handler, CL_PROFILING_COMMAND_END, sizeof(res), &res, nullptr));
 	return res;
 }
-cl_ulong event::profileComplete()
+cl_ulong event::profileComplete() const
 {
 	cl_ulong res;
 	cl_assert(clGetEventProfilingInfo(handler, CL_PROFILING_COMMAND_COMPLETE, sizeof(res), &res, nullptr));

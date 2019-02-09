@@ -14,7 +14,7 @@ inline std::string readfile(const std::string& filepath)
 auto device = cl::device::get_all_devices()[2];
 auto context = cl::context({device});
 auto queue = cl::queue(context, device);
-auto kernel = cl::kernel(context, device, {readfile("./examples/kernel.cl.c")}, "");
+auto kernel = cl::kernel(context, device, {readfile("./examples/5_kronecker/kronecker.cl.c")}, "");
 auto A = cl::buffer(context, CL_MEM_READ_ONLY, 4*sizeof(float));
 auto B = cl::buffer(context, CL_MEM_READ_ONLY, 4*sizeof(float));
 auto C = cl::buffer(context, CL_MEM_READ_WRITE, 16*sizeof(float));

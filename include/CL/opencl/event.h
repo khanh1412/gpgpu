@@ -4,18 +4,12 @@
 #include"CL/utils/singleton.h"
 #include"CL/opencl/error.h"
 namespace cl {
-class param;
-class queue;
 class event
 {
-	private:
-		friend class param;
-		friend class queue;
-	private:
-		cl_event handler;
-	private:
-		event(const cl_event& event_id);
 	public:
+		cl_event handler;
+	public:
+		event(const cl_event& event_id);
 		event(const context& target);
 		~event();
 		void setComplete();

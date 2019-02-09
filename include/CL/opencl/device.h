@@ -7,19 +7,12 @@
 #include"CL/opencl/platform.h"
 #include<string>
 namespace cl {
-class context;
-class queue;
-class program;
 class device: public field
 {
-	private:
-		friend class queue;
-		friend class context;
-		friend class program;
-	private:
-		cl_device_id handler;
-		device(const cl_device_id& device_id);
 	public:
+		cl_device_id handler;
+	public:
+		device(const cl_device_id& device_id);
 		device(const device& target);
 		~device() {}
 		static container<device> get_all_devices();

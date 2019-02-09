@@ -7,20 +7,9 @@
 #include"CL/opencl/platform.h"
 #include"CL/opencl/device.h"
 namespace cl {
-class queue;
-class buffer;
-class program;
-class event;
-class kernel;
 class context: public singleton
 {
-	private:
-		friend class queue;
-		friend class buffer;
-		friend class program;
-		friend class kernel;
-		friend class event;
-	private:
+	public:
 		cl_context handler;
 	public:
 		context(const container<device>& target);

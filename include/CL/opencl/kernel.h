@@ -16,27 +16,21 @@ extern "C" void CL_CALLBACK build_callback(cl_program program, void *user_data)
 	e.signal();
 }
 namespace cl {
-class program;
-class queu;
 class kernel: public singleton
 {
-	private:
-		friend class queue;
-	private:
-		cl_kernel handler;
-		kernel(const cl_kernel& kernel_id);
 	public:
+		cl_kernel handler;
+	public:
+		kernel(const cl_kernel& kernel_id);
 		kernel(const context& target_context, const device& target_device, const container<std::string>& source, const std::string& options);
 		~kernel();
 		static container<kernel> build(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options);
 };
 class program
 {
-	private:
-		friend class kernel;
-	private:
+	public:
 		cl_program handler;
-	private:
+	public:
 		program(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options);
 		~program();
 };

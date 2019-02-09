@@ -5,14 +5,9 @@
 #include"CL/opencl/error.h"
 #include"CL/opencl/context.h"
 namespace cl {
-class param;
-class queue;
 class buffer: public singleton
 {
-	private:
-		friend class param;
-		friend class queue;
-	private:
+	public:
 		cl_mem handler;
 	public:
 		buffer(context& target, cl_mem_flags flags, size_t size, void *host_ptr = nullptr);

@@ -3,7 +3,7 @@ DEBUG = 0
 CC = g++
 CCFLAGS = -std=c++17 -fPIC -Wall -Wfatal-errors
 INFLAGS = -I./include -I./examples
-LDFLAGS = -lOpenCL
+LDFLAGS = -lOpenCL -lclblast
 
 ifeq (1, $(DEBUG))
 CCFLAGS += -g -O0

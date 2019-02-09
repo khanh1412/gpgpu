@@ -10,9 +10,10 @@
 #include"CL/opencl/buffer.h"
 #include"CL/opencl/kernel.h"
 namespace cl {
+class param;
 class queue: public singleton
 {
-	private:
+	public:
 		cl_command_queue handler;
 	public:
 		queue(const context& target_context, const device& target_device, bool out_of_order = false);

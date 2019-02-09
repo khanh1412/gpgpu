@@ -5,15 +5,12 @@
 #include"CL/utils/container.h"
 #include"CL/opencl/error.h"
 namespace cl {
-class device;
 class platform: public field
 {
-	private:
-		friend class device;
-	private:
-		cl_platform_id handler;
-		platform(const cl_platform_id& platform_id);
 	public:
+		cl_platform_id handler;
+	public:
+		platform(const cl_platform_id& platform_id);
 		platform(const platform& target);
 		~platform() {}
 		static container<platform> get_all_platforms();

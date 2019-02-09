@@ -86,7 +86,7 @@ std::string error::errorname()
 		case -70: return std::string("CL_INVALID_DEVICE_QUEUE                     ");
 		case -71: return std::string("CL_INVALID_SPEC_ID                          ");
 		case -72: return std::string("CL_MAX_SIZE_RESTRICTION_EXCEEDED            ");
-		default: throw std::runtime_error("ERROR CODE DOES NOT EXIST");
+		default:  return std::string("ERROR_CODE_DOES_NOT_EXIST                   ");
 	}
 }
 error::error(const cl_int& error_code, int line, const std::string& file)

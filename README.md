@@ -14,7 +14,7 @@ https://docs.nvidia.com/cuda/cuda-runtime-api/index.html
 
 https://docs.nvidia.com/cuda/cuda-driver-api/index.html
 
-![alt text](https://raw.githubusercontent.com/khanh1412/opencl/master/images/20181216_204709.jpg)
+![alt text](https://raw.githubusercontent.com/khanh1412/opencl/opencl200/images/20181216_204709.jpg)
 
 Simplify the usage of OpenCL in both Linux and Windows using only 4 classes `Context`, `Buffer`, `Queue` and `Kernel`.
 

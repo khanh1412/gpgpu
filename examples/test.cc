@@ -29,10 +29,23 @@ int main(int argc, char **argv)
 		queue.enqueueWriteBuffer(B, b, 4*sizeof(float));
 	}
 	{
-		queue.enqueueNDRangeKernel(kernel, {2, 2, 2, 2, A, B, C, cl::localmem(sizeof(float))}, {4, 4}, {2, 2});
+		queue.enqueueNDRangeKernel(kernel, {(size_t)2, (size_t)2, (size_t)2, (size_t)2, A, B, C, cl::localmem(sizeof(float))}, {4, 4}, {2, 2});
 	}
 	{
 		queue.enqueueReadBuffer(C, c, 16*sizeof(float));
 	}
+
+	for (int i=0; i<4; ++i)
+	{
+		for (int j=0; j<4; ++j)
+			std::cout<<c[i*4+j]<<" ";
+		std::cout<<"\n";
+	}
+
+
+
+
+
+
 	return 0;
 }

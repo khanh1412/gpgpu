@@ -1,6 +1,6 @@
 DEBUG = 0
 
-CC = clang++
+CC = g++
 CCFLAGS = -std=c++17 -fPIC -Wall -Wfatal-errors
 INFLAGS = -I./include -I./examples
 LDFLAGS = -lOpenCL

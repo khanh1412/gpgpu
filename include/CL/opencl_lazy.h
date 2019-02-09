@@ -10,7 +10,6 @@ inline std::string readfile(const std::string& filepath)
 		std::istreambuf_iterator<char>());
 	return content;
 }
-extern "C" {
 void chooseDevice(size_t i = 0)
 {
 	auto all_devices = cl::device::get_all_devices();
@@ -46,5 +45,4 @@ double enqueueExecuteKernel(const cl::kernel& kernel, const std::initializer_lis
 	cl::event e = queue->enqueueNDRangeKernel(kernel, p, global_dim);
 	e.join();
 	return e.profileEnd() - e.profileStart();
-}
 }

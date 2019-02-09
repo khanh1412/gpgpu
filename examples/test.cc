@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
 
 
-
+	std::cout<<cl::builtin::kronecker_source<<std::endl;
 
 
 	return 0;

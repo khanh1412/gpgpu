@@ -31,9 +31,8 @@ class queue: public singleton
 enum paramtype {EVENT, BUFFER, NUMBER};
 class localmem
 {
-	private:
-		size_t size;
 	public:
+		size_t size;
 		localmem(size_t size): size(size) {}
 		~localmem(){}
 };
@@ -48,7 +47,7 @@ class param
 	public:
 		param(const event& obj): type(EVENT), size(sizeof(cl_event)), data((void*)&obj.handler) {}
 		param(const buffer& obj): type(BUFFER), size(sizeof(cl_mem)), data((void*)&obj.handler) {}
-		param(const localmem& obj): type(BUFFER), size(sizeof(cl_mem)), data(nullptr) {}
+		param(const localmem& obj): type(BUFFER), size(obj.size), data(nullptr) {}
 		template<class numtype>
 		param(const numtype& obj): type(NUMBER), size(sizeof(numtype)), data((void*)&obj){}
 };

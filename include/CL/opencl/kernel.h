@@ -7,14 +7,6 @@
 #include"CL/opencl/error.h"
 #include"CL/opencl/context.h"
 #include"CL/opencl/device.h"
-cl::alarm e;
-bool builddone;
-extern "C" void CL_CALLBACK build_callback(cl_program program, void *user_data)
-{
-	builddone = true;
-	cl::alarm& e = *reinterpret_cast<cl::alarm*>(user_data);
-	e.signal();
-}
 namespace cl {
 class kernel: public singleton
 {
@@ -73,21 +65,27 @@ program::program(const context& target_context, const container<device>& target_
 	array<cl_device_id> device_ids(target_devices.size());
 	for (size_t i=0; i<device_ids.size(); ++i)
 		device_ids[i] = target_devices[i].handler;
-	builddone = false;
-	cl_assert(clBuildProgram(handler, device_ids.size(), device_ids.data(), options.c_str(), build_callback, &e));
-	if (not builddone) e.wait_for_signal();
-	for (size_t i=0; i<target_devices.size(); ++i)
+	try
 	{
-		cl_build_status sts;
-		cl_assert(clGetProgramBuildInfo(handler, target_devices[i].handler, CL_PROGRAM_BUILD_STATUS, sizeof(sts), &sts, nullptr));
-		if (CL_BUILD_SUCCESS != sts)
+		cl_assert(clBuildProgram(handler, device_ids.size(), device_ids.data(), options.c_str(), nullptr, nullptr));
+	}
+	catch (const cl::error& err)
+	{
+		for (size_t i=0; i<target_devices.size(); ++i)
 		{
-			size_t logsize;
-			cl_assert(clGetProgramBuildInfo(handler, target_devices[i].handler, CL_PROGRAM_BUILD_LOG, 0, nullptr, &logsize));
-			array<char> log(logsize+1); log[logsize] = '\0';
-			cl_assert(clGetProgramBuildInfo(handler, target_devices[i].handler, CL_PROGRAM_BUILD_LOG, logsize, log.data(), nullptr));
-			throw std::runtime_error(std::string(log.data(), log.size()));
+			std::cout<<"\nBuild log: ("<<target_devices[i].name()<<")"<<std::endl;
+			cl_build_status sts;
+			cl_assert(clGetProgramBuildInfo(handler, target_devices[i].handler, CL_PROGRAM_BUILD_STATUS, sizeof(sts), &sts, nullptr));
+			if (CL_BUILD_SUCCESS != sts)
+			{
+				size_t logsize;
+				cl_assert(clGetProgramBuildInfo(handler, target_devices[i].handler, CL_PROGRAM_BUILD_LOG, 0, nullptr, &logsize));
+				array<char> log(logsize+1); log[logsize] = '\0';
+				cl_assert(clGetProgramBuildInfo(handler, target_devices[i].handler, CL_PROGRAM_BUILD_LOG, logsize, log.data(), nullptr));
+				std::cout<<log.data()<<std::endl;
+			}
 		}
+		throw err;
 	}
 }
 program::~program()

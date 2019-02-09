@@ -105,6 +105,7 @@ const char* error::what() const throw()
 void error::assert(const cl_int err, int line, const std::string& file)
 {
 	if (err != CL_SUCCESS)
+		//std::cout<<error(err, line, file).what()<<std::endl;
 		throw error(err, line, file);
 }
 }

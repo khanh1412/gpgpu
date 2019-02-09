@@ -6,3 +6,4 @@ run
 *.so
 *.o
 clinfo/clinfo
+clinfo/clinfo.run

@@ -5,3 +5,4 @@ run
 *.dll
 *.so
 *.o
+clinfo/clinfo

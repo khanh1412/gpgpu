@@ -1,5 +1,5 @@
 #ifndef _ALARM_H_
-#define _ALAMR_H_
+#define _ALARM_H_
 #include<mutex>
 #include<condition_variable>
 namespace cl {

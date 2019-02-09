@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 		auto w1 = queue.enqueueWriteBuffer(A, a, 4*sizeof(float));
 		auto w2 = queue.enqueueWriteBuffer(B, b, 4*sizeof(float));
 		queue.enqueueBarrier({w1, w2});
-		auto k = cl::clblast::gemm(queue, 2, 2, 2, false, false, 1.0f, 0.0f, A, B, C);
+		auto k = cl::clblast::gemm(queue, 2, 2, 2, 1.0f, 0.0f, A, B, C);
 		queue.enqueueBarrier({k});
 		queue.enqueueReadBuffer(C, c, 4*sizeof(float));
 		queue.join();

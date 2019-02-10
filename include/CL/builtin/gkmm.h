@@ -76,7 +76,9 @@ event gkmm(queue& Q, size_t m, size_t n, size_t p, size_t q, float alpha, float 
 {
 	cl_context context_handler; clGetCommandQueueInfo(Q.handler, CL_QUEUE_CONTEXT, sizeof(cl_context), &context_handler, nullptr);
 	cl_device_id device_handler; clGetCommandQueueInfo(Q.handler, CL_QUEUE_DEVICE, sizeof(cl_device_id), &device_handler, nullptr);
-	auto kronecker_kernel_float = cl::kernel(context(context_handler), device(device_handler), {kronecker_source}, "-Ddtype=float");
+	context *target_context = new context(context_handler);
+	auto kronecker_kernel_float = cl::kernel(*target_context, device(device_handler), {kronecker_source}, "-Ddtype=float");
+	std::free(target_context);
 	return Q.enqueueNDRangeKernel(kronecker_kernel_float, {m, n, p, q, alpha, beta, A, B, C}, {m*p, n*q}, {m, n});
 }
 

@@ -3,7 +3,7 @@
 #include"CL/opencl.h"
 #include"CL/builtin/gemm.h"
 #include"CL/builtin/gkmm.h"
-auto device = cl::device::get_all_devices()[2];
+auto device = cl::device::get_all_devices()[0];
 auto context = cl::context({device});
 auto queue = cl::queue(context, device);
 auto A = cl::buffer(context, CL_MEM_READ_ONLY, 4*sizeof(float));

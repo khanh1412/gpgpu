@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	auto t2 = std::clock();
 	std::cout<<"count  : "<<(int)count<<std::endl;
 	std::cout<<"threads: "<<num_threads<<std::endl;
-	std::cout<<"time   : "<<1000*(t2-t1)/CLOCKS_PER_SEC<<" millisec"<<std::endl;
+	std::cout<<"avg time   : "<<(1000*(t2-t1)/CLOCKS_PER_SEC)/2<<" millisec"<<std::endl;
 	/*
 	for (int64_t i=0; i<count*num_threads; ++i)
 	{

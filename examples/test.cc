@@ -7,6 +7,7 @@ class vector
 	int x;
 	int y;
 	vector(int x, int y): x(x), y(y) {std::cout<<"constructor ("<<x<<","<<y<<") is called!\n";}
+	vector(const vector& v): x(v.x), y(v.y){std::cout<<"constructor ("<<x<<","<<y<<") is called!\n";}
 	~vector(){std::cout<<"destructor("<<x<<","<<y<<") is called!\n";}
 };
 std::ostream& operator<<(std::ostream& out, const vector& v)

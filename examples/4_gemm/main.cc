@@ -74,7 +74,7 @@ double HOST_GEMM(float alpha, float beta, const matrix& A, const matrix& B, cons
 	auto t2 = omp_get_wtime();
 	return (t2-t1)*1e9;
 }
-auto device = cl::device::get_all_devices()[0];
+auto device = cl::device::get_all_devices()[1];
 auto context = cl::context({device});
 auto queue = cl::queue(context, device);
 double CL_GEMM(float alpha, float beta, const matrix& A, const matrix& B, const matrix& C)

@@ -1,6 +1,26 @@
 #include"CL/opencl.h"
+#include<iostream>
+class vector
+{
+	public:
+	int x;
+	int y;
+	vector(int x, int y): x(x), y(y) {}
+	~vector(){}
+};
+std::ostream& operator<<(std::ostream& out, const vector& v)
+{
+	out<<"("<<v.x<<", "<<v.y<<")";
+	return out;
+}
 int main(int argc, char **argv)
 {
-	auto all_devices = cl::device::get_all_devices();
+	auto c = cl::container<vector>();
+	c.push_back(new vector(1,2));
+	c.push_back(new vector(3,4));
+	for (auto& i : c)
+	{
+		std::cout<<i<<std::endl;
+	}
 	return 0;
 }

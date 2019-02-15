@@ -14,6 +14,92 @@ class holder
 		~holder();
 };
 template<class obj_type>
+class iterator
+{
+	public:
+		obj_type **pointer;
+		iterator(obj_type **pointer);
+		iterator(const iterator& it);
+		inline iterator operator=(const iterator& it);
+		~iterator();
+		inline obj_type& operator*();
+		inline obj_type* operator->();
+		inline iterator& operator++();
+		inline iterator& operator--();
+		inline iterator operator++(int);
+		inline iterator operator--(int);
+		inline iterator& operator+=(size_t addon);
+		inline iterator& operator-=(size_t addon);
+		inline iterator operator+(size_t addon) const;
+		inline iterator operator-(size_t addon) const;
+		template<class> friend inline bool operator!=(const iterator<obj_type>& a, const iterator<obj_type>& b);
+};
+template<class obj_type> bool operator!=(const iterator<obj_type>& a, const iterator<obj_type>& b)
+{
+	return (a.pointer != b.pointer);
+}
+template<class obj_type> iterator<obj_type>::iterator(obj_type **pointer)
+	: pointer(pointer)
+{}
+template<class obj_type> iterator<obj_type>::iterator(const iterator& it)
+	: pointer(it.pointer)
+{}
+template<class obj_type> iterator<obj_type> iterator<obj_type>::operator=(const iterator& it)
+{
+	pointer = it.pointer;
+	return *this;
+}
+template<class obj_type> iterator<obj_type>::~iterator()
+{}
+template<class obj_type> inline obj_type& iterator<obj_type>::operator*()
+{
+	return **pointer;
+}
+template<class obj_type> inline obj_type* iterator<obj_type>::operator->()
+{
+	return *pointer;
+}
+template<class obj_type> inline iterator<obj_type>& iterator<obj_type>::operator++()
+{
+	++pointer;
+	return *this;
+}
+template<class obj_type> inline iterator<obj_type>& iterator<obj_type>::operator--()
+{
+	--pointer;
+	return *this;
+}
+template<class obj_type> inline iterator<obj_type> iterator<obj_type>::operator++(int)
+{
+	auto temp = iterator<obj_type>(*this);
+	++pointer;
+	return temp;
+}
+template<class obj_type> inline iterator<obj_type> iterator<obj_type>::operator--(int)
+{
+	auto temp = iterator<obj_type>(*this);
+	--pointer;
+	return temp;
+}
+template<class obj_type> inline iterator<obj_type>& iterator<obj_type>::operator+=(size_t addon)
+{
+	pointer += addon;
+	return *this;
+}
+template<class obj_type> inline iterator<obj_type>& iterator<obj_type>::operator-=(size_t addon)
+{
+	pointer -= addon;
+	return *this;
+}
+template<class obj_type> inline iterator<obj_type> iterator<obj_type>::operator+(size_t addon) const
+{
+	return interator(pointer+addon);
+}
+template<class obj_type> inline iterator<obj_type> iterator<obj_type>::operator-(size_t addon) const
+{
+	return interator(pointer-addon);
+}
+template<class obj_type>
 class container: public field
 {
 	private:
@@ -37,7 +123,18 @@ class container: public field
 		inline void flush(const obj_type& obj);
 		inline void flush_all();
 		inline size_t find(const obj_type& obj) const;
+	public:
+		inline iterator<obj_type> begin() const;
+		inline iterator<obj_type> end() const;
 };
+template<class obj_type> iterator<obj_type> container<obj_type>::begin() const
+{
+	return iterator<obj_type>(arr.data());
+}
+template<class obj_type> iterator<obj_type> container<obj_type>::end() const
+{
+	return iterator<obj_type>(arr.data() + size());
+}
 template<class obj_type> holder<obj_type>::holder(const obj_type& obj)
 	: ptr(&obj)
 {}

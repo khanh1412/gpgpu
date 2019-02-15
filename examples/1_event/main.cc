@@ -1,6 +1,6 @@
 #include"CL/opencl.h"
 #include<iostream>
-const uint64_t COUNT = 100;
+const uint64_t COUNT = 10;
 auto all_devices = cl::device::get_all_devices();
 auto& device = all_devices[2];
 auto context = cl::context({device});

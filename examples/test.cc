@@ -22,5 +22,18 @@ int main(int argc, char **argv)
 	{
 		std::cout<<i<<std::endl;
 	}
+	auto it = c.begin();
+	++it;
+	std::cout<<*it<<std::endl;
+	--it;
+	std::cout<<*it<<std::endl;
+	it++;
+	std::cout<<*it<<std::endl;
+	it--;
+	std::cout<<*it<<std::endl;
+	it += 1;
+	std::cout<<*it<<std::endl;
+	it -= 1;
+	std::cout<<*it<<std::endl;
 	return 0;
 }

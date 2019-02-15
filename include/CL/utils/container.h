@@ -121,11 +121,11 @@ template<class obj_type> inline iterator<obj_type>& iterator<obj_type>::operator
 }
 template<class obj_type> inline iterator<obj_type> iterator<obj_type>::operator+(size_t addon) const
 {
-	return interator(pointer+addon);
+	return iterator<obj_type>(pointer+addon);
 }
 template<class obj_type> inline iterator<obj_type> iterator<obj_type>::operator-(size_t addon) const
 {
-	return interator(pointer-addon);
+	return iterator<obj_type>(pointer-addon);
 }
 template<class obj_type> iterator<obj_type> container<obj_type>::begin() const
 {

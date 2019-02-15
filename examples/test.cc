@@ -16,8 +16,8 @@ std::ostream& operator<<(std::ostream& out, const vector& v)
 int main(int argc, char **argv)
 {
 	auto c = cl::container<vector>();
-	c.push_back(new vector(1,2));
-	c.push_back(new vector(3,4));
+	c.push_back(vector(1,2));
+	c.push_back(vector(3,4));
 	for (auto& i : c)
 	{
 		std::cout<<i<<std::endl;

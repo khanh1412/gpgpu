@@ -51,6 +51,7 @@ class container: public field
 		inline size_t size() const;
 		inline obj_type& operator[](size_t i) const;
 		inline void push_back(const obj_type* ptr);
+		inline void push_back(const obj_type& obj);
 		inline void pop_back();
 		inline void clear(const obj_type& obj);
 		inline void clear_all();
@@ -177,6 +178,10 @@ template<class obj_type> inline obj_type& container<obj_type>::operator[](size_t
 template<class obj_type> inline void container<obj_type>::push_back(const obj_type* ptr)
 {
 	arr.push_back((obj_type*)ptr);
+}
+template<class obj_type> inline void container<obj_type>::push_back(const obj_type& obj)
+{
+	push_back(new obj_type(obj));
 }
 template<class obj_type> inline void container<obj_type>::pop_back()
 {

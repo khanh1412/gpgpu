@@ -1,5 +1,6 @@
 #include"CL/opencl.h"
 #include<iostream>
+#include<vector>
 class vector
 {
 	public:
@@ -14,9 +15,8 @@ std::ostream& operator<<(std::ostream& out, const vector& v)
 	return out;
 }
 
-//using container = cl::container<vector>;
-#include<vector>
-using container = std::vector<vector>;
+using container = cl::container<vector>;
+//using container = std::vector<vector>;
 
 
 int main(int argc, char **argv)

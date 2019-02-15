@@ -5,7 +5,7 @@ class vector
 	public:
 	int x;
 	int y;
-	vector(int x, int y): x(x), y(y) {}
+	vector(int x, int y): x(x), y(y) {std::cout<<"constructor is called!\n";}
 	~vector(){std::cout<<"destructor is called!\n";}
 };
 std::ostream& operator<<(std::ostream& out, const vector& v)

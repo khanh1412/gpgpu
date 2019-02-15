@@ -34,6 +34,34 @@ class iterator
 		inline iterator operator-(size_t addon) const;
 		template<class> friend inline bool operator!=(const iterator<obj_type>& a, const iterator<obj_type>& b);
 };
+template<class obj_type>
+class container: public field
+{
+	private:
+		array<obj_type*> arr;
+
+	public:	
+		container();
+		container(const container<obj_type>& obj);
+		container& operator=(const container<obj_type>& obj);
+		virtual ~container();
+		container(const std::initializer_list<holder<obj_type>>& list);
+
+	public:	
+		inline size_t size() const;
+		inline obj_type& operator[](size_t i) const;
+		inline void push_back(const obj_type* ptr);
+		inline void pop_back();
+		inline void clear(const obj_type& obj);
+		inline void clear_all();
+		inline void flush_back();
+		inline void flush(const obj_type& obj);
+		inline void flush_all();
+		inline size_t find(const obj_type& obj) const;
+	public:
+		inline iterator<obj_type> begin() const;
+		inline iterator<obj_type> end() const;
+};
 template<class obj_type> bool operator!=(const iterator<obj_type>& a, const iterator<obj_type>& b)
 {
 	return (a.pointer != b.pointer);
@@ -99,34 +127,6 @@ template<class obj_type> inline iterator<obj_type> iterator<obj_type>::operator-
 {
 	return interator(pointer-addon);
 }
-template<class obj_type>
-class container: public field
-{
-	private:
-		array<obj_type*> arr;
-
-	public:	
-		container();
-		container(const container<obj_type>& obj);
-		container& operator=(const container<obj_type>& obj);
-		virtual ~container();
-		container(const std::initializer_list<holder<obj_type>>& list);
-
-	public:	
-		inline size_t size() const;
-		inline obj_type& operator[](size_t i) const;
-		inline void push_back(const obj_type* ptr);
-		inline void pop_back();
-		inline void clear(const obj_type& obj);
-		inline void clear_all();
-		inline void flush_back();
-		inline void flush(const obj_type& obj);
-		inline void flush_all();
-		inline size_t find(const obj_type& obj) const;
-	public:
-		inline iterator<obj_type> begin() const;
-		inline iterator<obj_type> end() const;
-};
 template<class obj_type> iterator<obj_type> container<obj_type>::begin() const
 {
 	return iterator<obj_type>(arr.data());

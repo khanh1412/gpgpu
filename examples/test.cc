@@ -6,7 +6,7 @@ class vector
 	int x;
 	int y;
 	vector(int x, int y): x(x), y(y) {}
-	~vector(){}
+	~vector(){std::cout<<"destructor is called!\n";}
 };
 std::ostream& operator<<(std::ostream& out, const vector& v)
 {
@@ -15,9 +15,10 @@ std::ostream& operator<<(std::ostream& out, const vector& v)
 }
 int main(int argc, char **argv)
 {
+{
 	auto c = cl::container<vector>();
-	c.push_back(vector(1,2));
-	c.push_back(vector(3,4));
+	c.push_back(new vector(1,2));
+	c.push_back(new vector(3,4));
 	for (auto& i : c)
 	{
 		std::cout<<i<<std::endl;
@@ -35,5 +36,6 @@ int main(int argc, char **argv)
 	std::cout<<*it<<std::endl;
 	it -= 1;
 	std::cout<<*it<<std::endl;
+}
 	return 0;
 }

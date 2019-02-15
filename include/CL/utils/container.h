@@ -151,7 +151,7 @@ template<class obj_type> container<obj_type>& container<obj_type>::operator=(con
 }
 template<class obj_type> container<obj_type>::~container()
 {
-	flush_all();
+//	flush_all();
 }
 template<class obj_type> container<obj_type>::container(const std::initializer_list<holder<obj_type>>& list)
 	:arr(list.size())

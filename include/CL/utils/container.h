@@ -188,8 +188,7 @@ template<class obj_type> inline void container<obj_type>::flush(const obj_type& 
 }
 template<class obj_type> inline void container<obj_type>::flush_all()
 {
-	while (size() > 0)
-		flush_back();
+	while (size() > 0) flush_back();
 }
 template<class obj_type> inline size_t container<obj_type>::find(const obj_type& obj) const
 {

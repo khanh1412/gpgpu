@@ -1,7 +1,6 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 #include<CL/cl.h>
-#include"CL/utils/container.h"
 #include"CL/utils/singleton.h"
 #include"CL/opencl/error.h"
 #include"CL/opencl/device.h"

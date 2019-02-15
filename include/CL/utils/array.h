@@ -33,7 +33,6 @@ class array: public field
 		inline size_t find(const type& obj) const;
 		inline size_t find(const array<type>& obj) const;
 };
-
 template<class type> inline void array<type>::extend()
 {
 	++count;

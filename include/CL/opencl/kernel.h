@@ -1,6 +1,7 @@
 #ifndef _KERNEL_H_
 #define _KERNEL_H_
 #include<CL/cl.h>
+#include<iostream>
 #include"CL/utils/container.h"
 #include"CL/utils/singleton.h"
 #include"CL/utils/alarm.h"

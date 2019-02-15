@@ -51,17 +51,6 @@ int main(int argc, char **argv)
 		y[i] = COUNT-i;
 		z[i] = 0;
 	}
-	std::cout<<"time: "<<cl_call(z.data(), 1, x.data(), y.data(), COUNT)<<std::endl;
-	size_t fail = 0;
-	for (size_t i=0; i<COUNT; ++i)
-	{
-		float diff = z[i] - (x[i] + y[i]);
-		if (diff*diff > tol*tol)
-			fail++;
-	}
-	std::cout<<"fail: "<<fail<<"/"<<COUNT<<std::endl;
-
-
-
+	std::cout<<"performance: "<<2*COUNT/cl_call(z.data(), 1, x.data(), y.data(), COUNT)<<" gflops"<<std::endl;
 	return 0;
 }

@@ -35,7 +35,7 @@ container<device> device::get_all_devices()
 	{
 		auto some_devices = get_all_devices(all_platforms[i]);
 		for (size_t j=0; j<some_devices.size(); ++j)
-			all_devices.push_back(new device(some_devices[j]));	
+			all_devices.emplace_back(some_devices[j]);
 	}
 	return all_devices;
 }
@@ -49,7 +49,7 @@ container<device> device::get_all_devices(const platform& target)
 	cl_assert(clGetDeviceIDs(target.handler, CL_DEVICE_TYPE_ALL, num_devices, all_device_ids.data(), nullptr));
 	container<device> all_devices;
 	for (size_t i=0; i<num_devices; ++i)
-		all_devices.push_back(new device(all_device_ids[i]));
+		all_devices.emplace_back(all_device_ids[i]);
 	return all_devices;
 }
 std::string device::version() const

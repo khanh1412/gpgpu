@@ -34,7 +34,7 @@ container<platform> platform::get_all_platforms()
 	cl_assert(clGetPlatformIDs(num_platforms, all_platform_ids.data(), nullptr));
 	container<platform> all_platforms;
 	for (size_t i=0; i<num_platforms; ++i)
-		all_platforms.push_back(new platform(all_platform_ids[i]));
+		all_platforms.emplace_back(all_platform_ids[i]);
 	return all_platforms;
 }
 std::string platform::version() const

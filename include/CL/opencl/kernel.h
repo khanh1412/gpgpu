@@ -48,7 +48,7 @@ container<kernel> kernel::build(const context& target_context, const container<d
 	cl_assert(clCreateKernelsInProgram(prog.handler, num_kernels, kernels.data(), nullptr));
 	container<kernel> all_kernels;
 	for (size_t i=0; i<num_kernels; ++i)
-		all_kernels.push_back(new kernel(kernels[i]));
+		all_kernels.emplace_back(kernels[i]);
 	return all_kernels;
 
 }

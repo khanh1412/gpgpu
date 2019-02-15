@@ -50,15 +50,12 @@ class container: public field
 	public:	
 		inline size_t size() const;
 		inline obj_type& operator[](size_t i) const;
-		inline void push_back(const obj_type* ptr);
-		inline void pop_back();
-		inline void clear(const obj_type& obj);
-		inline void clear_all();
+		template<class... Args> inline void emplace_back(Args&&... args);
 		inline void flush_back();
 		inline void flush(const obj_type& obj);
 		inline void flush_all();
-		inline size_t find(const obj_type& obj) const;
 	public:
+		inline size_t find(const obj_type& obj) const;
 		inline iterator<obj_type> begin() const;
 		inline iterator<obj_type> end() const;
 };
@@ -154,7 +151,7 @@ template<class obj_type> container<obj_type>& container<obj_type>::operator=(con
 }
 template<class obj_type> container<obj_type>::~container()
 {
-	clear_all();
+	flush_all();
 }
 template<class obj_type> container<obj_type>::container(const std::initializer_list<holder<obj_type>>& list)
 	:arr(list.size())
@@ -174,22 +171,9 @@ template<class obj_type> inline obj_type& container<obj_type>::operator[](size_t
 {
 	return *arr[i];
 }
-template<class obj_type> inline void container<obj_type>::push_back(const obj_type* ptr)
+template<class obj_type> template<class... Args> inline void container<obj_type>::emplace_back(Args&&... args)
 {
-	arr.push_back((obj_type*)ptr);
-}
-template<class obj_type> inline void container<obj_type>::pop_back()
-{
-	arr.pop_back();
-}
-template<class obj_type> inline void container<obj_type>::clear(const obj_type& obj)
-{
-	size_t i = find(obj);
-	arr[i] = nullptr;
-}
-template<class obj_type> inline void container<obj_type>::clear_all()
-{
-	while (size() > 0) pop_back();
+	arr.push_back(new obj_type(args...));
 }
 template<class obj_type> inline void container<obj_type>::flush_back()
 {

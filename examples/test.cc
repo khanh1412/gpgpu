@@ -5,18 +5,24 @@ class vector
 	public:
 	int x;
 	int y;
-	vector(int x, int y): x(x), y(y) {std::cout<<"constructor is called!\n";}
-	~vector(){std::cout<<"destructor is called!\n";}
+	vector(int x, int y): x(x), y(y) {std::cout<<"constructor ("<<x<<","<<y<<") is called!\n";}
+	~vector(){std::cout<<"destructor("<<x<<","<<y<<") is called!\n";}
 };
 std::ostream& operator<<(std::ostream& out, const vector& v)
 {
 	out<<"("<<v.x<<", "<<v.y<<")";
 	return out;
 }
+
+//using container = cl::container<vector>;
+#include<vector>
+using container = std::vector<vector>;
+
+
 int main(int argc, char **argv)
 {
 {
-	auto c = cl::container<vector>();
+	auto c = container();
 	c.emplace_back(1,2);
 	c.emplace_back(3,4);
 	for (auto& i : c)

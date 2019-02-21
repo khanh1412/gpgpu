@@ -142,11 +142,17 @@ template<class obj_type> container<obj_type>::container()
 {}
 template<class obj_type> container<obj_type>::container(const container<obj_type>& obj)
 {
-	arr = obj.arr;
+//	arr = obj.arr;
+	for (size_t i=0; i < obj.size(); ++i)
+		emplace_back(obj[i]);
+	return;
 }
 template<class obj_type> container<obj_type>& container<obj_type>::operator=(const container<obj_type>& obj)
 {
-	arr = obj.arr;
+//	arr = obj.arr; obj.arr = array<obj_type*>();
+	flush_all();
+	for (size_t i=0; i < obj.size(); ++i)
+		emplace_back(obj[i]);
 	return *this;
 }
 template<class obj_type> container<obj_type>::~container()

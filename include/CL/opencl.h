@@ -1,6 +1,6 @@
 #ifndef _OPENCL_H_
 #define _OPENCL_H_
-#define CL_TARGET_OPENCL_VERSION 200
+#define CL_USE_DEPRECATED_OPENCL_1_2_APIS
 #include<CL/cl.h>
 #include"CL/utils/field.h"
 #include"CL/utils/singleton.h"

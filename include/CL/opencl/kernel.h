@@ -17,7 +17,7 @@ class kernel: public singleton
 		kernel(const cl_kernel& kernel_id);
 		kernel(const context& target_context, const device& target_device, const container<std::string>& source, const std::string& options);
 		~kernel();
-		static container<kernel> build(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options);
+		static container<kernel> *build(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options);
 };
 class program
 {
@@ -39,16 +39,16 @@ kernel::~kernel()
 {
 	clReleaseKernel(handler);
 }
-container<kernel> kernel::build(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options)
+container<kernel> *kernel::build(const context& target_context, const container<device>& target_devices, const container<std::string>& source, const std::string& options)
 {
 	program prog(target_context, target_devices, source, options);
 	cl_uint num_kernels;
 	cl_assert(clCreateKernelsInProgram(prog.handler, 0, nullptr, &num_kernels));
 	array<cl_kernel> kernels(num_kernels);
 	cl_assert(clCreateKernelsInProgram(prog.handler, num_kernels, kernels.data(), nullptr));
-	container<kernel> all_kernels;
+	container<kernel> *all_kernels = new container<kernel>();
 	for (size_t i=0; i<num_kernels; ++i)
-		all_kernels.emplace_back(kernels[i]);
+		all_kernels->emplace_back(kernels[i]);
 	return all_kernels;
 
 }

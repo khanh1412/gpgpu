@@ -82,11 +82,10 @@ inline std::string read_file(const std::string& filepath)
 		std::istreambuf_iterator<char>());
 	return content;
 }
-auto all_devices = cl::device::get_all_devices();
-auto& device = all_devices[1];
+auto device = cl::device::get_all_devices()[0];
 auto context = cl::context({device});
 auto queue = cl::queue(context, device);
-auto kernel = cl::kernel(context, device, {read_file("examples/3_rsa/factorization.cl.c")}, "-cl-std=CL1.2");
+auto kernel = cl::kernel(context, device, {read_file("examples/3_rsa/factorization.cl.c")}, "-cl-std=CL1.1");
 auto factor = cl::buffer(context, CL_MEM_WRITE_ONLY, sizeof(uint64_t));
 int_t cl_factorization(const int_t& modulo)
 {

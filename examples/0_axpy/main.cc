@@ -10,8 +10,7 @@ inline std::string read_file(const std::string& filepath)
 }
 double cl_call(float *z, float a, float *x, float *y, size_t COUNT)
 {
-	auto all_devices = cl::device::get_all_devices();
-	auto& device = all_devices[1];
+	auto device = cl::device::get_all_devices()[1];
 	auto context = cl::context({device});
 	double kernel_time;
 	{

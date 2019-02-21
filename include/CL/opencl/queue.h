@@ -52,12 +52,22 @@ class param
 };
 queue::queue(const context& target_context, const device& target_device, bool devicequeue)
 {
+	if (target_device.version().find("OpenCL 2.") == 0)
+	{
 	cl_command_queue_properties properties[] = {CL_QUEUE_PROPERTIES, 0, 0};
 	if (devicequeue)
 		properties[1] = CL_QUEUE_ON_DEVICE | CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE | CL_QUEUE_PROFILING_ENABLE;
 	else
 		properties[1] = CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE | CL_QUEUE_PROFILING_ENABLE;
 	cl_int err; handler = clCreateCommandQueueWithProperties(target_context.handler, target_device.handler, &(properties[0]), &err); cl_assert(err);
+	}
+	else if (target_device.version().find("OpenCL 1.") == 0)
+	{
+	cl_command_queue_properties properties = CL_QUEUE_PROFILING_ENABLE;
+	cl_int err; handler = clCreateCommandQueue(target_context.handler, target_device.handler, properties, &err); cl_assert(err);	
+	}
+	else
+	cl_assert(CL_INVALID_DEVICE);
 }
 queue::~queue()
 {

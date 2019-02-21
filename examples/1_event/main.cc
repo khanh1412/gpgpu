@@ -1,8 +1,7 @@
 #include"CL/opencl.h"
 #include<iostream>
 const uint64_t COUNT = 10;
-auto all_devices = cl::device::get_all_devices();
-auto& device = all_devices[2];
+auto device = cl::device::get_all_devices()[0];
 auto context = cl::context({device});
 void COPY(float *a0, float *a1, uint64_t COUNT)
 {

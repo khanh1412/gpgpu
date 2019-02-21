@@ -1,5 +1,5 @@
-#include"CL/opencl.h"
 #include<iostream>
+#include"CL/opencl.h"
 #include<fstream>
 inline std::string read_file(const std::string& filepath)
 {

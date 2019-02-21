@@ -1,5 +1,6 @@
 #ifndef _CONTAINER_H_
 #define _CONTAINER_H_
+#include<iostream>
 #include"CL/utils/array.h"
 #include"CL/utils/field.h"
 namespace cl {
@@ -155,9 +156,13 @@ template<class obj_type> container<obj_type>& container<obj_type>::operator=(con
 		emplace_back(obj[i]);
 	return *this;
 }
+size_t heapleak = 0;
 template<class obj_type> container<obj_type>::~container()
 {
 //	flush_all();
+	heapleak += size()*sizeof(obj_type);
+	std::cout<<"container error due to OpenCL, total leaked size: "<<heapleak<<" bytes"<<std::endl;
+
 }
 template<class obj_type> container<obj_type>::container(const std::initializer_list<holder<obj_type>>& list)
 	:arr(list.size())

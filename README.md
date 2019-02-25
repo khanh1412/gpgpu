@@ -1,6 +1,6 @@
 # opencl
 
-CL/CU C++ simple wrapper (master)
+OpenCL C++ Template-based library
 
 # sources
 

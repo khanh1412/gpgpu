@@ -1,4 +1,4 @@
-# opencl
+# Simple Compute Framework based on OpenCL
 
 OpenCL C++ Template-based library
 

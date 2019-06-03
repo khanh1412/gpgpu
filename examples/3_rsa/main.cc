@@ -90,6 +90,7 @@ auto factor = cl::buffer(context, CL_MEM_WRITE_ONLY, sizeof(uint64_t));
 int_t cl_factorization(const int_t& modulo)
 {
 	//CL CALL
+	std::cout<<"USING DEVICE: "<<device.name()<<std::endl;
 	uint64_t factor64;
 	uint64_t modulo64 = modulo.get_ui();
 	int_t global_dim = ((sqrt(modulo)-1)/2);
@@ -144,13 +145,13 @@ int main(int argc, char **argv)
 		auto t2 = omp_get_wtime();
 		std::cout<<"OCL Time: "<<(t2-t1)<<" sec"<<std::endl;
 	}
-	/*
 	{
 		auto t1 = omp_get_wtime();
 		std::cout<<"cracked "<<omp_crack(pair.pub)<<std::endl;
 		auto t2 = omp_get_wtime();
 		std::cout<<"OMP Time: "<<(t2-t1)<<" sec"<<std::endl;
 	}
+	/*
 	{
 		auto t1 = omp_get_wtime();
 		std::cout<<"cracked "<<crack(pair.pub)<<std::endl;

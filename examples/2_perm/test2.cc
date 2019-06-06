@@ -30,7 +30,7 @@ static void generate(int8_t *it, int8_t *arr, int8_t count)
 			++i;
 		}
 	}
-	delete buffer;
+	delete[] buffer;
 }
 void permutation(int8_t *data, int8_t size)
 {
@@ -40,7 +40,7 @@ void permutation(int8_t *data, int8_t size)
 
 	generate(data, a, size);
 
-	delete a;
+	delete[] a;
 }
 int64_t fac(int8_t count)
 {
@@ -70,6 +70,6 @@ int main(int argc, char *argv[])
 		if ((1+i)%count == 0) std::cout<<std::endl;
 	}
 	*/
-	delete data;
+	delete[] data;
 	return 0;
 }

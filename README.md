@@ -6,15 +6,15 @@ OpenCL C++ Template-based library
 
 ## Resources
 
-(https://www.khronos.org/registry/OpenCL/sdk/2.0/docs/man/xhtml/)
+[OpenCL 2.0 doc](https://www.khronos.org/registry/OpenCL/sdk/2.0/docs/man/xhtml/)
 
-(https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/)
+[OpenCL 1.2 doc](https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/)
 
-(https://www.sharcnet.ca/help/index.php/Porting_CUDA_to_OpenCL)
+[Porting CUDA to OpenCL](https://www.sharcnet.ca/help/index.php/Porting_CUDA_to_OpenCL)
 
-(https://docs.nvidia.com/cuda/cuda-runtime-api/index.html)
+[CUDA Runtime API](https://docs.nvidia.com/cuda/cuda-runtime-api/index.html)
 
-(https://docs.nvidia.com/cuda/cuda-driver-api/index.html)
+[CUDA Driver API](https://docs.nvidia.com/cuda/cuda-driver-api/index.html)
 
 ![alt text](https://raw.githubusercontent.com/khanh1412/opencl/opencl200/images/20181216_204709.jpg)
 

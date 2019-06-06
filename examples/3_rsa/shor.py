@@ -23,7 +23,6 @@ while (True):
         if (1 == gcd(a, n)):
             break
     print("\ta = {}".format(a))
-    
     #calculate period (r)
     r = 1
     while (True):

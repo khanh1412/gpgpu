@@ -30,6 +30,7 @@ static void generate(int8_t *it, int8_t *arr, int8_t count)
 			++i;
 		}
 	}
+	delete buffer;
 }
 void permutation(int8_t *data, int8_t size)
 {

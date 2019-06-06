@@ -1,6 +1,0 @@
-git clone https://github.com/Oblomov/clinfo
-cd clinfo
-make
-cd ..
-cat "./clinfo/clinfo" >> clinfo.run
-chmod +x clinfo.run

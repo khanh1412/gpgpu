@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 	std::cout<<"count  : "<<(int)count<<std::endl;
 	std::cout<<"threads: "<<num_threads<<std::endl;
 	std::cout<<"avg time   : "<<(1000*(t2-t1)/CLOCKS_PER_SEC)/num_threads<<" millisec"<<std::endl;
-	delete data;
+	delete[] data;
 	return 0;
 }
 

@@ -4,7 +4,6 @@
 #include<iostream>
 #include"CL/utils/container.h"
 #include"CL/utils/singleton.h"
-#include"CL/utils/alarm.h"
 #include"CL/opencl/error.h"
 #include"CL/opencl/context.h"
 #include"CL/opencl/device.h"

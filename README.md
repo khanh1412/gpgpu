@@ -1,6 +1,6 @@
 # Simple Compute Library based on OpenCL
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e836909b61e242a2a52aa9d00c198dbd)](https://app.codacy.com/app/khanhhhh/SimpleComputeFramework?utm_source=github.com&utm_medium=referral&utm_content=khanhhhh/SimpleComputeFramework&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/df4b4ff79e8c476dba28def2237104c3)](https://www.codacy.com/manual/khanhhhh/compute-lib?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=khanhhhh/compute-lib&amp;utm_campaign=Badge_Grade)
 
 OpenCL C++ Template-based library
 
